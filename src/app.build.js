@@ -1,0 +1,4 @@
+({
+    appDir: './passgen',
+    dir: './build'
+})
