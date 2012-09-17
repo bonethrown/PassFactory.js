@@ -1,11 +1,12 @@
 QUnit.config.autostart = false;
 
 define(['PassTests',
-        'PassUtilityTests'], function() {
+        'PassUtilityTests',
+        'FieldTests'], function() {
 
     QUnit.start();
 
     for (var i = 0; i < arguments.length; i ++) {
-        arguments[i].runTests();
+        if (arguments[i].runTests) arguments[i].runTests();
     }
 });

@@ -1,80 +1,90 @@
-define('Field', ['../PassUtility'], function(PassUtility) {
-    function Field(keyOrArgs, value) {
+define(['../util/PassUtility', './TextAlignment'],
+       function(PassUtility, TextAlignment) {
+
+    function Field(args) {
         this._key = null;
         this._value = null;
         this._changeMessage = null;
         this._label = null;
         this._textAlignment = null;
 
-        if (keyOrArgs.type === 'string' || keyOrArgs instanceof String) {
-            key = keyOrArgs;
-        } else {
-            PassUtility.validateType(keyOrArgs, Object);
+        PassUtility.validateType(args, Object);
 
-            var args = keyOrArgs;
-
-            if (key) this.key = key;
-            else if (args.key) this.key = args.key;
-
-            if (args.value) this.value = args.value;
-            if (args.changeMessage) this.changeMessage = args.changeMessage;
-            if (args.label) this.label = args.label;
-            if (args.textAlignment) this.textAlignment = args.textAlignment;
-        }
-
+        this.key = args.key || null;
+        this.value = args.value || null;
+        this.changeMessage = args.changeMessage || null;
+        this.label = args.label || null;
+        this.textAlignment = args.textAlignment || null;
     }
     
     Field.prototype = {
         toJSON: function() {
-            return { 
+            var message = 'Field not ready to be serialized. Missing property : ';
+
+            if (!this.key) throw new Error(message + 'key');
+            if (!this.value) throw new Error(message + 'value');
+
+            var result = {
                 key: this.key,
-                value: this.value,
-                changeMessage: this.changeMessage,
-                label: this.label,
-                textAlignment: this.textAlignment
+                value: this.value
             };
+
+            if (this.changeMessage) result.value = this.changeMessage;
+            if (this.label) result.label = this.label;
+            if (this.textAlignment) result.textAlignment = this.textAlignment;
+
+            return result;
         }
     };
 
-    Object.defineProperty(Field.prototype, 'key', {
-        enumberable: false,
-        get: function() { return this._key; },
-        set: function(val) {
-            this._key = val;
+    Object.defineProperties(Field.prototype, {
+        key: {
+            enumberable: false,
+            get: function() { return this._key; },
+            set: function(val) {
+                PassUtility.validateTypeOrNull(val, String);
+                this._key = val;
+            }
+        },
+
+        value: {
+            enumerable: false,
+            get: function() { return this._value; },
+            set: function(val) {
+                PassUtility.validateFieldValueOrNull(val);
+                this._value = val;
+            }
+        },
+
+        changeMessage: {
+            enumerable: false,
+            get: function() { return this._changeMessage; },
+            set: function(val) {
+                PassUtility.validateTypeOrNull(val, String);
+                this._changeMessage = val;
+            }
+        },
+
+        label: {
+            enumerable: false,
+            get: function() { return this._label; },
+            set: function(val) {
+                PassUtility.validateTypeOrNull(val, String);
+                this._label = val;
+            }
+        },
+
+        textAlignment: {
+            enumerable: false,
+            get: function() { return this._textAlignment; },
+            set: function(val) {
+                PassUtility.validateTypeOrNull(val, TextAlignment);
+                this._textAlignment = val;
+            }
         }
     });
 
-    Object.defineProperty(Field.prototype, 'value', {
-        enumerable: false,
-        get: function() { return this._value; },
-        set: function(val) {
-            this._value = val;
-        }
-    });
+    Object.freeze(Field.prototype);
 
-    Object.defineProperty(Field.prototype, 'changeMessage', {
-        enumerable: false,
-        get: function() { return this._changeMessage; },
-        set: function(val) {
-            this._changeMessage = val;
-        }
-    });
-
-    Object.defineProperty(Field.prototype, 'label', {
-        enumerable: false,
-        get: function() { return this._label; },
-        set: function(val) {
-            this._label = val;
-        }
-    });
-
-    Object.defineProperty(Field.prototype, 'textAlignment', {
-        enumerable: false,
-        get: function() { return this._textAlignment; },
-        set: function(val) {
-            this._textAlignment = val;
-        }
-    });
-
-    return Pass;
+    return Field;
 });

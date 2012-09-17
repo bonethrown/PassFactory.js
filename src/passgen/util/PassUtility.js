@@ -1,4 +1,4 @@
-define(function() {
+define(['../../underscore'], function() {
     return {
         isValidFieldValue: function(val) {
             return this.isCorrectType(val, String) ||
@@ -15,6 +15,12 @@ define(function() {
                     return obj instanceof Number ||
                            typeof obj === 'number';
                 default:
+                    // Enums
+                    if (typeof type === 'object') {
+                        return _.values(type).indexOf(obj) > -1;
+                    }
+                    
+                    // Regular inheritance case
                     return obj instanceof type;
             }
         },
@@ -28,6 +34,18 @@ define(function() {
         validateTypeOrNull: function(obj, type) {
             if (!this.isCorrectType(obj, type) || obj === null) {
                 throw new TypeError(obj + ' is not of type ' + type);
+            }
+        },
+
+        validateFieldValue: function(obj) {
+            if (!this.isValidFieldValue(obj)) {
+                throw new TypeError(obj + ' is not a valid field value');
+            }
+        },
+
+        validateFieldValueOrNull: function(obj) {
+            if (!this.isValidFieldValue(obj) || obj === null) {
+                throw new TypeError(obj + ' is not a valid field value');
             }
         }
     };
