@@ -1,5 +1,20 @@
-define(['../../underscore'], function() {
+define(['../../underscore', '../external/sha1'], function(_, CryptoJS) {
     return {
+        sha1OfString: function(str) {
+            return CryptoJS.SHA1(str).toString();
+        },
+
+        // callback(fileDataAsString, sha1)
+        sha1OfFile: function(file, callback) {
+            var fileReader = new FileReader();
+            fileReader.onload = function() {
+                var fileData = fileReader.result;
+                var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData)).toString();
+                callback(sha1);
+            };
+            fileReader.readAsBinaryString(file);
+        },
+
         isValidFieldValue: function(val) {
             return this.isCorrectType(val, String) ||
                    this.isCorrectType(val, Number) ||

@@ -5,15 +5,6 @@ define(['../passgen/model/Field', '../passgen/model/TextAlignment'],
 
             module('Field');
 
-            test('Simple Constructor', function() {
-                var simpleField = new Field('name', 'Jimmy');
-                equal(simpleField.key, 'name', 'key');
-                equal(simpleField.value, 'Jimmy', 'value');
-                equal(simpleField.label, null, 'label');
-                equal(simpleField.changeMessage, null, 'changeMessage');
-                equal(simpleField.textAlignment, null, 'textAlignment');
-            });
-
             test('Complex Constructor', function() {
                 var date = new Date();
                 var complexField = new Field({
