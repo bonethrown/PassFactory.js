@@ -1,6 +1,4 @@
-# PassFactory.js
-
-iOS 6 passes from your web browser.
+# PassFactory.js - iOS 6 passes (almost) from your web browser
 
 [Try it on the web](#) or download it (below).
 
@@ -51,3 +49,5 @@ installed, then navigate a terminal to the root of this repository.
 
     $ node r.js -o global.build.js        # production version
     $ node r.js -o global-dev.build.js    # development version
+
+Resulting files should appear in the `build/` directory.
