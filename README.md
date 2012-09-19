@@ -1,10 +1,10 @@
-# PassGen.js
+# PassFactory.js
 
-PassKit passes from your web browser.
+iOS 6 passes from your web browser.
 
 ## License
 
-PassGen.js is released under the MIT license:
+PassFactory.js is released under the MIT license:
 
     Copyright (C) 2012 Jimmy Theis
 
