@@ -2,6 +2,16 @@
 
 iOS 6 passes from your web browser.
 
+[Try it on the web](#) or download it (below).
+
+## Usage
+
+*TODO*
+
+## Download
+
+*TODO*
+
 ## License
 
 PassFactory.js is released under the MIT license:
@@ -25,3 +35,19 @@ PassFactory.js is released under the MIT license:
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
+
+## Building
+
+To build PassFactory.js, make sure you have [Node.js](http://nodejs.org/) and
+[the Require.js optimizer](http://requirejs.org/docs/optimization.html#download)
+installed, then navigate a terminal to the root of this repository.
+
+### For AMD users:
+
+    $ node r.js -o amd.build.js        # production version
+    $ node r.js -o amd-dev.build.js    # development version
+
+### For global export users:
+
+    $ node r.js -o global.build.js        # production version
+    $ node r.js -o global-dev.build.js    # development version
