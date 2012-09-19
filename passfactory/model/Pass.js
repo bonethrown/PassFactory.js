@@ -1,5 +1,5 @@
-define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color'],
-       function(Utility, FieldSet, Barcode, Color) {
+define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage'],
+       function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
     function Pass() {
         // Standard keys
@@ -52,6 +52,10 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
 
         addBackField: function(name, args) { this.backFields.addField(name, args);  },
         removeBackField: function(name) { this.backFields.removeField(name); },
+
+        toPackage: function() {
+            return new PassPackage(this);
+        },
 
         toJSON: function() {
             var errorMessage = 'Pass not ready to be serialized. Property not yet defined: ';
@@ -133,7 +137,7 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             }
         },
 
-        passTypeIdentifer: {
+        passTypeIdentifier: {
             configurable: false,
             get: function() { return this._passTypeIdentifier; },
             set: function(val) {
@@ -164,7 +168,7 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
 
         associatedStoreIdentifiers: {
             configurable: false,
-            get: function() { return this._associatedStoreIdentifers; }
+            get: function() { return this._associatedStoreIdentifiers; }
         },
 
         // Relevance keys
