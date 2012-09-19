@@ -1,4 +1,6 @@
-define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(PassUtility, FieldSet, Barcode, Color) {
+define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color'],
+       function(Utility, FieldSet, Barcode, Color) {
+
     function Pass() {
         // Standard keys
         this._description = null;
@@ -112,7 +114,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._description; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._description = val;
             }
         },
@@ -126,7 +128,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._organizationName; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._organizationName = val;
             }
         },
@@ -135,7 +137,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._passTypeIdentifier; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._passTypeIdentifier = val;
             }
         },
@@ -144,7 +146,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._serialNumber; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._serialNumber = val;
             }
         },
@@ -153,7 +155,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._teamIdentifier; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._teamIdentifier = val;
             }
         },
@@ -176,7 +178,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._relevantDate; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, Date);
+                Utility.validateTypeOrNull(val, Date);
                 this._relevantDate = val;
             }
         },
@@ -214,7 +216,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._barcode; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, Barcode);
+                Utility.validateTypeOrNull(val, Barcode);
                 this._barcode = val;
             }
         },
@@ -223,7 +225,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._backgroundColor; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, Color);
+                Utility.validateTypeOrNull(val, Color);
                 this._backgroundColor = val;
             }
         },
@@ -250,7 +252,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._logoText; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._logoText = val;
             }
         },
@@ -259,7 +261,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._suppressStripShine; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, Boolean);
+                Utility.validateTypeOrNull(val, Boolean);
                 this._suppressStripShine = val;
             }
         },
@@ -270,7 +272,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._authenticationToken; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._authenticationToken = val;
             }
         },
@@ -279,7 +281,7 @@ define(['../util/PassUtility', './FieldSet', './Barcode', './Color'], function(P
             configurable: false,
             get: function() { return this._webServiceURL; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._webServiceURL = val;
             }
         }

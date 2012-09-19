@@ -1,4 +1,4 @@
-define(['../../underscore', '../external/sha1'], function(_, CryptoJS) {
+define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
     return {
         sha1OfString: function(str) {
             return CryptoJS.SHA1(str).toString();

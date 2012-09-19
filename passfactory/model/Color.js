@@ -1,4 +1,4 @@
-define(['../util/PassUtility'], function(PassUtility) {
+define('model/Color', ['Utility'], function(Utility) {
 
     function Color(red, green, blue) {
         this.red = red || 0;
@@ -17,7 +17,7 @@ define(['../util/PassUtility'], function(PassUtility) {
             configurable: false,
             get: function() { return this._red; },
             set: function(val) {
-                PassUtility.validateType(val, Number);
+                Utility.validateType(val, Number);
                 if (val < 0 || val > 255) throw new TypeError('Invalid RBG color value: ' + val);
                 this._red = val;
             }
@@ -27,7 +27,7 @@ define(['../util/PassUtility'], function(PassUtility) {
             configurable: false,
             get: function() { return this._green; },
             set: function(val) {
-                PassUtility.validateType(val, Number);
+                Utility.validateType(val, Number);
                 if (val < 0 || val > 255) throw new TypeError('Invalid RBG color value: ' + val);
                 this._green = val;
             }
@@ -37,7 +37,7 @@ define(['../util/PassUtility'], function(PassUtility) {
             configurable: false,
             get: function() { return this._blue; },
             set: function(val) {
-                PassUtility.validateType(val, Number);
+                Utility.validateType(val, Number);
                 if (val < 0 || val > 255) throw new TypeError('Invalid RBG color value: ' + val);
                 this._blue = val;
             }

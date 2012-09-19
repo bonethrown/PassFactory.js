@@ -1,4 +1,4 @@
-define(function() {
+define('model/TextAlignment', function() {
     return Object.freeze({
         Left:    'PKTextAlignmentLeft',
         Center:  'PKTextAlignmentCenter',

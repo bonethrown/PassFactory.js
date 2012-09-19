@@ -1,4 +1,4 @@
-define('FieldSet', function() {
+define('model/FieldSet', function() {
 
     function FieldSet() { }
 

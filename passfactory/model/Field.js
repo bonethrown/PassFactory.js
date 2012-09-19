@@ -1,5 +1,5 @@
-define(['../util/PassUtility', './TextAlignment'],
-       function(PassUtility, TextAlignment) {
+define('model/Field', ['Utility', 'model/TextAlignment'],
+       function(Utility, TextAlignment) {
 
     function Field(args) {
         this._key = null;
@@ -8,7 +8,7 @@ define(['../util/PassUtility', './TextAlignment'],
         this._label = null;
         this._textAlignment = null;
 
-        PassUtility.validateType(args, Object);
+        Utility.validateType(args, Object);
 
         this.key = args.key || null;
         this.value = args.value || null;
@@ -42,7 +42,7 @@ define(['../util/PassUtility', './TextAlignment'],
             enumberable: false,
             get: function() { return this._key; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._key = val;
             }
         },
@@ -51,7 +51,7 @@ define(['../util/PassUtility', './TextAlignment'],
             enumerable: false,
             get: function() { return this._value; },
             set: function(val) {
-                PassUtility.validateFieldValueOrNull(val);
+                Utility.validateFieldValueOrNull(val);
                 this._value = val;
             }
         },
@@ -60,7 +60,7 @@ define(['../util/PassUtility', './TextAlignment'],
             enumerable: false,
             get: function() { return this._changeMessage; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._changeMessage = val;
             }
         },
@@ -69,7 +69,7 @@ define(['../util/PassUtility', './TextAlignment'],
             enumerable: false,
             get: function() { return this._label; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._label = val;
             }
         },
@@ -78,7 +78,7 @@ define(['../util/PassUtility', './TextAlignment'],
             enumerable: false,
             get: function() { return this._textAlignment; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, TextAlignment);
+                Utility.validateTypeOrNull(val, TextAlignment);
                 this._textAlignment = val;
             }
         }

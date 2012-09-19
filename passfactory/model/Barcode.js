@@ -1,5 +1,5 @@
-define(['../util/PassUtility', './BarcodeFormat'],
-       function(PassUtility, BarcodeFormat) {
+define('model/Barcode', ['Utility', 'model/BarcodeFormat'],
+       function(Utility, BarcodeFormat) {
 
     function Barcode(args) {
         this.altText = args.altText || null;
@@ -34,7 +34,7 @@ define(['../util/PassUtility', './BarcodeFormat'],
             configurable: false,
             get: function() { return this._altText; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._altText = val;
             }
         },
@@ -43,7 +43,7 @@ define(['../util/PassUtility', './BarcodeFormat'],
             configurable: false,
             get: function() { return this._format; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, BarcodeFormat);
+                Utility.validateTypeOrNull(val, BarcodeFormat);
                 this._format = val;
             }
         },
@@ -52,7 +52,7 @@ define(['../util/PassUtility', './BarcodeFormat'],
             configurable: false,
             get: function() { return this._message; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._message = message;
             }
         },
@@ -61,7 +61,7 @@ define(['../util/PassUtility', './BarcodeFormat'],
             configurable: false,
             get: function() { return this._messageEncoding; },
             set: function(val) {
-                PassUtility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, String);
                 this._messageEncoding = val;
             }
         }
