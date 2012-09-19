@@ -3,13 +3,13 @@
 define('zip', function() {
 
 /**
+ * JSZip - A Javascript class for generating and reading zip files
+ * <http://stuartk.com/jszip>
+ * (c) 2009-2012 Stuart Knightley <stuart [at] stuartk.com>
+ * Dual licenced under the MIT license or GPLv3. See LICENSE.markdown.
+ **/
 
-JSZip - A Javascript class for generating and reading zip files
-<http://stuartk.com/jszip>
-
-(c) 2009-2012 Stuart Knightley <stuart [at] stuartk.com>
-Dual licenced under the MIT license or GPLv3. See LICENSE.markdown.
-
+/**
 Usage:
    zip = new JSZip();
    zip.file("hello.txt", "Hello, World!").add("tempfile", "nothing");

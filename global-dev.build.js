@@ -1,9 +1,10 @@
 ({
     baseUrl: 'passfactory',
     name: 'Core',
-    out: 'build/passfactory-global.js',
+    out: 'build/passfactory-global-dev.js',
+    optimize: 'none',
     wrap: {
-        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', 'Global export production version') + '(function() {',
+        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', 'Global export development version') + '(function() {',
         end: '}());'
     },
     paths: {
