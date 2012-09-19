@@ -1,3 +1,5 @@
+// test comment
+
 require.config({
     paths: {
         'underscore': 'external/underscore',
