@@ -4,14 +4,16 @@ define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
             return CryptoJS.SHA1(str).toString();
         },
 
-        // callback(fileDataAsString, sha1)
+        // callback(sha1, fileData)
         sha1OfFile: function(file, callback) {
             var fileReader = new FileReader();
+
             fileReader.onload = function() {
                 var fileData = fileReader.result;
                 var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData)).toString();
-                callback(sha1);
+                callback(sha1, fileData);
             };
+
             fileReader.readAsBinaryString(file);
         },
 
