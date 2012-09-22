@@ -1,4 +1,5 @@
-define('model/PassPackage', ['Utility', 'zip'], function(Utility, JSZip) {
+define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt'],
+        function(Utility, JSZip, rubyText, appleScriptText) {
 
     function PassPackage(pass) {
         this.pass = pass;
@@ -59,12 +60,23 @@ define('model/PassPackage', ['Utility', 'zip'], function(Utility, JSZip) {
             });
         },
 
-        toBase64Script: function() {
-            var zipData = this.toBase64Zip();
+        toBase64AppleScript: function(callback) {
+            return this.toBase64Zip(function(zipData) {
+                Utility.base64EncodeFile(this.keyFile, function(keyData) {
+                    var ruby = rubyText.replace('**PASS_NAME**', this.passFileName)
+                                       .replace('**ZIP_DATA**', Utility.breakUpRubyString(zipData))
+                                       .replace('**KEY_DATA**', Utility.breakUpRubyString(keyData));
+                    var appleScript = appleScriptText.replace('**RUBY_FILE_CONTENT**', ruby.replace(/^/gm, '        '));
+
+                    callback(appleScript);
+                }.bind(this));
+            }.bind(this));
         },
 
-        toBase64ScriptLinkData: function() {
-            return 'data:application/zip;base64,' + this.toBase64Script();
+        toBase64AppleScriptLinkData: function(callback) {
+            this.toBase64AppleScript(function(script) {
+                callback('data:application/x-applescript;base64,' + Utility.base64(script));
+            });
         }
     };
 
@@ -73,6 +85,24 @@ define('model/PassPackage', ['Utility', 'zip'], function(Utility, JSZip) {
             configurable: false,
             get: function() { return this._pass; },
             set: function(val) { this._pass = val; }
+        },
+
+        passFileName: {
+            configurable: false,
+            get: function() { return this._passFileName; },
+            set: function(val) {
+                Utility.validateType(val, String);
+                this._passFileName = val;
+            }
+        },
+
+        keyFile: {
+            configurable: false,
+            get: function() { return this._keyFile; },
+            set: function(val) {
+                Utility.validateType(val, File);
+                this._keyFile = val;
+            }
         },
 
         backgroundImage: {

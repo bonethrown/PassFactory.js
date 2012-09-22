@@ -1,4 +1,4 @@
-define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
+define(['underscore', 'sha1', 'zip', 'external/base64'], function(_, CryptoJS, JSZip, Base64) {
     return {
         sha1OfString: function(str) {
             return CryptoJS.SHA1(str).toString();
@@ -16,6 +16,18 @@ define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
 
             fileReader.readAsBinaryString(file);
         },
+
+        base64EncodeFile: function(file, callback) {
+            var fileReader = new FileReader();
+
+            fileReader.onload = function() {
+                var result = fileReader.result;
+                callback(result.slice(result.indexOf(',') + 1));
+            };
+
+            fileReader.readAsDataURL(file);
+        },
+
 
         /**
          * From: http://www.webtoolkit.info/javascript-base64.html
@@ -74,6 +86,16 @@ define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
             return output;
         },
 
+        breakUpRubyString: function(str) {
+            var len = 50;
+            var result = str.slice(0, len);
+
+            for (var i = len; i < str.length; i += len) {
+                result += "\n              " + str.slice(i, i + len);
+            }
+
+            return result;
+        },
 
         isValidFieldValue: function(val) {
             return this.isCorrectType(val, String) ||

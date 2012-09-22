@@ -6,17 +6,11 @@ require 'fileutils'
 require 'openssl'
 require 'tmpdir'
 
-def generate_pass(pass_name, zip_data, key_data)
-
-    # Get the password from the user
-    print 'Enter the password for your certificate and key (text won\'t show): '
-    system 'stty -echo'
-    password = gets.chomp
-    system 'stty echo'
+def generate_pass(pass_name, zip_data, key_data, password)
 
     # Load the key and certificate
     puts '==> Loading key and certificate'
-    p12 = OpenSSL::PKCS12.new(File.read('key.p12'), password)
+    p12 = OpenSSL::PKCS12.new(Base64.decode64(key_data), password)
     cert = p12.certificate
     key = p12.key
 
@@ -53,4 +47,13 @@ def generate_pass(pass_name, zip_data, key_data)
     end
 end
 
-generate_pass('**PASS_NAME**', '**ZIP_DATA**', '**KEY_DATA**')
+generate_pass('**PASS_NAME**',
+
+              # Zip data
+              '**ZIP_DATA**',
+              
+              # Key data
+              '**KEY_DATA**',
+             
+             # Password (to be filled in by AppleScript)
+             '**PASSWORD**')

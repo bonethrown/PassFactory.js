@@ -5,6 +5,11 @@ require.config({
         'underscore': 'external/underscore',
         'sha1': 'external/sha1',
         'zip': 'external/zip'
+    },
+    shim: {
+        'external/base64': {
+            exports: 'Base64'
+        }
     }
 });
 
