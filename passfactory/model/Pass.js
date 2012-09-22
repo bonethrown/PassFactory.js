@@ -1,7 +1,7 @@
-define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage'],
-       function(Utility, FieldSet, Barcode, Color, PassPackage) {
+define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage', 'model/PassType'],
+       function(Utility, FieldSet, Barcode, Color, PassPackage, PassType) {
 
-    function Pass() {
+    function Pass(args) {
         // Standard keys
         this._description = null;
         this._formatVersion = 1;
@@ -35,6 +35,28 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
         // Web service keys
         this._authenticationToken = null;
         this._webServiceURL = null;
+
+        if (args) {
+            if (args.description) this.description = args.description;
+            if (args.organizationName) this.organizationName = args.organizationName;
+            if (args.serialNumber) this.serialNumber = args.serialNumber;
+            if (args.teamIdentifier) this.teamIdentifier = args.teamIdentifier;
+
+            if (args.associatedStoreIdentifiers) this.associatedStoreIdentifiers = args.associatedStoreIdentifiers;
+            
+            if (args.locations) this.locations = args.locations;
+            if (args.relevantDate) this.relevantDate = args.relevantDate;
+
+            if (args.barcode) this.barcode = args.barcode;
+            if (args.backgroundColor) this.backgroundColor = args.backgroundColor;
+            if (args.foregroundColor) this.foregroundColor = args.foregroundColor;
+            if (args.labelColor) this.labelColor = args.labelColor;
+            if (args.logoColor) this.logoColor = args.logoColor;
+            if (args.suppressStripShine !== undefined) this.suppressStripShine = args.suppressStripShine;
+
+            if (args.authenticationToken) this.authenticationToken = args.authenticationToken;
+            if (args.webserviceURL) this.webServiceURL = args.webServiceURL;
+        }
     }
     
     Pass.prototype = {
@@ -141,7 +163,7 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._passTypeIdentifier; },
             set: function(val) {
-                Utility.validateTypeOrNull(val, String);
+                Utility.validateTypeOrNull(val, PassType);
                 this._passTypeIdentifier = val;
             }
         },

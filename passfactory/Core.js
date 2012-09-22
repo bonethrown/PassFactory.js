@@ -1,5 +1,3 @@
-// test comment
-
 require.config({
     paths: {
         'underscore': 'external/underscore',
@@ -13,21 +11,24 @@ require.config({
     }
 });
 
-define('Core', ['model/Barcode', 'model/BarcodeFormat', 'model/Color', 'model/Field', 'model/FieldSet', 'model/Pass', 'model/PassPackage', 'model/TextAlignment', 'Utility'],
-        function(Barcode, BarcodeFormat, Color, Field, FieldSet, Pass, PassPackage, TextAlignment, Utility) {
+define('Core', ['model/Barcode', 'model/BarcodeFormat', 'model/BoardingPass', 'model/Color', 'model/Coupon', 'model/EventTicket', 'model/GenericPass', 'model/StoreCard', 'model/TextAlignment'],
+        function(Barcode, BarcodeFormat, BoardingPass, Color, Coupon, EventTicket, GenericPass, StoreCard, TextAlignment) {
 
     var PassFactory = {
+
+        // Pass types
+        BoardingPass: BoardingPass,
+        Coupon: Coupon,
+        EventTicket: EventTicket,
+        GenericPass: GenericPass,
+        StoreCard: StoreCard,
+
+        // Enums
         Barcode: Barcode,
         BarcodeFormat: BarcodeFormat,
         Color: Color,
-        Pass: Pass,
-        TextAlignment: TextAlignment,
-        lib: {
-            Field: Field,
-            FieldSet: FieldSet,
-            Utility: Utility,
-            PassPackage: PassPackage
-        }
+        TextAlignment: TextAlignment
+
     };
 
     Object.freeze(PassFactory);
