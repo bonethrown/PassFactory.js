@@ -40,6 +40,8 @@ define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'te
             loadIfExists(this.retinaLogoImage, 'logo@2x.png');
             loadIfExists(this.stripImage, 'strip.png');
             loadIfExists(this.retinaStripImage, 'strip@2x.png');
+
+            returnIfReady();
         },
         
         toBase64Zip: function(callback) {

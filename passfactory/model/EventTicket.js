@@ -6,7 +6,7 @@ define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
     EventTicket.prototype = Object.create(new Pass());
 
     Object.defineProperties(EventTicket.prototype, {
-        passTypeIdentifier: {
+        styleKey: {
             configurable: false,
             get: function() { return PassType.EventTicket; }
         }

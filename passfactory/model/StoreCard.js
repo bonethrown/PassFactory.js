@@ -6,7 +6,7 @@ define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
     StoreCard.prototype = Object.create(new Pass());
 
     Object.defineProperties(StoreCard.prototype, {
-        passTypeIdentifier: {
+        styleKey: {
             configurable: false,
             get: function() { return PassType.StoreCard; }
         }

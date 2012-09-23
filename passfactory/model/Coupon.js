@@ -6,7 +6,7 @@ define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
     Coupon.prototype = Object.create(new Pass());
 
     Object.defineProperties(Coupon.prototype, {
-        passTypeIdentifier: {
+        styleKey: {
             configurable: false,
             get: function() { return PassType.Coupon; }
         }

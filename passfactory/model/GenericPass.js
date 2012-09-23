@@ -6,7 +6,7 @@ define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
     GenericPass.prototype = Object.create(new Pass());
 
     Object.defineProperties(GenericPass.prototype, {
-        passTypeIdentifier: {
+        styleKey: {
             configurable: false,
             get: function() { return PassType.Generic; }
         }

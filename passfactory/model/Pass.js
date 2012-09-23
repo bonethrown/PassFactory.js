@@ -39,6 +39,7 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
         if (args) {
             if (args.description) this.description = args.description;
             if (args.organizationName) this.organizationName = args.organizationName;
+            if (args.passTypeIdentifier) this.passTypeIdentifier = args.passTypeIdentifier;
             if (args.serialNumber) this.serialNumber = args.serialNumber;
             if (args.teamIdentifier) this.teamIdentifier = args.teamIdentifier;
 
@@ -134,6 +135,11 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
 
     Object.defineProperties(Pass.prototype, {
 
+        styleKey: {
+            configurable: false,
+            get: function() { throw new Error(); }
+        },
+
         // Standard keys
 
         description: {
@@ -163,7 +169,7 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._passTypeIdentifier; },
             set: function(val) {
-                Utility.validateTypeOrNull(val, PassType);
+                Utility.validateTypeOrNull(val, String);
                 this._passTypeIdentifier = val;
             }
         },

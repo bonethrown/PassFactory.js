@@ -29,7 +29,8 @@ def generate_pass(pass_name, zip_data, key_data, password)
 
             # Sign the manifest
             puts '==> Signing pass manifest'
-            signature = OpenSSL::PKCS7::sign(cert, key, File.read('manifest.json'), [], OpenSSL::PKCS7::DETACHED)
+            signature = OpenSSL::PKCS7::sign(cert, key, File.read('manifest.json'), [],
+                                             OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOATTR | OpenSSL::PKCS7::DETACHED)
             open 'signature', 'w' do |io| io.write signature.to_der end
 
             # Package up the final pass

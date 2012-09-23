@@ -11,10 +11,10 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
         Utility.validateType(args, Object);
 
         this.key = args.key || null;
-        this.value = args.value || null;
-        this.changeMessage = args.changeMessage || null;
-        this.label = args.label || null;
-        this.textAlignment = args.textAlignment || null;
+        if (args.value) this.value = args.value;
+        if (args.changeMessage) this.changeMessage = args.changeMessage;
+        if (args.label) this.label = args.label;
+        if (args.textAlignment) this.textAlignment = args.textAlignment;
     }
     
     Field.prototype = {

@@ -28,7 +28,6 @@ define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
             fileReader.readAsDataURL(file);
         },
 
-
         /**
          * From: http://www.webtoolkit.info/javascript-base64.html
          */

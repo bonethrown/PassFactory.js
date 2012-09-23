@@ -13,7 +13,7 @@ define(['Utility', 'model/Pass', 'model/PassType', 'model/TransitType'], functio
     });
 
     Object.defineProperties(BoardingPass.prototype, {
-        passTypeIdentifier: {
+        styleKey: {
             configurable: false,
             get: function() { return PassType.BoardingPass; }
         },
