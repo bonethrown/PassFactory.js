@@ -109,7 +109,7 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             if (this.relevantDate) result.relevantDate = relevantDate;
 
             // Style keys
-            this[this.styleKey] = {
+            result[this.styleKey] = {
                 headerFields: this.headerFields,
                 primaryFields: this.primaryFields,
                 secondaryFields: this.secondaryFields,

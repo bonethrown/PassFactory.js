@@ -16,6 +16,18 @@ define(['model/Field'], function(Field) {
 
         removeField: function(name) {
             if (this[name]) delete this[name];
+        },
+
+        toJSON: function() {
+            result = [];
+
+            for (var property in this) {
+                if (this.hasOwnProperty(property) && this[property] instanceof Field) {
+                    result.push(this[property]);
+                }
+            }
+
+            return result;
         }
     };
 
