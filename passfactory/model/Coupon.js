@@ -1,4 +1,4 @@
-define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
+define(['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
     function Coupon(args) {
         Pass.call(this, args);
     }
@@ -8,7 +8,7 @@ define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
     Object.defineProperties(Coupon.prototype, {
         styleKey: {
             configurable: false,
-            get: function() { return PassType.Coupon; }
+            get: function() { return PassStyle.Coupon; }
         }
     });
 

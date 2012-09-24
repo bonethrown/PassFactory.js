@@ -1,5 +1,5 @@
-define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage', 'model/PassType'],
-       function(Utility, FieldSet, Barcode, Color, PassPackage, PassType) {
+define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage', 'model/PassStyle'],
+       function(Utility, FieldSet, Barcode, Color, PassPackage, PassStyle) {
 
     function Pass(args) {
         // Standard keys

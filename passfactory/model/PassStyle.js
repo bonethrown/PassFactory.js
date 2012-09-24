@@ -1,5 +1,5 @@
 define(function() {
-    var PassType = {
+    var PassStyle = {
         BoardingPass: 'boardingPass',
         Coupon: 'coupon',
         EventTicket: 'eventTicket',
@@ -7,5 +7,5 @@ define(function() {
         StoreCard: 'storeCard'
     };
 
-    return Object.freeze(PassType);
+    return Object.freeze(PassStyle);
 });

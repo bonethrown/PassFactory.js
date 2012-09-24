@@ -1,4 +1,4 @@
-define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
+define(['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
     function StoreCard(args) {
         Pass.call(this, args);
     }
@@ -8,7 +8,7 @@ define(['model/Pass', 'model/PassType'], function(Pass, PassType) {
     Object.defineProperties(StoreCard.prototype, {
         styleKey: {
             configurable: false,
-            get: function() { return PassType.StoreCard; }
+            get: function() { return PassStyle.StoreCard; }
         }
     });
 

@@ -1,4 +1,4 @@
-define(['Utility', 'model/Pass', 'model/PassType', 'model/TransitType'], function(Utility, Pass, PassType, TransitType) {
+define(['Utility', 'model/Pass', 'model/PassStyle', 'model/TransitType'], function(Utility, Pass, PassStyle, TransitType) {
 
     function BoardingPass(args) {
         Pass.call(this, args);
@@ -15,7 +15,7 @@ define(['Utility', 'model/Pass', 'model/PassType', 'model/TransitType'], functio
     Object.defineProperties(BoardingPass.prototype, {
         styleKey: {
             configurable: false,
-            get: function() { return PassType.BoardingPass; }
+            get: function() { return PassStyle.BoardingPass; }
         },
 
         transitType: {
