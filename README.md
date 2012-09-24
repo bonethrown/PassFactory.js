@@ -42,12 +42,12 @@ installed, then navigate a terminal to the root of this repository.
 
 ### For AMD users:
 
-    $ node r.js -o amd.build.js        # production version
-    $ node r.js -o amd-dev.build.js    # development version
+    $ r.js -o amd.build.js        # production version
+    $ r.js -o amd-dev.build.js    # development version
 
 ### For global export users:
 
-    $ node r.js -o global.build.js        # production version
-    $ node r.js -o global-dev.build.js    # development version
+    $ r.js -o global.build.js        # production version
+    $ r.js -o global-dev.build.js    # development version
 
 Resulting files should appear in the `build/` directory.
