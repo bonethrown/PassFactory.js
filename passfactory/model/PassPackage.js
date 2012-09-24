@@ -1,4 +1,4 @@
-define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt'],
+define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt'],
         function(Utility, JSZip, rubyText, appleScriptText) {
 
     function PassPackage(pass) {

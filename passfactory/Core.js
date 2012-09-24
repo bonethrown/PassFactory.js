@@ -1,13 +1,8 @@
 require.config({
-    paths: {
-        'underscore': 'external/underscore',
-        'sha1': 'external/sha1',
-        'zip': 'external/zip'
-    },
     shim: {
-        'external/base64': {
-            exports: 'Base64'
-        }
+        'lib/crypto-js-sha1': { exports: 'CryptoJS' },
+        'lib/jszip': { exports: 'JSZip' },
+        'lib/underscore': { exports: '_' }
     }
 });
 

@@ -3,12 +3,12 @@
     name: 'Core',
     out: 'build/passfactory-global.js',
     wrap: {
-        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', 'Global export production version') + '(function() {',
+        start: fs.readFileSync('BANNER', 'utf8').replace('EDITION', 'Global export production edition') + '(function() {',
         end: '}());'
     },
-    paths: {
-        'underscore': 'external/underscore',
-        'sha1': 'external/sha1',
-        'zip': 'external/zip'
+    shim: {
+        'lib/crypto-js-sha1': { exports: 'CryptoJS' },
+        'lib/jszip': { exports: 'JSZip' },
+        'lib/underscore': { exports: '_' }
     }
 })

@@ -1,4 +1,4 @@
-define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
+define(['lib/underscore', 'lib/crypto-js-sha1', 'lib/jszip'], function(_, CryptoJS, JSZip) {
     return {
 
         sha1: function(str) {
