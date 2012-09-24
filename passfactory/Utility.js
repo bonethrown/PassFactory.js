@@ -1,11 +1,12 @@
 define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
     return {
-        sha1OfString: function(str) {
+
+        sha1: function(str) {
             return CryptoJS.SHA1(str).toString();
         },
 
         // callback(sha1, fileData)
-        sha1OfFile: function(file, callback) {
+        sha1File: function(file, callback) {
             var fileReader = new FileReader();
 
             fileReader.onload = function() {
@@ -15,17 +16,6 @@ define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
             };
 
             fileReader.readAsBinaryString(file);
-        },
-
-        base64EncodeFile: function(file, callback) {
-            var fileReader = new FileReader();
-
-            fileReader.onload = function() {
-                var result = fileReader.result;
-                callback(result.slice(result.indexOf(',') + 1));
-            };
-
-            fileReader.readAsDataURL(file);
         },
 
         /**
@@ -85,7 +75,18 @@ define(['underscore', 'sha1', 'zip'], function(_, CryptoJS, JSZip) {
             return output;
         },
 
-        breakUpRubyString: function(str) {
+        base64File: function(file, callback) {
+            var fileReader = new FileReader();
+
+            fileReader.onload = function() {
+                var result = fileReader.result;
+                callback(result.slice(result.indexOf(',') + 1));
+            };
+
+            fileReader.readAsDataURL(file);
+        },
+
+        lineBreakRubyStringLiteral: function(str) {
             var len = 50;
             var result = str.slice(0, len);
 

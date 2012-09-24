@@ -10,7 +10,7 @@ define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'te
         _getManifestData: function(passData, zip, callback) {
             var manifest = {};
 
-            manifest['pass.json'] = Utility.sha1OfString(passData);
+            manifest['pass.json'] = Utility.sha1(passData);
 
             var pendingUploads = 0;
 
@@ -21,7 +21,7 @@ define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'te
             var loadIfExists = function(image, imageName) {
                 if (image) {
                     pendingUploads ++;
-                    Utility.sha1OfFile(image, function(sha1, fileData) {
+                    Utility.sha1File(image, function(sha1, fileData) {
                         manifest[imageName] = sha1;
                         zip.file(imageName, fileData, { binary: true });
                         pendingUploads --;
@@ -64,7 +64,7 @@ define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'te
 
         toBase64AppleScript: function(callback) {
             return this.toBase64Zip(function(zipData) {
-                Utility.base64EncodeFile(this.keyFile, function(keyData) {
+                Utility.base64File(this.keyFile, function(keyData) {
                     var ruby = rubyText.replace('**PASS_NAME**', this.passFileName)
                                        .replace('**ZIP_DATA**', Utility.breakUpRubyString(zipData))
                                        .replace('**KEY_DATA**', Utility.breakUpRubyString(keyData));
