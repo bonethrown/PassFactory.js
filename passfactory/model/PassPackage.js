@@ -44,7 +44,7 @@ define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'te
             returnIfReady();
         },
         
-        toBase64Zip: function(callback) {
+        toZip: function(callback) {
             var passData = JSON.stringify(this.pass, null, '    ') + '\n';
             var zip = new JSZip();
 
@@ -56,18 +56,18 @@ define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'te
             });
         },
 
-        toBase64ZipLinkData: function(callback) {
-            return this.toBase64Zip(function(data) {
+        toZipDataUrl: function(callback) {
+            return this.toZip(function(data) {
                 callback('data:application/zip;base64,' + data);
             });
         },
 
-        toBase64AppleScript: function(callback) {
-            return this.toBase64Zip(function(zipData) {
+        toAppleScript: function(callback) {
+            return this.toZip(function(zipData) {
                 Utility.base64File(this.keyFile, function(keyData) {
-                    var ruby = rubyText.replace('**PASS_NAME**', this.passFileName)
-                                       .replace('**ZIP_DATA**', Utility.breakUpRubyString(zipData))
-                                       .replace('**KEY_DATA**', Utility.breakUpRubyString(keyData));
+                    var ruby = rubyText.replace('**PASS_NAME**', this.passFileName || 'Pass')
+                                       .replace('**ZIP_DATA**', Utility.lineBreakRubyStringLiteral(zipData))
+                                       .replace('**KEY_DATA**', Utility.lineBreakRubyStringLiteral(keyData));
                     var appleScript = appleScriptText.replace('**RUBY_FILE_CONTENT**', ruby.replace(/^/gm, '        '));
 
                     callback(appleScript);
@@ -75,8 +75,8 @@ define('model/PassPackage', ['Utility', 'zip', 'text!text/generate_pass.rb', 'te
             }.bind(this));
         },
 
-        toBase64AppleScriptLinkData: function(callback) {
-            this.toBase64AppleScript(function(script) {
+        toAppleScriptDataUrl: function(callback) {
+            this.toAppleScript(function(script) {
                 callback('data:application/x-applescript;base64,' + Utility.base64(script));
             });
         }
