@@ -4,8 +4,8 @@
         <title>PassFactory.js</title>
 
         <!-- CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet" />
-        <link href="css/site.css" rel="stylesheet" />
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/site.css" rel="stylesheet" />
     </head>
     <body>
         <a href="https://github.com/jetheis/PassFactory.js">
@@ -17,19 +17,19 @@
                     <a class="brand" href="/">PassFactory.js</a>
                     <ul class="nav">
                         <li class="active">
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
                         </li>
                         <li>
-                            <a href="#">FAQ</a>
+                            <a href="/faq/">FAQ</a>
                         </li>
                         <li>
-                            <a href="designer.html">Designer</a>
+                            <a href="/designer/">Designer</a>
                         </li>
                         <li>
-                            <a href="#">Usage</a>
+                            <a href="/usage/">Usage</a>
                         </li>
                         <li>
-                            <a href="#">Source</a>
+                            <a href="https://github.com/jetheis/PassFactory.js">Source</a>
                         </li>
                     </ul>
                 </div>
@@ -51,22 +51,36 @@
                 <div class="span4">
                     <h2>Pass Designer</h2>
                     <p>PassFactory.js comes with an online pass designer tool that you can use right here in your browser. Although this tool is hosted online, all of the work happens in your browser, with no information about your pass leaving your computer. If you have an iOS Developer License and a Mac, give it a try!</p>
-                    <a class="btn" href="#">Build a Pass &raquo;</a>
+                    <a class="btn btn-primary" href="/designer/">Build a Pass &raquo;</a>
                 </div>
                 <div class="span4">
                     <h2>JavaScript Library</h2>
-                    <p>PassFactory.js is at its core a pure JavaScript libary. You can use it in your own sites and apps to create pass-generating scripts, or even extend it for more automated pass generation.</p>
-                    <a class="btn" href="#">Use PassFactory.js &raquo;</a>
+                    <p>PassFactory.js is at its core a pure JavaScript library (with all dependencies built right in). You can use it in your own sites and apps to create pass-generating scripts, or even extend it for more automated pass generation. PassFactory.js supports both traditional global export style and Require.js AMD style projects.</p>
+                    <a class="btn btn-primary" href="/usage/">Use PassFactory.js &raquo;</a>
                 </div>
                 <div class="span4">
                     <h2>FAQ</h2>
-                    <a class="btn" href="#">View FAQ &raquo;</a>
+                    <p>Why does PassFactory.js have to generate a script to create a pass? Why does the online designer require Flash? Is the data I enter here safe? Is this a replacement for writing an app or hiring an app developer? Should I buy, or sell? All your life's questions can be answered by the FAQ.</p>
+                    <a class="btn btn-primary" href="/faq/">Read the FAQ &raquo;</a>
                 </div>
             </div>
         </div>
 
         <!-- JS -->
-        <script src="js/jquery-1.8.2.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="/js/jquery-1.8.2.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+
+        <!-- Google Analytics -->
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-35062550-1']);
+            _gaq.push(['_trackPageview']);
+            
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
     </body>
 </html>
