@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>PassFactory.js</title>
+        <title>PassFactory.js - Pass Designer</title>
 
         <!-- CSS -->
         <link href="/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/css/site.css" rel="stylesheet" />
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#sidebar">
         <a href="https://github.com/jetheis/PassFactory.js">
             <img class="ribbon" src="/img/github-ribbon.png" alt="Fork me on GitHub"/>
         </a>
@@ -36,7 +36,232 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="container-fluid">
+            <div id="sidebar" class="span3">
+                <ul class="nav nav-tabs nav-stacked nav-sidebar">
+                    <li>
+                        <a href="#intro">Introduction</a>
+                    </li>
+                    <li>
+                        <a href="#certificate-and-key">Certificate and Key</a>
+                    </li>
+                    <li>
+                        <a href="#required-metadata">Required Metadata</a>
+                    </li>
+                    <li>
+                        <a href="#visual-options">Visual Options</a>
+                    </li>
+                    <li>
+                        <a href="#header-fields">Header Fields</a>
+                    </li>
+                    <li>
+                        <a href="#primary-fields">Primary Fields</a>
+                    </li>
+                    <li>
+                        <a href="#secondary-fields">Secondary Fields</a>
+                    </li>
+                    <li>
+                        <a href="#auxiliary-fields">Auxiliary Fields</a>
+                    </li>
+                    <li>
+                        <a href="#back-fields">Back Fields</a>
+                    </li>
+                    <li>
+                        <a href="#images">(Optional) Images</a>
+                    </li>
+                    <li>
+                        <a href="#translations">(Optional) Translations</a>
+                    </li>
+                    <li>
+                        <a href="#download">10. Download and Generate</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="span9 offset1 scroll-body">
+                    <form id="certificateForm" action="" method="post" class="form-horizontal">
+                    <section id="intro">
+                    <h2>Introduction</h2>
+                    </section>
+
+                    <section id="certificate-and-key">
+                    <h2>Certificate and Key</h2>
+                    <div class="control-group error">
+                        <label class="control-label">Key/Certificate File:</label>
+                        <div class="controls">
+                            <button type="button" class="btn btn-success">Choose File <i class="icon-chevron-right icon-white"></i></button>
+                            <button type="button" class="btn btn-danger"><i class="icon-remove icon-white"></i></button>
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    </section>
+
+                    <section id="required-metadata">
+                    <h2>Required Metadata</h2>
+                    <div class="control-group success">
+                        <label class="control-label">Pass Type:</label>
+                        <div class="controls">
+                            <select id="styleKey">
+                                <option value="generic">Generic</option>
+                            </select>
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group error">
+                        <label class="control-label">Description:</label>
+                        <div class="controls">
+                            <input type="text" id="description" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group error">
+                        <label class="control-label">Organization Name:</label>
+                        <div class="controls">
+                            <input type="text" id="organization" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group error">
+                        <label class="control-label">Pass Type Identifier:</label>
+                        <div class="controls">
+                            <input type="text" id="passTypeIdentifier" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group error">
+                        <label class="control-label">Team Identifier:</label>
+                        <div class="controls">
+                            <input type="text" id="teamIdentifier" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group error">
+                        <label class="control-label">Serial Number:</label>
+                        <div class="controls">
+                            <input type="text" id="serialNumber" />
+                            <button type="button" class="btn btn-success">Generate</button>
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    </section>
+
+                    <section id="visual-options">
+                    <h2>Visual Options</h2>
+                    <div class="control-group">
+                        <label class="control-label">Logo Text:</label>
+                        <div class="controls">
+                            <input type="text" id="logoText" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Background Color:</label>
+                        <div class="controls">
+                            <input type="text" id="backgroundColor" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Foreground Color:</label>
+                        <div class="controls">
+                            <input type="text" id="forgroundColor" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Label Color:</label>
+                        <div class="controls">
+                            <input type="text" id="labelColor" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Strip Shine:</label>
+                        <div class="controls">
+                            <input type="checkbox" id="stripShine" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+                    </section>
+
+                    <section id="fields-intro">
+                    <h2>Fields</h2>
+                    </section>
+
+                    <section id="header-fields">
+                    <h3>Header Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="primary-fields">
+                    <h3>Primary Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="secondary-fields">
+                    <h3>Secondary Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="auxiliary-fields">
+                    <h3>Auxiliary Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="back-fields">
+                    <h3>Back Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="images">
+                    <h2>(Optional) Images</h2>
+                    </section>
+
+                    <section id="date">
+                    <h2>(Optional) Date and Time</h2>
+                    </section>
+
+                    <section id="locations">
+                    <h2>(Optional) Location</h2>
+                    </section>
+
+                    <section id="barcode">
+                    <h2>(Optional) Barcode</h2>
+                    </section>
+
+                    <section id="developer">
+                    <h2>(Optional) Developer Metadata</h2>
+                    </section>
+
+                    <section id="download">
+                    <h2>Download and Generate</h2>
+                    </section>
+                    </form>
+            </div>
         </div>
 
         <!-- JS -->

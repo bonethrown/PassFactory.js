@@ -10,3 +10,21 @@ img.ribbon {
     border: 0;
     z-index: 1040;
 }
+
+input[type=file] {
+    display: none;
+}
+
+section {
+    padding-top: 30px;
+}
+
+.scroll-body {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+ul.nav-sidebar {
+    position: fixed;
+    top: 60px;
+}

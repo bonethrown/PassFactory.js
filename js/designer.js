@@ -1,0 +1,3 @@
+define(['angular', 'jquery'], function() {
+
+});
