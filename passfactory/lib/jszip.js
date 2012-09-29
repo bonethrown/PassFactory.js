@@ -734,3 +734,7 @@ var JSZipBase64 = (function() {
 
 // enforcing Stuk's coding style
 // vim: set shiftwidth=3 softtabstop=3:
+
+
+// Force JSZip into current scope object
+this.JSZip = JSZip;

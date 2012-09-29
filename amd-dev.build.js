@@ -1,7 +1,7 @@
 ({
     baseUrl: 'passfactory',
-    name: 'BuildAMD',
-    out: 'build/passfactory-amd-dev.js',
+    name: 'PassFactory',
+    out: 'build/passfactory.amd.js',
     optimize: 'none',
     wrap: {
         start: fs.readFileSync('BANNER', 'utf8').replace('EDITION', 'AMD development edition'),
