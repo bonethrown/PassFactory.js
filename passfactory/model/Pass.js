@@ -59,6 +59,19 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
 
             if (args.authenticationToken) this.authenticationToken = args.authenticationToken;
             if (args.webserviceURL) this.webServiceURL = args.webServiceURL;
+            
+            if (args.fileName) this.fileName = args.fileName;
+            if (args.keyFile) this.keyFile = args.keyFile;
+            if (args.backgroundImage) this.backgroundImage = args.backgroundImage;
+            if (args.retinaBackgroundImage) this.retinaBackgroundImage = args.retinaBackgroundImage;
+            if (args.footerImage) this.footerImage = args.footerImage;
+            if (args.retinaFooterImage) this.retinaFooterImage = args.retinaFooterImage;
+            if (args.iconImage) this.iconImage = args.iconImage;
+            if (args.retinaIconImage) this.retinaIconImage = args.retinaIconImage;
+            if (args.logoImage) this.logoImage = args.logoImage;
+            if (args.retinaLogoImage) this.retinaLogoImage = args.retinaLogoImage;
+            if (args.stripImage) this.stripImage = args.stripImage;
+            if (args.retinaStripImage) this.retinaStripImage = args.retinaStripImage;
         }
     }
     
