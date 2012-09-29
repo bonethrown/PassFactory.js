@@ -1,6 +1,8 @@
 ({
     baseUrl: 'passfactory',
-    name: 'Core',
+    name: 'almond',
+    include: ['Core'],
+    insertRequire: ['Core'],
     out: 'build/passfactory-global.js',
     wrap: {
         start: fs.readFileSync('BANNER', 'utf8').replace('EDITION', 'Global export production edition') + '(function() {',

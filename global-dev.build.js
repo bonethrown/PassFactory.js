@@ -1,6 +1,8 @@
 ({
     baseUrl: 'passfactory',
-    name: 'Core',
+    name: 'almond',
+    include: ['Core'],
+    insertRequire: ['Core'],
     out: 'build/passfactory-global-dev.js',
     optimize: 'none',
     wrap: {
