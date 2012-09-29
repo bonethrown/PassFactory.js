@@ -189,20 +189,31 @@ Designer.prototype = {
 
     generatePass: function() {
         if (this.validateAllInputs()) {
-            this._downloadButtonContainer.downloadify({
-                swf: '/media/downloadify.swf',
-                downloadImage: '/img/download.png',
-                width: 102,
-                height: 38,
-                filename: 'generate_pass.scpt',
-                data: 'AAAAA',
-                dataType: 'base64'
+            var pass = new PassFactory.GenericPass({
+                keyFile: this._certificateFileInput.get(0).files[0],
+                description: this._descriptionInput.val(),
+                organizationName: this._organizationNameInput.val(),
+                passTypeIdentifier: this._passTypeIdentifierInput.val(),
+                teamIdentifier: this._teamIdentifierInput.val(),
+                serialNumber: this._serialNumberInput.val()
             });
+            
+            pass.toAppleScript(function(script) {
+                this._downloadButtonContainer.downloadify({
+                    swf: '/media/downloadify.swf',
+                    downloadImage: '/img/download.png',
+                    width: 102,
+                    height: 38,
+                    filename: 'generate_pass.scpt',
+                    data: script,
+                    dataType: 'string'
+                });
+            }.bind(this));
         }
     }
 };
 
 $(document).ready(function() {
-    new Designer();
+    window.Designer = new Designer();
 });
 
