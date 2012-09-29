@@ -89,11 +89,14 @@
                     <div class="control-group error">
                         <label class="control-label">Key/Certificate File:</label>
                         <div class="controls">
-                            <button type="button" class="btn btn-success">Choose File <i class="icon-chevron-right icon-white"></i></button>
-                            <button type="button" class="btn btn-danger"><i class="icon-remove icon-white"></i></button>
-                            <a href="#">
+                            <button id="certificateFileButton" type="button" class="btn btn-danger">Choose File <i class="icon-chevron-right icon-white"></i></button>
+                            <button id="certificateFileClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
+                            <div id="certificateFileInputContainer">
+                                <input id="certificateFileInput" type="file" />
+                            </div>
                         </div>
                     </div>
                     </section>
@@ -104,9 +107,13 @@
                         <label class="control-label">Pass Type:</label>
                         <div class="controls">
                             <select id="styleKey">
-                                <option value="generic">Generic</option>
+                                <option value="boardingPass">Boarding Pass</option>
+                                <option value="coupon">Coupon</option>
+                                <option value="eventTicket">Event Ticket</option>
+                                <option value="generic" selected>Generic</option>
+                                <option value="storeCard">Store Card</option>
                             </select>
-                            <a href="#">
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
                         </div>
@@ -114,8 +121,8 @@
                     <div class="control-group error">
                         <label class="control-label">Description:</label>
                         <div class="controls">
-                            <input type="text" id="description" />
-                            <a href="#">
+                            <input type="text" id="description" class="input-xlarge"/>
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
                         </div>
@@ -123,8 +130,8 @@
                     <div class="control-group error">
                         <label class="control-label">Organization Name:</label>
                         <div class="controls">
-                            <input type="text" id="organization" />
-                            <a href="#">
+                            <input type="text" id="organization" class="input-xlarge" />
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
                         </div>
@@ -132,8 +139,8 @@
                     <div class="control-group error">
                         <label class="control-label">Pass Type Identifier:</label>
                         <div class="controls">
-                            <input type="text" id="passTypeIdentifier" />
-                            <a href="#">
+                            <input type="text" id="passTypeIdentifier" class="input-xlarge" />
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
                         </div>
@@ -141,8 +148,8 @@
                     <div class="control-group error">
                         <label class="control-label">Team Identifier:</label>
                         <div class="controls">
-                            <input type="text" id="teamIdentifier" />
-                            <a href="#">
+                            <input type="text" id="teamIdentifier" class="input-xlarge" />
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
                         </div>
@@ -150,9 +157,9 @@
                     <div class="control-group error">
                         <label class="control-label">Serial Number:</label>
                         <div class="controls">
-                            <input type="text" id="serialNumber" />
-                            <button type="button" class="btn btn-success">Generate</button>
-                            <a href="#">
+                            <input type="text" id="serialNumber" class="input-xlarge" />
+                            <button type="button" id="generateSerialNumber" class="btn btn-success">Generate</button>
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
                         </div>
@@ -165,7 +172,7 @@
                         <label class="control-label">Logo Text:</label>
                         <div class="controls">
                             <input type="text" id="logoText" />
-                            <a href="#">
+                            <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
                         </div>
@@ -259,6 +266,12 @@
 
                     <section id="download">
                     <h2>Download and Generate</h2>
+                    <div id="validationErrorContainer"></div>
+                    <button id="generateButton" type="button" class="btn btn-success btn-large">Generate Pass</button>
+                    <h5>Download link (uses Flash):</h5>
+                    <div id="downloadLinkContainer" class="downloadLinkContainer">
+                        <button type="button" class="btn btn-warning btn-large disabled">Download</button>
+                    </div>
                     </section>
                     </form>
             </div>
@@ -267,6 +280,10 @@
         <!-- JS -->
         <script src="/js/jquery-1.8.2.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/swfobject.js"></script>
+        <script src="/js/downloadify.min.js"></script>
+        <script src="/js/passfactory-global.js"></script>
+        <script src="/js/designer.js"></script>
 
         <!-- Google Analytics -->
         <script type="text/javascript">
