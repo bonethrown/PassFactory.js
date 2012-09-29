@@ -1,6 +1,6 @@
 ({
     baseUrl: 'passfactory',
-    name: 'Core',
+    name: 'BuildAMD',
     out: 'build/passfactory-amd-dev.js',
     optimize: 'none',
     wrap: {
