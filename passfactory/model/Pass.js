@@ -111,11 +111,12 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             if (!this.teamIdentifier) throwPropertyError('teamIdentifier');
 
             var result = {
-                description: this._description,
+                description: this.description,
                 formatVersion: this._formatVersion,
-                organizationName: this._organizationName,
-                passTypeIdentifier: this._passTypeIdentifier,
-                serialNumber: this._serialNumber
+                organizationName: this.organizationName,
+                passTypeIdentifier: this.passTypeIdentifier,
+                serialNumber: this.serialNumber,
+                teamIdentifier: this.teamIdentifier
             };
 
             // Associated app keys
