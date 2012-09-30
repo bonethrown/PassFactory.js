@@ -40,6 +40,8 @@ define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb
             loadIfExists(this.retinaLogoImage, 'logo@2x.png');
             loadIfExists(this.stripImage, 'strip.png');
             loadIfExists(this.retinaStripImage, 'strip@2x.png');
+            loadIfExists(this.thumbnailImage, 'thumbnail.png');
+            loadIfExists(this.retinaThumbnailImage, 'thumbnail@2x.png');
 
             returnIfReady();
         },
@@ -194,6 +196,24 @@ define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb
             set: function(val) {
                 Utility.validateType(val, File);
                 this._retinaStripImage = val;
+            }
+        },
+
+        thumbnailImage: {
+            configurable: false,
+            get: function() { return this._thumbnailImage; },
+            set: function(val) {
+                Utility.validateType(val, File);
+                this._thumbnailImage = val;
+            }
+        },
+
+        retinaThumbnailImage: {
+            configurable: false,
+            get: function() { return this._retinaThumbnailImage; },
+            set: function(val) {
+                Utility.validateType(val, File);
+                this._retinaThumbnailImage = val;
             }
         }
     });
