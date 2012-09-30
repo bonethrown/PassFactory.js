@@ -82,6 +82,11 @@
                     <form id="certificateForm" action="" method="post" class="form-horizontal">
                     <section id="intro">
                     <h2>Introduction</h2>
+                    <ul>
+                        <li><a href="https://developer.apple.com/passbook/">Passbook For Developers</a></li>
+                        <li><a href="https://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/PassKit_PG/Chapters/Introduction.html">PassKit Programming Guide</a></li>
+                        <li><a href="https://developer.apple.com/library/ios/#documentation/UserExperience/Reference/PassKit_Bundle/Chapters/Introduction.html">PassKit Package Format Reference</a></li>
+                    </ul>
                     </section>
 
                     <section id="certificate-and-key">
@@ -204,10 +209,10 @@
                             </a>
                         </div>
                     </div>
-                    <div class="control-group">
+                    <div class="control-group success">
                         <label class="control-label">Strip Shine:</label>
                         <div class="controls">
-                            <input type="checkbox" id="stripShine" />
+                            <input type="checkbox" id="stripShine" checked />
                             <a href="#">
                                 <i class="icon-info-sign"></i>
                             </a>
@@ -245,33 +250,218 @@
                     </section>
 
                     <section id="images">
-                    <h2>(Optional) Images</h2>
+                    <h2>Images</h2>
+
+                    <!-- Background Image -->
+                    <div class="control-group">
+                        <label class="control-label">Background Image:</label>
+                        <div class="controls">
+                            <button id="backgroundImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="backgroundImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="backgroundImageInputContainer">
+                                <input id="backgroundImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2x Background Image -->
+                    <div class="control-group">
+                        <label class="control-label">2x Background Image:</label>
+                        <div class="controls">
+                            <button id="retinaBackgroundImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="retinaBackgroundImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="retinaBackgroundImageInputContainer">
+                                <input id="retinaBackgroundImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Image -->
+                    <div class="control-group">
+                        <label class="control-label">Footer Image:</label>
+                        <div class="controls">
+                            <button id="footerImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="footerImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="footerImageInputContainer">
+                                <input id="footerImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2x Footer Image -->
+                    <div class="control-group">
+                        <label class="control-label">2x Footer Image:</label>
+                        <div class="controls">
+                            <button id="retinaFooterImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="retinaFooterImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="retinaFooterImageInputContainer">
+                                <input id="retinaFooterImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Icon Image -->
+                    <div class="control-group">
+                        <label class="control-label">Icon Image:</label>
+                        <div class="controls">
+                            <button id="iconImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="iconImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="iconImageInputContainer">
+                                <input id="iconImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2x Icon Image -->
+                    <div class="control-group">
+                        <label class="control-label">2x Icon Image:</label>
+                        <div class="controls">
+                            <button id="retinaIconImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="retinaIconImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="retinaIconImageInputContainer">
+                                <input id="retinaIconImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Logo Image -->
+                    <div class="control-group">
+                        <label class="control-label">Logo Image:</label>
+                        <div class="controls">
+                            <button id="logoImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="logoImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="logoImageInputContainer">
+                                <input id="logoImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2x Logo Image -->
+                    <div class="control-group">
+                        <label class="control-label">2x Logo Image:</label>
+                        <div class="controls">
+                            <button id="retinaLogoImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="retinaLogoImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="retinaLogoImageInputContainer">
+                                <input id="retinaLogoImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strip Image -->
+                    <div class="control-group">
+                        <label class="control-label">Strip Image:</label>
+                        <div class="controls">
+                            <button id="stripImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="stripImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="stripImageInputContainer">
+                                <input id="stripImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2x Strip Image -->
+                    <div class="control-group">
+                        <label class="control-label">2x Strip Image:</label>
+                        <div class="controls">
+                            <button id="retinaStripImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="retinaStripImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="retinaStripImageInputContainer">
+                                <input id="retinaStripImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thumbnail Image -->
+                    <div class="control-group">
+                        <label class="control-label">Thumbnail Image:</label>
+                        <div class="controls">
+                            <button id="thumbnailImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="thumbnailImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="thumbnailImageInputContainer">
+                                <input id="thumbnailImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2x Thumbnail Image -->
+                    <div class="control-group">
+                        <label class="control-label">2x Thumbnail Image:</label>
+                        <div class="controls">
+                            <button id="retinaThumbnailImageButton" type="button" class="btn">Choose File <i class="icon-chevron-right"></i></button>
+                            <button id="retinaThumbnailImageClearButton" type="button" class="btn btn-danger hidden"><i class="icon-remove icon-white"></i></button>
+                            <a href="#" tabindex="-1">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                            <div id="retinaThumbnailImageInputContainer">
+                                <input id="retinaThumbnailImageInput" type="file" />
+                            </div>
+                        </div>
+                    </div>
+
                     </section>
 
                     <section id="date">
-                    <h2>(Optional) Date and Time</h2>
+                    <h2>Date and Time</h2>
                     </section>
 
                     <section id="locations">
-                    <h2>(Optional) Location</h2>
+                    <h2>Location</h2>
                     </section>
 
                     <section id="barcode">
-                    <h2>(Optional) Barcode</h2>
+                    <h2>Barcode</h2>
                     </section>
 
                     <section id="developer">
-                    <h2>(Optional) Developer Metadata</h2>
+                    <h2>Developer Metadata</h2>
                     </section>
 
                     <section id="download">
-                    <h2>Download and Generate</h2>
+                    <h2>Generate Pass Script</h2>
                     <div id="validationErrorContainer"></div>
-                    <button id="generateButton" type="button" class="btn btn-success btn-large">Generate Pass</button>
+                    <button id="generateButton" type="button" class="btn btn-success btn-large">Generate Pass Script</button>
                     <h5>Download link (uses Flash):</h5>
                     <div id="downloadLinkContainer" class="downloadLinkContainer">
-                        <button type="button" class="btn btn-warning btn-large disabled">Download</button>
+                        <button type="button" class="btn btn-danger btn-large disabled">No Pass Script Generated Yet</button>
                     </div>
+                    </section>
+
+                    <section id="generate">
+                    <h2>Generate Pass</h2>
                     </section>
                     </form>
             </div>
