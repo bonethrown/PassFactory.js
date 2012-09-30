@@ -35,7 +35,7 @@ define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb
             loadIfExists(this.footerImage, 'footer.png');
             loadIfExists(this.retinaFooterImage, 'footer@2x.png');
             loadIfExists(this.iconImage, 'icon.png');
-            loadIfExists(this.retinaIconImage, 'iconImage@2x.png');
+            loadIfExists(this.retinaIconImage, 'icon@2x.png');
             loadIfExists(this.logoImage, 'logo.png');
             loadIfExists(this.retinaLogoImage, 'logo@2x.png');
             loadIfExists(this.stripImage, 'strip.png');
