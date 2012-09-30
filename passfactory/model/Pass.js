@@ -238,6 +238,17 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             set: function(val) { return this.packageData.retinaStripImage = val; }
         },
 
+        thumbnailImage: {
+            configurable: false,
+            get: function() { return this.packageData.thumbnailImage; },
+            set: function(val) { return this.packageData.thumbnailImage = val; }
+        },
+
+        retinaThumbnailImage: {
+            configurable: false,
+            get: function() { return this.packageData.retinaThumbnailImage; },
+            set: function(val) { return this.packageData.retinaThumbnailImage = val; }
+        },
         // Style key (implemented by child classes)
 
         styleKey: {
