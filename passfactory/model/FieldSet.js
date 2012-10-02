@@ -1,6 +1,8 @@
 define(['model/Field'], function(Field) {
 
-    function FieldSet() { }
+    function FieldSet() { 
+        this._length = 0;
+    }
 
     FieldSet.prototype = {
         addField: function(name, args) {
@@ -15,7 +17,11 @@ define(['model/Field'], function(Field) {
         },
 
         removeField: function(name) {
-            if (this[name]) delete this[name];
+            if (this[name])  {
+                delete this[name];
+                delete this['_' + name];
+                this._length --;
+            }
         },
 
         toJSON: function() {
@@ -30,6 +36,13 @@ define(['model/Field'], function(Field) {
             return result;
         }
     };
+
+    Object.defineProperties(FieldSet.prototype, {
+        length: {
+            configurable: false,
+            get: function() { return this._length; }
+        }
+    });
 
     Object.freeze(FieldSet.prototype);
 

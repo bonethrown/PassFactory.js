@@ -127,13 +127,14 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             if (this.relevantDate) result.relevantDate = relevantDate;
 
             // Style keys
-            result[this.styleKey] = {
-                headerFields: this.headerFields,
-                primaryFields: this.primaryFields,
-                secondaryFields: this.secondaryFields,
-                auxiliaryFields: this.auxiliaryFields,
-                backFields: this.backFields
-            };
+            var styleKey = {};
+            result[this.styleKey] = {};
+
+            if (this.headerFields.length > 0) styleKey.headerFields = this.headerFields;
+            if (this.primaryFields.length > 0) styleKey.primaryFields = this.primaryFields;
+            if (this.secondaryFields.length > 0) styleKey.secondaryFields = this.secondaryFields;
+            if (this.auxiliaryFields.length > 0) styleKey.auxiliaryFields = this.auxiliaryFields;
+            if (this.backFields.length > 0) styleKey.backFields = this.backFields;
 
             // Visual appaerance keys
             if (this.barcode) result.barcode = this.barcode;
