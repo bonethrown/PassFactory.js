@@ -1,5 +1,5 @@
 define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage', 'model/PassStyle'],
-       function(Utility, FieldSet, Barcode, Color, PassPackage, PassStyle) {
+       function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
     function Pass(args) {
         this._packageData = null;
@@ -124,7 +124,7 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
 
             // Relevance keys
             if (this.locations.length > 0) result.locations = this.locations;
-            if (this.relevantDate) result.relevantDate = relevantDate;
+            if (this.relevantDate) result.relevantDate = this.relevantDate;
 
             // Style keys
             var styleKey = {};
