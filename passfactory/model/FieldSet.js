@@ -16,6 +16,8 @@ define(['model/Field'], function(Field) {
                 get: function() { return this[privateName].value; },
                 set: function(val) { this[privateName].value = val; }
             });
+
+            this._length ++;
         },
 
         removeField: function(name) {
