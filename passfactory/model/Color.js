@@ -26,8 +26,8 @@ define('model/Color', ['Utility'], function(Utility) {
             if (hex.length === 6) {
 
                 // Standard 6-character hex color
-                this.red = parseInt(hex.substring(0, 3), 16);
-                this.green = parseInt(hex.substring(2, 5), 16);
+                this.red = parseInt(hex.substring(0, 2), 16);
+                this.green = parseInt(hex.substring(2, 4), 16);
                 this.blue = parseInt(hex.substring(4), 16);
 
             } else if (hex.length === 3) {
