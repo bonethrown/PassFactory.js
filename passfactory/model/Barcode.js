@@ -1,6 +1,8 @@
 define('model/Barcode', ['Utility', 'model/BarcodeFormat'],
        function(Utility, BarcodeFormat) {
 
+    "use strict";
+
     function Barcode(args) {
         this.altText = args.altText || null;
         this.format = args.format || null;
@@ -53,7 +55,7 @@ define('model/Barcode', ['Utility', 'model/BarcodeFormat'],
             get: function() { return this._message; },
             set: function(val) {
                 Utility.validateTypeOrNull(val, String);
-                this._message = message;
+                this._message = val;
             }
         },
 

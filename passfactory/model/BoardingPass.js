@@ -1,5 +1,7 @@
 define(['Utility', 'model/Pass', 'model/PassStyle', 'model/TransitType'], function(Utility, Pass, PassStyle, TransitType) {
 
+    "use strict";
+
     function BoardingPass(args) {
         Pass.call(this, args);
         

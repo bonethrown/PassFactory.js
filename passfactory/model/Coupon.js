@@ -1,4 +1,7 @@
 define(['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
+
+    "use strict";
+
     function Coupon(args) {
         Pass.call(this, args);
     }

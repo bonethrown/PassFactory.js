@@ -1,6 +1,8 @@
 define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage', 'model/PassStyle'],
        function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
+    "use strict";
+
     function Pass(args) {
         this._packageData = null;
 

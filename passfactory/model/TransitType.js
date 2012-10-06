@@ -1,4 +1,7 @@
 define(function() {
+
+	"use strict";
+
     var TransitType = {
         Air: 'PKTransitTypeAir',
         Boat: 'PKTransitTypeBoat',

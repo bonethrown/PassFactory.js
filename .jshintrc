@@ -3,7 +3,8 @@
 	"predef": {
 		"define": true,
 		"require": true,
-		"requirejs": true
+		"requirejs": true,
+		"File": true
 	},
 
 	"camelcase": true,

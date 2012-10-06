@@ -1,6 +1,8 @@
 define(['model/Field'], function(Field) {
 
-    function FieldSet() { 
+    "use strict";
+
+    function FieldSet() {
         this._length = 0;
     }
 
@@ -25,7 +27,7 @@ define(['model/Field'], function(Field) {
         },
 
         toJSON: function() {
-            result = [];
+            var result = [];
 
             for (var property in this) {
                 if (this.hasOwnProperty(property) && this[property] instanceof Field) {

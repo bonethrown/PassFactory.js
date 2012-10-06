@@ -1,5 +1,7 @@
 define('model/Color', ['Utility'], function(Utility) {
 
+    "use strict";
+
     function Color(redOrHex, green, blue) {
         if (Utility.isCorrectType(redOrHex, String)) {
 

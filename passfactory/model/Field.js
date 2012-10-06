@@ -1,6 +1,8 @@
 define('model/Field', ['Utility', 'model/TextAlignment'],
        function(Utility, TextAlignment) {
 
+    "use strict";
+
     function Field(args) {
         this._key = null;
         this._value = null;

@@ -1,6 +1,8 @@
 define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt'],
         function(Utility, JSZip, rubyText, appleScriptText) {
 
+    "use strict";
+
     function PassPackage(pass) {
         this.pass = pass;
     }

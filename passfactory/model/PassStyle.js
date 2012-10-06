@@ -1,4 +1,7 @@
 define(function() {
+	
+	"use strict";
+
     var PassStyle = {
         BoardingPass: 'boardingPass',
         Coupon: 'coupon',

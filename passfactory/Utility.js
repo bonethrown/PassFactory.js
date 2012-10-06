@@ -1,4 +1,7 @@
-define(['lib/underscore', 'lib/crypto-js-sha1', 'lib/jszip'], function(_, CryptoJS, JSZip) {
+define(['lib/underscore', 'lib/crypto-js-sha1'], function(_, CryptoJS) {
+
+    "use strict";
+    
     return {
 
         sha1: function(str) {
@@ -22,9 +25,9 @@ define(['lib/underscore', 'lib/crypto-js-sha1', 'lib/jszip'], function(_, Crypto
          * From: http://www.webtoolkit.info/javascript-base64.html
          */
         base64: function(str) {
-            _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-            var utf8_encode = function(s) {
+            var utf8Encode = function(s) {
                 s = s.replace(/\r\n/g,"\n");
                 var utftext = "";
                 for (var n = 0; n < s.length; n++) {
@@ -47,7 +50,7 @@ define(['lib/underscore', 'lib/crypto-js-sha1', 'lib/jszip'], function(_, Crypto
             var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
             var i = 0;
  
-            str = utf8_encode(str);
+            str = utf8Encode(str);
  
             while (i < str.length) {
  
