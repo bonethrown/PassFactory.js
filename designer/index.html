@@ -176,7 +176,7 @@
                     <div class="control-group">
                         <label class="control-label">Logo Text:</label>
                         <div class="controls">
-                            <input type="text" id="logoText" />
+                            <input class="input-xlarge" type="text" id="logoText" />
                             <a href="#" tabindex="-1">
                                 <i class="icon-info-sign"></i>
                             </a>
@@ -185,7 +185,7 @@
                     <div class="control-group">
                         <label class="control-label">Background Color:</label>
                         <div class="controls">
-                            <input type="text" id="backgroundColor" />
+                            <input type="text" class="input-xlarge color {required:false}" id="backgroundColor" />
                             <a href="#">
                                 <i class="icon-info-sign"></i>
                             </a>
@@ -194,7 +194,7 @@
                     <div class="control-group">
                         <label class="control-label">Foreground Color:</label>
                         <div class="controls">
-                            <input type="text" id="forgroundColor" />
+                            <input type="text" class="input-xlarge color {required:false}" id="forgroundColor" />
                             <a href="#">
                                 <i class="icon-info-sign"></i>
                             </a>
@@ -203,7 +203,7 @@
                     <div class="control-group">
                         <label class="control-label">Label Color:</label>
                         <div class="controls">
-                            <input type="text" id="labelColor" />
+                            <input type="text" class="input-xlarge color {required:false}" id="labelColor" />
                             <a href="#">
                                 <i class="icon-info-sign"></i>
                             </a>
@@ -226,6 +226,72 @@
 
                     <section id="header-fields">
                     <h3>Header Fields</h3>
+
+                    <hr />
+
+                    <div class="control-group error">
+                        <label class="control-label">Label:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="label" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group error">
+                        <label class="control-label">Value:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="value" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group error">
+                        <label class="control-label">Internal Key:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="key" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Change Message:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="changeMessage" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Text Alignment:</label>
+                        <div class="controls">
+                            <select id="textAlignment">
+                                <option value="unselected"></option>
+                                <option value="natural">Natural</option>
+                                <option value="left">Left</option>
+                                <option value="right">Right</option>
+                                <option value="center">Center</option>
+                            </select>
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="button" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete Field</button>
+                        </div>
+                    </div>
+
+                    <hr />
                     <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
                     </section>
 
@@ -470,6 +536,7 @@
         <!-- JS -->
         <script src="/js/jquery-1.8.2.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/jscolor/jscolor.js"></script>
         <script src="/js/swfobject.js"></script>
         <script src="/js/downloadify.min.js"></script>
         <script src="/js/passfactory.min.js"></script>
