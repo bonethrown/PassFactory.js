@@ -374,6 +374,10 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._backgroundColor; },
             set: function(val) {
+                if (Utility.isCorrectType(val, String)) {
+                    val = new Color(val);
+                }
+
                 Utility.validateTypeOrNull(val, Color);
                 this._backgroundColor = val;
             }
@@ -383,7 +387,11 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._foregroundColor; },
             set: function(val) {
-                PassUtililty.validateTypeOrNull(val, Color);
+                if (Utility.isCorrectType(val, String)) {
+                    val = new Color(val);
+                }
+
+                Utility.validateTypeOrNull(val, Color);
                 this._foregroundColor = val;
             }
         },
@@ -392,7 +400,11 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._labelColor; },
             set: function(val) {
-                PassUtillity.validateTypeOrNull(val, Color);
+                if (Utility.isCorrectType(val, String)) {
+                    val = new Color(val);
+                }
+
+                Utility.validateTypeOrNull(val, Color);
                 this._labelColor = val;
             }
         },
