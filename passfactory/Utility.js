@@ -1,8 +1,11 @@
-define(['lib/underscore', 'lib/crypto-js-sha1'], function(_, CryptoJS) {
+define(['lib/underscore',
+        'lib/crypto-js-sha1'],
+
+function(_, CryptoJS) {
 
     "use strict";
     
-    return {
+    var Utility = {
 
         sha1: function(str) {
             return CryptoJS.SHA1(str).toString();
@@ -149,4 +152,6 @@ define(['lib/underscore', 'lib/crypto-js-sha1'], function(_, CryptoJS) {
             }
         }
     };
+
+    return Object.freeze(Utility);
 });
