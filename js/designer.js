@@ -103,6 +103,18 @@ Designer.prototype = {
                                        this._certificateFileInputContainer,
                                        true);
 
+        this._hookUpFileButtonHandlers(this._iconImageButton,
+                                       this._iconImageClearButton,
+                                       this._iconImageInput,
+                                       this._iconImageInputContainer,
+                                       true);
+
+        this._hookUpFileButtonHandlers(this._retinaIconImageButton,
+                                       this._retinaIconImageClearButton,
+                                       this._retinaIconImageInput,
+                                       this._retinaIconImageInputContainer,
+                                       true);
+
         this._hookUpFileButtonHandlers(this._backgroundImageButton,
                                        this._backgroundImageClearButton,
                                        this._backgroundImageInput,
@@ -125,18 +137,6 @@ Designer.prototype = {
                                        this._retinaFooterImageClearButton,
                                        this._retinaFooterImageInput,
                                        this._retinaFooterImageInputContainer,
-                                       false);
-
-        this._hookUpFileButtonHandlers(this._iconImageButton,
-                                       this._iconImageClearButton,
-                                       this._iconImageInput,
-                                       this._iconImageInputContainer,
-                                       false);
-
-        this._hookUpFileButtonHandlers(this._retinaIconImageButton,
-                                       this._retinaIconImageClearButton,
-                                       this._retinaIconImageInput,
-                                       this._retinaIconImageInputContainer,
                                        false);
 
         this._hookUpFileButtonHandlers(this._logoImageButton,
