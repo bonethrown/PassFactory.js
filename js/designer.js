@@ -14,6 +14,10 @@ function Designer() {
     this._generateSerialNumberButton = $('#generateSerialNumber');
 
     this._logoTextInput = $('#logoText');
+    this._backgroundColorInput = $('#backgroundColor');
+    this._foregroundColorInput = $('#foregroundColor');
+    this._labelColorInput = $('#labelColor');
+    this._stripShineInput = $('#stripShine');
 
     this._backgroundImageButton = $('#backgroundImageButton');
     this._backgroundImageClearButton = $('#backgroundImageClearButton');
@@ -93,6 +97,9 @@ Designer.prototype = {
         this._serialNumberInput.change(this._stringInputValidator(true));
 
         this._logoTextInput.change(this._stringInputValidator(false));
+        this._backgroundColorInput.change(this._stringInputValidator(false));
+        this._foregroundColorInput.change(this._stringInputValidator(false));
+        this._labelColorInput.change(this._stringInputValidator(false));
 
         // Register click handlers
         this._generateSerialNumberButton.click(this.generateSerialNumber.bind(this));
@@ -333,6 +340,10 @@ Designer.prototype = {
             });
 
             if (this._logoTextInput.val()) pass.logoText = this._logoTextInput.val();
+            if (this._backgroundColorInput.val()) pass.backgroundColor = this._backgroundColorInput.val();
+            if (this._foregroundColorInput.val()) pass.foregroundColor = this._foregroundColorInput.val();
+            if (this._labelColorInput.val()) pass.labelColor = this._labelColorInput.val();
+            if (!this._stripShineInput.prop('checked')) pass.suppressStripShine = true;
             
             if (this._backgroundImageInput.get(0).files.length > 0) pass.backgroundImage = this._backgroundImageInput.get(0).files[0];
             if (this._retinaBackgroundImageInput.get(0).files.length > 0) pass.retinaBackgroundImage = this._retinaBackgroundImageInput.get(0).files[0];
