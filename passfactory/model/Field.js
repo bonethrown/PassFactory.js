@@ -1,5 +1,9 @@
-define('model/Field', ['Utility', 'model/TextAlignment'],
-       function(Utility, TextAlignment) {
+define(['Utility',
+        'model/TextAlignment',
+        'model/DateFormat',
+        'model/NumberFormat'],
+
+function(Utility, TextAlignment, DateFormat, NumberFormat) {
 
     "use strict";
 
@@ -10,6 +14,13 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
         this._label = null;
         this._textAlignment = null;
 
+        this._dateStyle = null;
+        this._timeStyle = null;
+        this._isRelative = null;
+
+        this._currencyCode = null;
+        this._numberStyle = null;
+
         Utility.validateType(args, Object);
 
         this.key = args.key || null;
@@ -17,6 +28,13 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
         if (args.changeMessage) this.changeMessage = args.changeMessage;
         if (args.label) this.label = args.label;
         if (args.textAlignment) this.textAlignment = args.textAlignment;
+
+        if (args.dateStyle) this.dateStyle = args.dateStyle;
+        if (args.timeStyle) this.timeStyle = args.timeStyle;
+        if (args.isRelative !== undefined) this.isRelative = args.isRelative;
+
+        if (args.currencyCode) this.currencyCode = args.currencyCode;
+        if (args.numberStyle) this.numberStyle = args.numberStyle;
     }
     
     Field.prototype = {
@@ -35,13 +53,20 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
             if (this.label) result.label = this.label;
             if (this.textAlignment) result.textAlignment = this.textAlignment;
 
+            if (this.dateStyle) result.dateStyle = this.dateStyle;
+            if (this.timeStyle) result.timeStyle = this.timeStyle;
+            if (this.isRelative !== null) result.isRelative = this.isRelative;
+
+            if (this.currencyCode) result.currencyCode = this.currencyCode;
+            if (this.numberStyle) result.numberStyle = this.numberStyle;
+
             return result;
         }
     };
 
     Object.defineProperties(Field.prototype, {
         key: {
-            enumberable: false,
+            configurable: false,
             get: function() { return this._key; },
             set: function(val) {
                 Utility.validateTypeOrNull(val, String);
@@ -50,7 +75,7 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
         },
 
         value: {
-            enumerable: false,
+            configurable: false,
             get: function() { return this._value; },
             set: function(val) {
                 Utility.validateFieldValueOrNull(val);
@@ -59,7 +84,7 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
         },
 
         changeMessage: {
-            enumerable: false,
+            configurable: false,
             get: function() { return this._changeMessage; },
             set: function(val) {
                 Utility.validateTypeOrNull(val, String);
@@ -68,7 +93,7 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
         },
 
         label: {
-            enumerable: false,
+            configurable: false,
             get: function() { return this._label; },
             set: function(val) {
                 Utility.validateTypeOrNull(val, String);
@@ -77,11 +102,56 @@ define('model/Field', ['Utility', 'model/TextAlignment'],
         },
 
         textAlignment: {
-            enumerable: false,
+            configurable: false,
             get: function() { return this._textAlignment; },
             set: function(val) {
                 Utility.validateTypeOrNull(val, TextAlignment);
                 this._textAlignment = val;
+            }
+        },
+
+        dateStyle: {
+            configurable: false,
+            get: function() { return this._dateStyle; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, DateFormat);
+                this._dateStyle = val;
+            }
+        },
+
+        timeStyle: {
+            configurable: false,
+            get: function() { return this._timeStyle; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, DateFormat);
+                this._timeStyle = val;
+            }
+        },
+
+        isRelative: {
+            configurable: false,
+            get: function() { return this._isRelative; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, Boolean);
+                this._isRelative = val;
+            }
+        },
+
+        currencyCode: {
+            configurable: false,
+            get: function() { return this._currencyCode; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._currencyCode = val;
+            }
+        },
+
+        numberStyle: {
+            configurable: false,
+            get: function() { return this._numberStyle; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, NumberFormat);
+                this._numberStyle = val;
             }
         }
     });
