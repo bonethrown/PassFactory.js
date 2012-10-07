@@ -1,9 +1,9 @@
 define(['Utility',
         'model/TextAlignment',
-        'model/DateFormat',
-        'model/NumberFormat'],
+        'model/DateStyle',
+        'model/NumberStyle'],
 
-function(Utility, TextAlignment, DateFormat, NumberFormat) {
+function(Utility, TextAlignment, DateStyle, NumberStyle) {
 
     "use strict";
 
@@ -114,7 +114,7 @@ function(Utility, TextAlignment, DateFormat, NumberFormat) {
             configurable: false,
             get: function() { return this._dateStyle; },
             set: function(val) {
-                Utility.validateTypeOrNull(val, DateFormat);
+                Utility.validateTypeOrNull(val, DateStyle);
                 this._dateStyle = val;
             }
         },
@@ -123,7 +123,7 @@ function(Utility, TextAlignment, DateFormat, NumberFormat) {
             configurable: false,
             get: function() { return this._timeStyle; },
             set: function(val) {
-                Utility.validateTypeOrNull(val, DateFormat);
+                Utility.validateTypeOrNull(val, DateStyle);
                 this._timeStyle = val;
             }
         },
@@ -150,7 +150,7 @@ function(Utility, TextAlignment, DateFormat, NumberFormat) {
             configurable: false,
             get: function() { return this._numberStyle; },
             set: function(val) {
-                Utility.validateTypeOrNull(val, NumberFormat);
+                Utility.validateTypeOrNull(val, NumberStyle);
                 this._numberStyle = val;
             }
         }
