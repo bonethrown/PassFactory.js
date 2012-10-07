@@ -1,5 +1,5 @@
-define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt'],
-        function(Utility, JSZip, rubyText, appleScriptText) {
+define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt', 'text!text/WWDR.pem'],
+        function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
     "use strict";
 
@@ -55,6 +55,7 @@ define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb
             this._getManifestData(passData, zip, function(manifestData) {
                 zip.file('pass.json', passData, zip);
                 zip.file('manifest.json', manifestData);
+                zip.file('wwdr.pem', wwdrCert);
                 
                 callback(zip.generate());
             });

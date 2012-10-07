@@ -27,9 +27,14 @@ def generate_pass(pass_name, zip_data, key_data, password)
             system 'unzip infile.zip'
             File.delete 'infile.zip';
 
+            # Load the WWDR cert
+            puts '==> Loading WWDR certificate'
+            wwdr = OpenSSL::X509::Certificate.new(File.read 'wwdr.pem')
+            File.delete 'wwdr.pem'
+
             # Sign the manifest
             puts '==> Signing pass manifest'
-            signature = OpenSSL::PKCS7::sign(cert, key, File.read('manifest.json'), [],
+            signature = OpenSSL::PKCS7::sign(cert, key, File.read('manifest.json'), [wwdr],
                                              OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOATTR | OpenSSL::PKCS7::DETACHED)
             open 'signature', 'w' do |io| io.write signature.to_der end
 
