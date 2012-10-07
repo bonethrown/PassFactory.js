@@ -1,4 +1,7 @@
-define(['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
+define(['model/Pass', 
+        'model/PassStyle'],
+
+function(Pass, PassStyle) {
 
     "use strict";
 

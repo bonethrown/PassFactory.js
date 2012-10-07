@@ -1,4 +1,6 @@
-define('model/Color', ['Utility'], function(Utility) {
+define(['Utility'],
+
+function(Utility) {
 
     "use strict";
 

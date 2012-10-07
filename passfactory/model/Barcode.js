@@ -1,5 +1,7 @@
-define('model/Barcode', ['Utility', 'model/BarcodeFormat'],
-       function(Utility, BarcodeFormat) {
+define(['Utility',
+        'model/BarcodeFormat'],
+       
+function(Utility, BarcodeFormat) {
 
     "use strict";
 

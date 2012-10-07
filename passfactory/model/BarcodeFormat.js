@@ -1,10 +1,12 @@
-define('model/BarcodeFormat', function() {
+define(function() {
 
 	"use strict";
-	
-    return Object.freeze({
+
+	var BarcodeFormat = {
         QR: 'PKBarcodeFormatQR',
         PDF417: 'PKBarcodeFormatPDF417',
         Aztec: 'PKBarcodeFormatAztec'
-    });
+	};
+	
+    return Object.freeze(BarcodeFormat);
 });

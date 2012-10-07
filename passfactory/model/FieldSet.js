@@ -1,4 +1,6 @@
-define(['model/Field'], function(Field) {
+define(['model/Field'],
+
+function(Field) {
 
     "use strict";
 

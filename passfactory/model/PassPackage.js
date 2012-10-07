@@ -1,5 +1,10 @@
-define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt', 'text!text/WWDR.pem'],
-        function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
+define(['Utility',
+        'lib/jszip',
+        'text!text/generate_pass.rb',
+        'text!text/generate_pass.scpt',
+        'text!text/WWDR.pem'],
+        
+function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
     "use strict";
 

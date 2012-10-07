@@ -1,4 +1,9 @@
-define(['Utility', 'model/Pass', 'model/PassStyle', 'model/TransitType'], function(Utility, Pass, PassStyle, TransitType) {
+define(['Utility',
+        'model/Pass',
+        'model/PassStyle',
+        'model/TransitType'],
+
+function(Utility, Pass, PassStyle, TransitType) {
 
     "use strict";
 

@@ -1,4 +1,6 @@
-define(['Utility'], function(Utility) {
+define(['Utility'],
+
+function(Utility) {
 
 	"use strict";
 

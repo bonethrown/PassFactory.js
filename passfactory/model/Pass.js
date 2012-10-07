@@ -1,5 +1,11 @@
-define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage', 'model/PassStyle'],
-       function(Utility, FieldSet, Barcode, Color, PassPackage) {
+define(['Utility',
+        'model/FieldSet',
+        'model/Barcode',
+        'model/Color',
+        'model/PassPackage',
+        'model/PassStyle'],
+       
+function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
     "use strict";
 
