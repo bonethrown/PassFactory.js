@@ -1,5 +1,5 @@
 /**
- * PassFactory.js
+ * PassFactory.js v0.1.0
  * iOS 6 Passes from the web browser
  * Global export development edition
  * 
@@ -1442,6 +1442,610 @@ define("lib/crypto-js-sha1", (function (global) {
     }
 }(this)));
 
+define('Utility',['lib/underscore',
+        'lib/crypto-js-sha1'],
+
+function(_, CryptoJS) {
+
+    
+    
+    var Utility = {
+
+        sha1: function(str) {
+            return CryptoJS.SHA1(str).toString();
+        },
+
+        // callback(sha1, fileData)
+        sha1File: function(file, callback) {
+            var fileReader = new FileReader();
+
+            fileReader.onload = function() {
+                var fileData = fileReader.result;
+                var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData)).toString();
+                callback(sha1, fileData);
+            };
+
+            fileReader.readAsBinaryString(file);
+        },
+
+        /**
+         * From: http://www.webtoolkit.info/javascript-base64.html
+         */
+        base64: function(str) {
+            var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+            var utf8Encode = function(s) {
+                s = s.replace(/\r\n/g,"\n");
+                var utftext = "";
+                for (var n = 0; n < s.length; n++) {
+                    var c = s.charCodeAt(n);
+                    if (c < 128) utftext += String.fromCharCode(c);
+                    else if (c > 127 && c < 2048) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+                    else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+                }
+                return utftext;
+            };
+ 
+            var output = "";
+            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+            var i = 0;
+ 
+            str = utf8Encode(str);
+ 
+            while (i < str.length) {
+ 
+                chr1 = str.charCodeAt(i++);
+                chr2 = str.charCodeAt(i++);
+                chr3 = str.charCodeAt(i++);
+ 
+                enc1 = chr1 >> 2;
+                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                enc4 = chr3 & 63;
+ 
+                if (isNaN(chr2)) {
+                    enc3 = enc4 = 64;
+                } else if (isNaN(chr3)) {
+                    enc4 = 64;
+                }
+ 
+                output = output +
+                _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+ 
+            }
+ 
+            return output;
+        },
+
+        base64File: function(file, callback) {
+            var fileReader = new FileReader();
+
+            fileReader.onload = function() {
+                var result = fileReader.result;
+                callback(result.slice(result.indexOf(',') + 1));
+            };
+
+            fileReader.readAsDataURL(file);
+        },
+
+        lineBreakRubyStringLiteral: function(str) {
+            var len = 50;
+            var result = str.slice(0, len);
+
+            for (var i = len; i < str.length; i += len) {
+                result += "\n              " + str.slice(i, i + len);
+            }
+
+            return result;
+        },
+
+        isValidFieldValue: function(val) {
+            return this.isCorrectType(val, String) ||
+                   this.isCorrectType(val, Number) ||
+                   this.isCorrectType(val, Date);
+        },
+
+        isCorrectType: function(obj, type) {
+            switch (type) {
+                case String:
+                    return obj instanceof String ||
+                           typeof obj === 'string';
+                case Number:
+                    return obj instanceof Number ||
+                           typeof obj === 'number';
+                default:
+                    // Enums
+                    if (typeof type === 'object') {
+                        return _.values(type).indexOf(obj) > -1;
+                    }
+                    
+                    // Regular inheritance case
+                    return obj instanceof type;
+            }
+        },
+
+        validateType: function(obj, type) {
+            if (!this.isCorrectType(obj, type)) {
+                throw new TypeError(obj + ' is not of type ' + type);
+            }
+        },
+
+        validateTypeOrNull: function(obj, type) {
+            if (!this.isCorrectType(obj, type) || obj === null) {
+                throw new TypeError(obj + ' is not of type ' + type);
+            }
+        },
+
+        validateFieldValue: function(obj) {
+            if (!this.isValidFieldValue(obj)) {
+                throw new TypeError(obj + ' is not a valid field value');
+            }
+        },
+
+        validateFieldValueOrNull: function(obj) {
+            if (!this.isValidFieldValue(obj) || obj === null) {
+                throw new TypeError(obj + ' is not a valid field value');
+            }
+        }
+    };
+
+    return Object.freeze(Utility);
+});
+define('model/BarcodeFormat',[],function() {
+
+	
+
+	var BarcodeFormat = {
+        QR: 'PKBarcodeFormatQR',
+        PDF417: 'PKBarcodeFormatPDF417',
+        Aztec: 'PKBarcodeFormatAztec'
+	};
+	
+    return Object.freeze(BarcodeFormat);
+});
+
+define('model/Barcode',['Utility',
+        'model/BarcodeFormat'],
+       
+function(Utility, BarcodeFormat) {
+
+    
+
+    function Barcode(args) {
+        this.altText = args.altText || null;
+        this.format = args.format || null;
+        this.message = args.message || null;
+        this.messageEncoding = args.messageEncoding || null;
+    }
+    
+    Barcode.prototype = {
+        toJSON: function() {
+            var notReadyMessage = 'Barcode not ready to be serialized. Property missing: ';
+            var throwNotReadyError = function(p) { throw new Error(notReadyMessage + p); };
+
+            if (!this.format) throwNotReadyError('format');
+            if (!this.message) throwNotReadyError('message');
+            if (!this.messageEncoding) throwNotReadyError('messageEncoding');
+
+            var result = {
+                format: this.format,
+                message: this.message,
+                messageEncoding: this.messageEncoding
+            };
+
+            if (this.altText) result.altText = this.altText;
+
+            return result;
+        }
+    };
+
+    Object.defineProperties(Barcode.prototype, {
+        altText: {
+            configurable: false,
+            get: function() { return this._altText; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._altText = val;
+            }
+        },
+
+        format: {
+            configurable: false,
+            get: function() { return this._format; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, BarcodeFormat);
+                this._format = val;
+            }
+        },
+
+        message: {
+            configurable: false,
+            get: function() { return this._message; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._message = val;
+            }
+        },
+
+        messageEncoding: {
+            configurable: false,
+            get: function() { return this._messageEncoding; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._messageEncoding = val;
+            }
+        }
+    });
+
+    Object.freeze(Barcode.prototype);
+
+    return Barcode;
+});
+
+define('model/TextAlignment',[],function() {
+
+	
+
+	var TextAlignment = {
+		Left:    'PKTextAlignmentLeft',
+        Center:  'PKTextAlignmentCenter',
+        Right:   'PKTextAlignmentRight',
+        Natural: 'PKTextAlignmentNatural'
+	}
+
+    return Object.freeze(TextAlignment);
+});
+
+define('model/DateStyle',[],function() {
+
+	
+
+	var DateStyle = {
+		None: 'PKDateStyleNone',
+		Short: 'PKDateStyleShort',
+		Medium: 'PKDateStyleMedium',
+		Long: 'PKDateStyleLong',
+		Full: 'PKDateStyleFull'
+	};
+
+	return Object.freeze(DateStyle);
+});
+define('model/NumberStyle',[],function() {
+
+	
+
+	var NumberStyle = {
+		Decimal: 'PKNumberStyleDecimal',
+		Percent: 'PKNumberStylePercent',
+		Scientific: 'PKNumberStyleScientific',
+		SpellOut: 'PKNumberStyleSpellOut'
+	};
+
+	return Object.freeze(NumberStyle);
+});
+define('model/Field',['Utility',
+        'model/TextAlignment',
+        'model/DateStyle',
+        'model/NumberStyle'],
+
+function(Utility, TextAlignment, DateStyle, NumberStyle) {
+
+    
+
+    function Field(args) {
+        this._key = null;
+        this._value = null;
+        this._changeMessage = null;
+        this._label = null;
+        this._textAlignment = null;
+
+        this._dateStyle = null;
+        this._timeStyle = null;
+        this._isRelative = null;
+
+        this._currencyCode = null;
+        this._numberStyle = null;
+
+        Utility.validateType(args, Object);
+
+        this.key = args.key || null;
+        if (args.value) this.value = args.value;
+        if (args.changeMessage) this.changeMessage = args.changeMessage;
+        if (args.label) this.label = args.label;
+        if (args.textAlignment) this.textAlignment = args.textAlignment;
+
+        if (args.dateStyle) this.dateStyle = args.dateStyle;
+        if (args.timeStyle) this.timeStyle = args.timeStyle;
+        if (args.isRelative !== undefined) this.isRelative = args.isRelative;
+
+        if (args.currencyCode) this.currencyCode = args.currencyCode;
+        if (args.numberStyle) this.numberStyle = args.numberStyle;
+    }
+    
+    Field.prototype = {
+        toJSON: function() {
+            var message = 'Field not ready to be serialized. Missing property : ';
+
+            if (!this.key) throw new Error(message + 'key');
+            if (!this.value) throw new Error(message + 'value');
+
+            var result = {
+                key: this.key,
+                value: this.value
+            };
+
+            if (this.changeMessage) result.value = this.changeMessage;
+            if (this.label) result.label = this.label;
+            if (this.textAlignment) result.textAlignment = this.textAlignment;
+
+            if (this.dateStyle) result.dateStyle = this.dateStyle;
+            if (this.timeStyle) result.timeStyle = this.timeStyle;
+            if (this.isRelative !== null) result.isRelative = this.isRelative;
+
+            if (this.currencyCode) result.currencyCode = this.currencyCode;
+            if (this.numberStyle) result.numberStyle = this.numberStyle;
+
+            return result;
+        }
+    };
+
+    Object.defineProperties(Field.prototype, {
+        key: {
+            configurable: false,
+            get: function() { return this._key; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._key = val;
+            }
+        },
+
+        value: {
+            configurable: false,
+            get: function() { return this._value; },
+            set: function(val) {
+                Utility.validateFieldValueOrNull(val);
+                this._value = val;
+            }
+        },
+
+        changeMessage: {
+            configurable: false,
+            get: function() { return this._changeMessage; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._changeMessage = val;
+            }
+        },
+
+        label: {
+            configurable: false,
+            get: function() { return this._label; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._label = val;
+            }
+        },
+
+        textAlignment: {
+            configurable: false,
+            get: function() { return this._textAlignment; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, TextAlignment);
+                this._textAlignment = val;
+            }
+        },
+
+        dateStyle: {
+            configurable: false,
+            get: function() { return this._dateStyle; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, DateStyle);
+                this._dateStyle = val;
+            }
+        },
+
+        timeStyle: {
+            configurable: false,
+            get: function() { return this._timeStyle; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, DateStyle);
+                this._timeStyle = val;
+            }
+        },
+
+        isRelative: {
+            configurable: false,
+            get: function() { return this._isRelative; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, Boolean);
+                this._isRelative = val;
+            }
+        },
+
+        currencyCode: {
+            configurable: false,
+            get: function() { return this._currencyCode; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, String);
+                this._currencyCode = val;
+            }
+        },
+
+        numberStyle: {
+            configurable: false,
+            get: function() { return this._numberStyle; },
+            set: function(val) {
+                Utility.validateTypeOrNull(val, NumberStyle);
+                this._numberStyle = val;
+            }
+        }
+    });
+
+    Object.freeze(Field.prototype);
+
+    return Field;
+});
+
+define('model/FieldSet',['model/Field'],
+
+function(Field) {
+
+    
+
+    function FieldSet() {
+        this._length = 0;
+    }
+
+    FieldSet.prototype = {
+        addField: function(name, args) {
+            var privateName = '_' + name;
+            this[privateName] = new Field(args);
+
+            Object.defineProperty(this, name, {
+                configurable: true,
+                get: function() { return this[privateName].value; },
+                set: function(val) { this[privateName].value = val; }
+            });
+
+            this._length ++;
+        },
+
+        removeField: function(name) {
+            if (this[name])  {
+                delete this[name];
+                delete this['_' + name];
+                this._length --;
+            }
+        },
+
+        toJSON: function() {
+            var result = [];
+
+            for (var property in this) {
+                if (this.hasOwnProperty(property) && this[property] instanceof Field) {
+                    result.push(this[property]);
+                }
+            }
+
+            return result;
+        }
+    };
+
+    Object.defineProperties(FieldSet.prototype, {
+        length: {
+            configurable: false,
+            get: function() { return this._length; }
+        }
+    });
+
+    Object.freeze(FieldSet.prototype);
+
+    return FieldSet;
+});
+
+define('model/Color',['Utility'],
+
+function(Utility) {
+
+    
+
+    function Color(redOrHex, green, blue) {
+        if (Utility.isCorrectType(redOrHex, String)) {
+
+            // Hex value supplied
+            this.parseHexColor(redOrHex);
+
+        } else {
+
+            // RGB values supplied
+            this.red = redOrHex || 0;
+            this.green = green || 0;
+            this.blue = blue || 0;
+
+        }
+    }
+    
+    Color.prototype = {
+        parseHexColor: function(hex) {
+            // Strip hash if it's there
+            if (hex.indexOf('#') === 0) {
+                hex = hex.substring(1);
+            }
+
+            if (hex.length === 6) {
+
+                // Standard 6-character hex color
+                this.red = parseInt(hex.substring(0, 2), 16);
+                this.green = parseInt(hex.substring(2, 4), 16);
+                this.blue = parseInt(hex.substring(4), 16);
+
+            } else if (hex.length === 3) {
+
+                // Web-safe 3-character hex color
+                var expandedRed = hex.substring(0, 1) + hex.substring(0, 1);
+                var expandedGreen = hex.substring(1, 2) + hex.substring(1, 2);
+                var expandedBlue = hex.substring(2) + hex.substring(2);
+
+                this.red = parseInt(expandedRed, 16);
+                this.green = parseInt(expandedGreen, 16);
+                this.blue = parseInt(expandedBlue, 16);
+
+            } else {
+                // Not sure what sort of color this is supposed to be
+                throw new TypeError('Invalid hex color supplied: ' + hex);
+            }
+        },
+
+        toJSON: function() {
+            return 'rgb(' + this.red + ', ' + this.green + ', ' + this.blue + ')';
+        }
+    };
+
+    Object.defineProperties(Color.prototype, {
+        red: {
+            configurable: false,
+            get: function() { return this._red || 0; },
+            set: function(val) {
+                Utility.validateType(val, Number);
+                if (val < 0 || val > 255) throw new TypeError('Invalid RBG red color value: ' + val);
+                this._red = val;
+            }
+        },
+
+        green: {
+            configurable: false,
+            get: function() { return this._green || 0; },
+            set: function(val) {
+                Utility.validateType(val, Number);
+                if (val < 0 || val > 255) throw new TypeError('Invalid RBG green color value: ' + val);
+                this._green = val;
+            }
+        },
+
+        blue: {
+            configurable: false,
+            get: function() { return this._blue || 0; },
+            set: function(val) {
+                Utility.validateType(val, Number);
+                if (val < 0 || val > 255) throw new TypeError('Invalid RBG blue color value: ' + val);
+                this._blue = val;
+            }
+        }
+    });
+
+    Object.freeze(Color.prototype);
+
+    return Color;
+});
+
 /**
  * JSZip - A Javascript class for generating and reading zip files
  * <http://stuartk.com/jszip>
@@ -2189,427 +2793,6 @@ define("lib/jszip", (function (global) {
     }
 }(this)));
 
-define('Utility',['lib/underscore', 'lib/crypto-js-sha1', 'lib/jszip'], function(_, CryptoJS, JSZip) {
-    return {
-
-        sha1: function(str) {
-            return CryptoJS.SHA1(str).toString();
-        },
-
-        // callback(sha1, fileData)
-        sha1File: function(file, callback) {
-            var fileReader = new FileReader();
-
-            fileReader.onload = function() {
-                var fileData = fileReader.result;
-                var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData)).toString();
-                callback(sha1, fileData);
-            };
-
-            fileReader.readAsBinaryString(file);
-        },
-
-        /**
-         * From: http://www.webtoolkit.info/javascript-base64.html
-         */
-        base64: function(str) {
-            _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-
-            var utf8_encode = function(s) {
-                s = s.replace(/\r\n/g,"\n");
-                var utftext = "";
-                for (var n = 0; n < s.length; n++) {
-                    var c = s.charCodeAt(n);
-                    if (c < 128) utftext += String.fromCharCode(c);
-                    else if (c > 127 && c < 2048) {
-                        utftext += String.fromCharCode((c >> 6) | 192);
-                        utftext += String.fromCharCode((c & 63) | 128);
-                    }
-                    else {
-                        utftext += String.fromCharCode((c >> 12) | 224);
-                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-                        utftext += String.fromCharCode((c & 63) | 128);
-                    }
-                }
-                return utftext;
-            };
- 
-            var output = "";
-            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-            var i = 0;
- 
-            str = utf8_encode(str);
- 
-            while (i < str.length) {
- 
-                chr1 = str.charCodeAt(i++);
-                chr2 = str.charCodeAt(i++);
-                chr3 = str.charCodeAt(i++);
- 
-                enc1 = chr1 >> 2;
-                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-                enc4 = chr3 & 63;
- 
-                if (isNaN(chr2)) {
-                    enc3 = enc4 = 64;
-                } else if (isNaN(chr3)) {
-                    enc4 = 64;
-                }
- 
-                output = output +
-                _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
-                _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
- 
-            }
- 
-            return output;
-        },
-
-        base64File: function(file, callback) {
-            var fileReader = new FileReader();
-
-            fileReader.onload = function() {
-                var result = fileReader.result;
-                callback(result.slice(result.indexOf(',') + 1));
-            };
-
-            fileReader.readAsDataURL(file);
-        },
-
-        lineBreakRubyStringLiteral: function(str) {
-            var len = 50;
-            var result = str.slice(0, len);
-
-            for (var i = len; i < str.length; i += len) {
-                result += "\n              " + str.slice(i, i + len);
-            }
-
-            return result;
-        },
-
-        isValidFieldValue: function(val) {
-            return this.isCorrectType(val, String) ||
-                   this.isCorrectType(val, Number) ||
-                   this.isCorrectType(val, Date);
-        },
-
-        isCorrectType: function(obj, type) {
-            switch (type) {
-                case String:
-                    return obj instanceof String ||
-                           typeof obj === 'string';
-                case Number:
-                    return obj instanceof Number ||
-                           typeof obj === 'number';
-                default:
-                    // Enums
-                    if (typeof type === 'object') {
-                        return _.values(type).indexOf(obj) > -1;
-                    }
-                    
-                    // Regular inheritance case
-                    return obj instanceof type;
-            }
-        },
-
-        validateType: function(obj, type) {
-            if (!this.isCorrectType(obj, type)) {
-                throw new TypeError(obj + ' is not of type ' + type);
-            }
-        },
-
-        validateTypeOrNull: function(obj, type) {
-            if (!this.isCorrectType(obj, type) || obj === null) {
-                throw new TypeError(obj + ' is not of type ' + type);
-            }
-        },
-
-        validateFieldValue: function(obj) {
-            if (!this.isValidFieldValue(obj)) {
-                throw new TypeError(obj + ' is not a valid field value');
-            }
-        },
-
-        validateFieldValueOrNull: function(obj) {
-            if (!this.isValidFieldValue(obj) || obj === null) {
-                throw new TypeError(obj + ' is not a valid field value');
-            }
-        }
-    };
-});
-
-define('model/BarcodeFormat',[], function() {
-    return Object.freeze({
-        QR: 'PKBarcodeFormatQR',
-        PDF417: 'PKBarcodeFormatPDF417',
-        Aztec: 'PKBarcodeFormatAztec'
-    });
-});
-
-define('model/Barcode', ['Utility', 'model/BarcodeFormat'],
-       function(Utility, BarcodeFormat) {
-
-    function Barcode(args) {
-        this.altText = args.altText || null;
-        this.format = args.format || null;
-        this.message = args.message || null;
-        this.messageEncoding = args.messageEncoding || null;
-    }
-    
-    Barcode.prototype = {
-        toJSON: function() {
-            var notReadyMessage = 'Barcode not ready to be serialized. Property missing: ';
-            var throwNotReadyError = function(p) { throw new Error(notReadyMessage + p); };
-
-            if (!this.format) throwNotReadyError('format');
-            if (!this.message) throwNotReadyError('message');
-            if (!this.messageEncoding) throwNotReadyError('messageEncoding');
-
-            var result = {
-                format: this.format,
-                message: this.message,
-                messageEncoding: this.messageEncoding
-            };
-
-            if (this.altText) result.altText = this.altText;
-
-            return result;
-        }
-    };
-
-    Object.defineProperties(Barcode.prototype, {
-        altText: {
-            configurable: false,
-            get: function() { return this._altText; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, String);
-                this._altText = val;
-            }
-        },
-
-        format: {
-            configurable: false,
-            get: function() { return this._format; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, BarcodeFormat);
-                this._format = val;
-            }
-        },
-
-        message: {
-            configurable: false,
-            get: function() { return this._message; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, String);
-                this._message = message;
-            }
-        },
-
-        messageEncoding: {
-            configurable: false,
-            get: function() { return this._messageEncoding; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, String);
-                this._messageEncoding = val;
-            }
-        }
-    });
-
-    Object.freeze(Barcode.prototype);
-
-    return Barcode;
-});
-
-define('model/TextAlignment',[], function() {
-    return Object.freeze({
-        Left:    'PKTextAlignmentLeft',
-        Center:  'PKTextAlignmentCenter',
-        Right:   'PKTextAlignmentRight',
-        Natural: 'PKTextAlignmentNatural'
-    });
-});
-
-define('model/Field', ['Utility', 'model/TextAlignment'],
-       function(Utility, TextAlignment) {
-
-    function Field(args) {
-        this._key = null;
-        this._value = null;
-        this._changeMessage = null;
-        this._label = null;
-        this._textAlignment = null;
-
-        Utility.validateType(args, Object);
-
-        this.key = args.key || null;
-        if (args.value) this.value = args.value;
-        if (args.changeMessage) this.changeMessage = args.changeMessage;
-        if (args.label) this.label = args.label;
-        if (args.textAlignment) this.textAlignment = args.textAlignment;
-    }
-    
-    Field.prototype = {
-        toJSON: function() {
-            var message = 'Field not ready to be serialized. Missing property : ';
-
-            if (!this.key) throw new Error(message + 'key');
-            if (!this.value) throw new Error(message + 'value');
-
-            var result = {
-                key: this.key,
-                value: this.value
-            };
-
-            if (this.changeMessage) result.value = this.changeMessage;
-            if (this.label) result.label = this.label;
-            if (this.textAlignment) result.textAlignment = this.textAlignment;
-
-            return result;
-        }
-    };
-
-    Object.defineProperties(Field.prototype, {
-        key: {
-            enumberable: false,
-            get: function() { return this._key; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, String);
-                this._key = val;
-            }
-        },
-
-        value: {
-            enumerable: false,
-            get: function() { return this._value; },
-            set: function(val) {
-                Utility.validateFieldValueOrNull(val);
-                this._value = val;
-            }
-        },
-
-        changeMessage: {
-            enumerable: false,
-            get: function() { return this._changeMessage; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, String);
-                this._changeMessage = val;
-            }
-        },
-
-        label: {
-            enumerable: false,
-            get: function() { return this._label; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, String);
-                this._label = val;
-            }
-        },
-
-        textAlignment: {
-            enumerable: false,
-            get: function() { return this._textAlignment; },
-            set: function(val) {
-                Utility.validateTypeOrNull(val, TextAlignment);
-                this._textAlignment = val;
-            }
-        }
-    });
-
-    Object.freeze(Field.prototype);
-
-    return Field;
-});
-
-define('model/FieldSet',['model/Field'], function(Field) {
-
-    function FieldSet() { }
-
-    FieldSet.prototype = {
-        addField: function(name, args) {
-            var privateName = '_' + name;
-            this[privateName] = new Field(args);
-
-            Object.defineProperty(this, name, {
-                configurable: true,
-                get: function() { return this[privateName].value; },
-                set: function(val) { this[privateName].value = val; }
-            });
-        },
-
-        removeField: function(name) {
-            if (this[name]) delete this[name];
-        },
-
-        toJSON: function() {
-            result = [];
-
-            for (var property in this) {
-                if (this.hasOwnProperty(property) && this[property] instanceof Field) {
-                    result.push(this[property]);
-                }
-            }
-
-            return result;
-        }
-    };
-
-    Object.freeze(FieldSet.prototype);
-
-    return FieldSet;
-});
-
-define('model/Color', ['Utility'], function(Utility) {
-
-    function Color(red, green, blue) {
-        this.red = red || 0;
-        this.green = green || 0;
-        this.blue = blue || 0;
-    }
-    
-    Color.prototype = {
-        toJSON: function() {
-            return 'rgb(' + this.red + ', ' + this.green + ', ' + this.blue + ')';
-        }
-    };
-
-    Object.defineProperties(Color.prototype, {
-        red: {
-            configurable: false,
-            get: function() { return this._red; },
-            set: function(val) {
-                Utility.validateType(val, Number);
-                if (val < 0 || val > 255) throw new TypeError('Invalid RBG color value: ' + val);
-                this._red = val;
-            }
-        },
-
-        green: {
-            configurable: false,
-            get: function() { return this._green; },
-            set: function(val) {
-                Utility.validateType(val, Number);
-                if (val < 0 || val > 255) throw new TypeError('Invalid RBG color value: ' + val);
-                this._green = val;
-            }
-        },
-
-        blue: {
-            configurable: false,
-            get: function() { return this._blue; },
-            set: function(val) {
-                Utility.validateType(val, Number);
-                if (val < 0 || val > 255) throw new TypeError('Invalid RBG color value: ' + val);
-                this._blue = val;
-            }
-        }
-    });
-
-    Object.freeze(Color.prototype);
-
-    return Color;
-});
-
 /**
  * @license RequireJS text 2.0.3 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -2919,12 +3102,21 @@ define('text',['module'], function (module) {
     return text;
 });
 
-define('text!text/generate_pass.rb',[],function () { return '# This file can\'t have any double quotes in it, because it will actually be\n# passed in as a quoted parameter to the ruby command-line executable.\n\nrequire \'base64\'\nrequire \'fileutils\'\nrequire \'openssl\'\nrequire \'tmpdir\'\n\ndef generate_pass(pass_name, zip_data, key_data, password)\n\n    # Load the key and certificate\n    puts \'==> Loading key and certificate\'\n    p12 = OpenSSL::PKCS12.new(Base64.decode64(key_data), password)\n    cert = p12.certificate\n    key = p12.key\n\n    # Create a temporary directory for file work (automatically deleted)\n    puts \'==> Creating temporary directory\'\n    Dir.mktmpdir do |dir|\n\n        FileUtils.cd dir do |cwd|\n\n            # Unpack the current zip file\n            # (unzipping requires an extra library, so use the command-line version)\n            puts \'==> Decoding and unzipping pass data\'\n            open \'infile.zip\', \'w\' do |io| io.write Base64.decode64(zip_data) end\n            system \'unzip infile.zip\'\n            File.delete \'infile.zip\';\n\n            # Sign the manifest\n            puts \'==> Signing pass manifest\'\n            signature = OpenSSL::PKCS7::sign(cert, key, File.read(\'manifest.json\'), [],\n                                             OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOATTR | OpenSSL::PKCS7::DETACHED)\n            open \'signature\', \'w\' do |io| io.write signature.to_der end\n\n            # Package up the final pass\n            # (creating zip files requires an extra library, so use the command-line version)\n            puts \'==> Creating final pass file\'\n            system \'zip -r \' + pass_name + \'.pkpass *\'\n\n            # Copy final pass to Desktop\n            puts \'==> Copying pass file to desktop\'\n            FileUtils.cp pass_name + \'.pkpass\', File.expand_path(\'~/Desktop\')\n\n            puts \'==> Done! It is now safe to exit. Your pass should be on your desktop.\'\n\n        end\n    end\nend\n\ngenerate_pass(\'**PASS_NAME**\',\n\n              # Zip data\n              \'**ZIP_DATA**\',\n              \n              # Key data\n              \'**KEY_DATA**\',\n             \n             # Password (to be filled in by AppleScript)\n             \'**PASSWORD**\')\n';});
+define('text!text/generate_pass.rb',[],function () { return '# This file can\'t have any double quotes in it, because it will actually be\n# passed in as a quoted parameter to the ruby command-line executable.\n\nrequire \'base64\'\nrequire \'fileutils\'\nrequire \'openssl\'\nrequire \'tmpdir\'\n\ndef generate_pass(pass_name, zip_data, key_data, password)\n\n    # Load the key and certificate\n    puts \'==> Loading key and certificate\'\n    p12 = OpenSSL::PKCS12.new(Base64.decode64(key_data), password)\n    cert = p12.certificate\n    key = p12.key\n\n    # Create a temporary directory for file work (automatically deleted)\n    puts \'==> Creating temporary directory\'\n    Dir.mktmpdir do |dir|\n\n        FileUtils.cd dir do |cwd|\n\n            # Unpack the current zip file\n            # (unzipping requires an extra library, so use the command-line version)\n            puts \'==> Decoding and unzipping pass data\'\n            open \'infile.zip\', \'w\' do |io| io.write Base64.decode64(zip_data) end\n            system \'unzip infile.zip\'\n            File.delete \'infile.zip\';\n\n            # Load the WWDR cert\n            puts \'==> Loading WWDR certificate\'\n            wwdr = OpenSSL::X509::Certificate.new(File.read \'wwdr.pem\')\n            File.delete \'wwdr.pem\'\n\n            # Sign the manifest\n            puts \'==> Signing pass manifest\'\n            signature = OpenSSL::PKCS7::sign(cert, key, File.read(\'manifest.json\'), [wwdr],\n                                             OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOATTR | OpenSSL::PKCS7::DETACHED)\n            open \'signature\', \'w\' do |io| io.write signature.to_der end\n\n            # Package up the final pass\n            # (creating zip files requires an extra library, so use the command-line version)\n            puts \'==> Creating final pass file\'\n            system \'zip -r \' + pass_name + \'.pkpass *\'\n\n            # Copy final pass to Desktop\n            puts \'==> Copying pass file to desktop\'\n            FileUtils.cp pass_name + \'.pkpass\', File.expand_path(\'~/Desktop\')\n\n            puts \'==> Done! It is now safe to exit. Your pass should be on your desktop.\'\n\n        end\n    end\nend\n\ngenerate_pass(\'**PASS_NAME**\',\n\n              # Zip data\n              \'**ZIP_DATA**\',\n              \n              # Key data\n              \'**KEY_DATA**\',\n             \n             # Password (to be filled in by AppleScript)\n             \'**PASSWORD**\')\n';});
 
 define('text!text/generate_pass.scpt',[],function () { return 'set rubyCommand to "echo \\"\n\n**RUBY_FILE_CONTENT**\n\n    \\" | ruby"\n\non replace_chars(this_text, search_string, replacement_string)\n    set AppleScript\'s text item delimiters to the search_string\n    set the item_list to every text item of this_text\n    set AppleScript\'s text item delimiters to the replacement_string\n    set this_text to the item_list as string\n    set AppleScript\'s text item delimiters to ""\n    return this_text\nend replace_chars\n\ndisplay dialog "Enter the password for your key/certificate file:" default answer "" with hidden answer\n\nset rubyCommand to replace_chars(rubyCommand, "**PASSWORD**", text returned of result)\n\ntell application "Terminal"\n    activate\n    set currentTab to do script rubyCommand\nend tell\n';});
 
-define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb', 'text!text/generate_pass.scpt'],
-        function(Utility, JSZip, rubyText, appleScriptText) {
+define('text!text/WWDR.pem',[],function () { return '-----BEGIN CERTIFICATE-----\nMIIEIzCCAwugAwIBAgIBGTANBgkqhkiG9w0BAQUFADBiMQswCQYDVQQGEwJVUzET\nMBEGA1UEChMKQXBwbGUgSW5jLjEmMCQGA1UECxMdQXBwbGUgQ2VydGlmaWNhdGlv\nbiBBdXRob3JpdHkxFjAUBgNVBAMTDUFwcGxlIFJvb3QgQ0EwHhcNMDgwMjE0MTg1\nNjM1WhcNMTYwMjE0MTg1NjM1WjCBljELMAkGA1UEBhMCVVMxEzARBgNVBAoMCkFw\ncGxlIEluYy4xLDAqBgNVBAsMI0FwcGxlIFdvcmxkd2lkZSBEZXZlbG9wZXIgUmVs\nYXRpb25zMUQwQgYDVQQDDDtBcHBsZSBXb3JsZHdpZGUgRGV2ZWxvcGVyIFJlbGF0\naW9ucyBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTCCASIwDQYJKoZIhvcNAQEBBQAD\nggEPADCCAQoCggEBAMo4VKbLVqrIJDlI6Yzu7F+4fyaRvDRTes58Y4Bhd2RepQcj\ntjn+UC0VVlhwLX7EbsFKhT4v8N6EGqFXya97GP9q+hUSSRUIGayq2yoy7ZZjaFIV\nPYyK7L9rGJXgA6wBfZcFZ84OhZU3au0Jtq5nzVFkn8Zc0bxXbmc1gHY2pIeBbjiP\n2CsVTnsl2Fq/ToPBjdKT1RpxtWCcnTNOVfkSWAyGuBYNweV3RY1QSLorLeSUheHo\nxJ3GaKWwo/xnfnC6AllLd0KRObn1zeFM78A7SIym5SFd/Wpqu6cWNWDS5q3zRinJ\n6MOL6XnAamFnFbLw/eVovGJfbs+Z3e8bY/6SZasCAwEAAaOBrjCBqzAOBgNVHQ8B\nAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUiCcXCam2GGCL7Ou6\n9kdZxVJUo7cwHwYDVR0jBBgwFoAUK9BpR5R2Cf70a40uQKb3R01/CF4wNgYDVR0f\nBC8wLTAroCmgJ4YlaHR0cDovL3d3dy5hcHBsZS5jb20vYXBwbGVjYS9yb290LmNy\nbDAQBgoqhkiG92NkBgIBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEA2jIAlsVUlNM7\ngjdmfS5o1cPGuMsmjEiQzxMkakaOY9Tw0BMG3djEwTcV8jMTOSYtzi5VQOMLA6/6\nEsLnDSG41YDPrCgvzi2zTq+GGQTG6VDdTClHECP8bLsbmGtIieFbnd5G2zWFNe8+\n0OJYSzj07XVaH1xwHVY5EuXhDRHkiSUGvdW0FY5e0FmXkOlLgeLfGK9EdB4ZoDpH\nzJEdOusjWv6lLZf3e7vWh0ZChetSPSayY6i0scqP9Mzis8hH4L+aWYP62phTKoL1\nfGUuldkzXfXtZcwxN8VaBOhr4eeIA0p1npsoy0pAiGVDdd3LOiUjxZ5X+C7O0qmS\nXnMuLyV1FQ==\n-----END CERTIFICATE-----\n';});
+
+define('model/PassPackage',['Utility',
+        'lib/jszip',
+        'text!text/generate_pass.rb',
+        'text!text/generate_pass.scpt',
+        'text!text/WWDR.pem'],
+        
+function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
+
+    
 
     function PassPackage(pass) {
         this.pass = pass;
@@ -2978,6 +3170,7 @@ define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb
             this._getManifestData(passData, zip, function(manifestData) {
                 zip.file('pass.json', passData, zip);
                 zip.file('manifest.json', manifestData);
+                zip.file('wwdr.pem', wwdrCert);
                 
                 callback(zip.generate());
             });
@@ -3148,8 +3341,10 @@ define('model/PassPackage', ['Utility', 'lib/jszip', 'text!text/generate_pass.rb
     return PassPackage;
 
 });
-
 define('model/PassStyle',[],function() {
+	
+	
+
     var PassStyle = {
         BoardingPass: 'boardingPass',
         Coupon: 'coupon',
@@ -3161,8 +3356,16 @@ define('model/PassStyle',[],function() {
     return Object.freeze(PassStyle);
 });
 
-define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color', 'model/PassPackage', 'model/PassStyle'],
-       function(Utility, FieldSet, Barcode, Color, PassPackage, PassStyle) {
+define('model/Pass',['Utility',
+        'model/FieldSet',
+        'model/Barcode',
+        'model/Color',
+        'model/PassPackage',
+        'model/PassStyle'],
+       
+function(Utility, FieldSet, Barcode, Color, PassPackage) {
+
+    
 
     function Pass(args) {
         this._packageData = null;
@@ -3287,16 +3490,18 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
 
             // Relevance keys
             if (this.locations.length > 0) result.locations = this.locations;
-            if (this.relevantDate) result.relevantDate = relevantDate;
+            if (this.relevantDate) result.relevantDate = this.relevantDate;
 
             // Style keys
-            result[this.styleKey] = {
-                headerFields: this.headerFields,
-                primaryFields: this.primaryFields,
-                secondaryFields: this.secondaryFields,
-                auxiliaryFields: this.auxiliaryFields,
-                backFields: this.backFields
-            };
+            var styleDict = {};
+
+            if (this.headerFields.length > 0) styleDict.headerFields = this.headerFields;
+            if (this.primaryFields.length > 0) styleDict.primaryFields = this.primaryFields;
+            if (this.secondaryFields.length > 0) styleDict.secondaryFields = this.secondaryFields;
+            if (this.auxiliaryFields.length > 0) styleDict.auxiliaryFields = this.auxiliaryFields;
+            if (this.backFields.length > 0) styleDict.backFields = this.backFields;
+
+            result[this.styleKey] = styleDict;
 
             // Visual appaerance keys
             if (this.barcode) result.barcode = this.barcode;
@@ -3536,6 +3741,10 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._backgroundColor; },
             set: function(val) {
+                if (Utility.isCorrectType(val, String)) {
+                    val = new Color(val);
+                }
+
                 Utility.validateTypeOrNull(val, Color);
                 this._backgroundColor = val;
             }
@@ -3545,7 +3754,11 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._foregroundColor; },
             set: function(val) {
-                PassUtililty.validateTypeOrNull(val, Color);
+                if (Utility.isCorrectType(val, String)) {
+                    val = new Color(val);
+                }
+
+                Utility.validateTypeOrNull(val, Color);
                 this._foregroundColor = val;
             }
         },
@@ -3554,7 +3767,11 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
             configurable: false,
             get: function() { return this._labelColor; },
             set: function(val) {
-                PassUtillity.validateTypeOrNull(val, Color);
+                if (Utility.isCorrectType(val, String)) {
+                    val = new Color(val);
+                }
+
+                Utility.validateTypeOrNull(val, Color);
                 this._labelColor = val;
             }
         },
@@ -3602,8 +3819,10 @@ define('model/Pass', ['Utility', 'model/FieldSet', 'model/Barcode', 'model/Color
 
     return Pass;
 });
-
 define('model/TransitType',[],function() {
+
+	
+
     var TransitType = {
         Air: 'PKTransitTypeAir',
         Boat: 'PKTransitTypeBoat',
@@ -3614,7 +3833,14 @@ define('model/TransitType',[],function() {
     return Object.freeze(TransitType);
 });
 
-define('model/BoardingPass',['Utility', 'model/Pass', 'model/PassStyle', 'model/TransitType'], function(Utility, Pass, PassStyle, TransitType) {
+define('model/BoardingPass',['Utility',
+        'model/Pass',
+        'model/PassStyle',
+        'model/TransitType'],
+
+function(Utility, Pass, PassStyle, TransitType) {
+
+    
 
     function BoardingPass(args) {
         Pass.call(this, args);
@@ -3649,7 +3875,13 @@ define('model/BoardingPass',['Utility', 'model/Pass', 'model/PassStyle', 'model/
     return BoardingPass;
 });
 
-define('model/Coupon',['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
+define('model/Coupon',['model/Pass',
+        'model/PassStyle'],
+
+function(Pass, PassStyle) {
+
+    
+
     function Coupon(args) {
         Pass.call(this, args);
     }
@@ -3668,7 +3900,13 @@ define('model/Coupon',['model/Pass', 'model/PassStyle'], function(Pass, PassStyl
     return Coupon;
 });
 
-define('model/EventTicket',['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
+define('model/EventTicket',['model/Pass',
+        'model/PassStyle'],
+
+function(Pass, PassStyle) {
+
+    
+
     function EventTicket(args) {
         Pass.call(this, args);
     }
@@ -3687,7 +3925,13 @@ define('model/EventTicket',['model/Pass', 'model/PassStyle'], function(Pass, Pas
     return EventTicket;
 });
 
-define('model/GenericPass',['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
+define('model/GenericPass',['model/Pass',
+        'model/PassStyle'],
+
+function(Pass, PassStyle) {
+
+    
+
     function GenericPass(args) {
         Pass.call(this, args);
     }
@@ -3706,7 +3950,13 @@ define('model/GenericPass',['model/Pass', 'model/PassStyle'], function(Pass, Pas
     return GenericPass;
 });
 
-define('model/StoreCard',['model/Pass', 'model/PassStyle'], function(Pass, PassStyle) {
+define('model/StoreCard',['model/Pass', 
+        'model/PassStyle'],
+
+function(Pass, PassStyle) {
+
+    
+
     function StoreCard(args) {
         Pass.call(this, args);
     }
