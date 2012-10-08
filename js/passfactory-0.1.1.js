@@ -1,5 +1,5 @@
 /**
- * PassFactory.js v0.1.0
+ * PassFactory.js v0.1.1
  * iOS 6 Passes from the web browser
  * Global export development edition
  * 
@@ -1561,6 +1561,11 @@ function(_, CryptoJS) {
                 case Number:
                     return obj instanceof Number ||
                            typeof obj === 'number';
+
+                case Boolean:
+                    return obj instanceof Boolean ||
+                           typeof obj === 'boolean';
+                           
                 default:
                     // Enums
                     if (typeof type === 'object') {
@@ -1579,7 +1584,7 @@ function(_, CryptoJS) {
         },
 
         validateTypeOrNull: function(obj, type) {
-            if (!this.isCorrectType(obj, type) || obj === null) {
+            if (!this.isCorrectType(obj, type) && obj !== null) {
                 throw new TypeError(obj + ' is not of type ' + type);
             }
         },
