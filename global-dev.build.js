@@ -3,10 +3,10 @@
     name: 'almond',
     include: ['BuildGlobal'],
     insertRequire: ['BuildGlobal'],
-    out: 'build/passfactory-0.1.0.js',
+    out: 'build/passfactory-' + fs.readFileSync('VERSION', 'utf8') + '.js',
     optimize: 'none',
     wrap: {
-        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', 'v0.1.0').replace('EDITION', 'Global export development edition') + '(function() {',
+        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', fs.readFileSync('VERSION', 'utf8')).replace('EDITION', 'Global export development edition') + '(function() {',
         end: '}());'
     },
     shim: {

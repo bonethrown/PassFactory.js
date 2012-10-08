@@ -3,9 +3,9 @@
     name: 'almond',
     include: ['BuildGlobal'],
     insertRequire: ['BuildGlobal'],
-    out: 'build/passfactory-0.1.0.min.js',
+    out: 'build/passfactory-' + fs.readFileSync('VERSION', 'utf8') + '.min.js',
     wrap: {
-        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', 'v0.1.0').replace('EDITION', 'Global export production edition') + '(function() {',
+        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', fs.readFileSync('VERSION', 'utf8')).replace('EDITION', 'Global export production edition') + '(function() {',
         end: '}());'
     },
     shim: {
