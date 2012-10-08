@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+
         <title>PassFactory.js - Pass Designer</title>
 
         <!-- CSS -->
         <link href="../css/bootstrap.min.css" rel="stylesheet" />
-        <link href="../css/datepicker.css" />
-        <link href="../css/timepicker.css" />
+        <link href="../css/datepicker.css" rel="stylesheet" />
+        <link href="../css/timepicker.css" rel="stylesheet" />
         <link href="../css/site.css" rel="stylesheet" />
     </head>
     <body data-spy="scroll" data-target="#sidebar">
@@ -222,99 +224,87 @@
                     </div>
                     </section>
 
-                    <section id="fields-intro">
-                    <h2>Fields</h2>
-                    </section>
-
-                    <section id="header-fields">
-                    <h3>Header Fields</h3>
-
-                    <hr />
-
-                    <div class="control-group error">
-                        <label class="control-label">Label:</label>
-                        <div class="controls">
-                            <input class="input-xlarge" type="text" id="label" />
-                            <a href="#">
-                                <i class="icon-info-sign"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="control-group error">
-                        <label class="control-label">Value:</label>
-                        <div class="controls">
-                            <input class="input-xlarge" type="text" id="value" />
-                            <a href="#">
-                                <i class="icon-info-sign"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="control-group error">
-                        <label class="control-label">Internal Key:</label>
-                        <div class="controls">
-                            <input class="input-xlarge" type="text" id="key" />
-                            <a href="#">
-                                <i class="icon-info-sign"></i>
-                            </a>
-                        </div>
-                    </div>
+                    <section id="date">
+                    <h2>Date/Time</h2>
 
                     <div class="control-group">
-                        <label class="control-label">Change Message:</label>
+                        <label class="control-label">Include a date/time: </label>
                         <div class="controls">
-                            <input class="input-xlarge" type="text" id="changeMessage" />
-                            <a href="#">
-                                <i class="icon-info-sign"></i>
-                            </a>
+                            <input id="includeRelevantDate" type="checkbox" />
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <label class="control-label">Text Alignment:</label>
-                        <div class="controls">
-                            <select id="textAlignment">
-                                <option value="unselected"></option>
-                                <option value="natural">Natural</option>
-                                <option value="left">Left</option>
-                                <option value="right">Right</option>
-                                <option value="center">Center</option>
-                            </select>
-                            <a href="#">
-                                <i class="icon-info-sign"></i>
-                            </a>
+                    <div id="relevantDateContainer" class="hidden">
+
+                        <div class="control-group success">
+                            <label class="control-label">Date: </label>
+                            <div class="controls">
+                                <div id="relevantDate" class="input-append date" data-date-format="mm/dd/yyyy" data-date="01/01/2013">
+                                    <input class="span2" type="text" disabled />
+                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="control-group success">
+                            <label class="control-label">Time: </label>
+                            <div class="controls">
+                                <div class="input-append bootstrap-timepicker-component">
+                                    <input class="timepicker-default input-small span2" id="relevantTime" type="text" disabled />
+                                    <span class="add-on"><i class="icon-time"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group success">
+                            <label class="control-label">Timezone: </label>
+                            <div class="controls">
+                                <select class="input-xlarge" id="relevantTimeZone">
+                                    <option value="720">GMT -12:00</option>
+                                    <option value="660">GMT -11:00</option>
+                                    <option value="600">GMT -10:00</option>
+                                    <option value="540">GMT -9:00</option>
+                                    <option value="480">GMT -8:00</option>
+                                    <option value="420">GMT -7:00</option>
+                                    <option value="360">GMT -6:00</option>
+                                    <option value="300">GMT -5:00</option>
+                                    <option value="240">GMT -4:00</option>
+                                    <option value="210">GMT -3:30</option>
+                                    <option value="180">GMT -3:00</option>
+                                    <option value="120">GMT -2:00</option>
+                                    <option value="60">GMT -1:00</option>
+                                    <option value="0">GMT</option>
+                                    <option value="-60">GMT +1:00</option>
+                                    <option value="-120">GMT +2:00</option>
+                                    <option value="-180">GMT +3:00</option>
+                                    <option value="-210">GMT +3:30</option>
+                                    <option value="-240">GMT +4:00</option>
+                                    <option value="-270">GMT +4:30</option>
+                                    <option value="-300">GMT +5:00</option>
+                                    <option value="-330">GMT +5:30</option>
+                                    <option value="-345">GMT +5:45</option>
+                                    <option value="-360">GMT +6:00</option>
+                                    <option value="-420">GMT +7:00</option>
+                                    <option value="-480">GMT +8:00</option>
+                                    <option value="-540">GMT +9:00</option>
+                                    <option value="-570">GMT +9:30</option>
+                                    <option value="-600">GMT +10:00</option>
+                                    <option value="-660">GMT +11:00</option>
+                                    <option value="-720">GMT +12:00</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="control-group">
-                        <div class="controls">
-                            <button type="button" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete Field</button>
-                        </div>
-                    </div>
-
-                    <hr />
-                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
                     </section>
 
-                    <section id="primary-fields">
-                    <h3>Primary Fields</h3>
-                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    <section id="locations">
+                    <h2>Locations</h2>
                     </section>
 
-                    <section id="secondary-fields">
-                    <h3>Secondary Fields</h3>
-                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
-                    </section>
-
-                    <section id="auxiliary-fields">
-                    <h3>Auxiliary Fields</h3>
-                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
-                    </section>
-
-                    <section id="back-fields">
-                    <h3>Back Fields</h3>
-                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    <section id="barcode">
+                    <h2>Barcode</h2>
                     </section>
 
                     <section id="images">
@@ -502,16 +492,99 @@
 
                     </section>
 
-                    <section id="date">
-                    <h2>Date and Time</h2>
+                    <section id="fields-intro">
+                    <h2>Fields</h2>
                     </section>
 
-                    <section id="locations">
-                    <h2>Location</h2>
+                    <section id="header-fields">
+                    <h3>Header Fields</h3>
+
+                    <hr />
+
+                    <div class="control-group error">
+                        <label class="control-label">Label:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="label" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group error">
+                        <label class="control-label">Value:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="value" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group error">
+                        <label class="control-label">Internal Key:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="key" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Change Message:</label>
+                        <div class="controls">
+                            <input class="input-xlarge" type="text" id="changeMessage" />
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Text Alignment:</label>
+                        <div class="controls">
+                            <select id="textAlignment">
+                                <option value="unselected"></option>
+                                <option value="natural">Natural</option>
+                                <option value="left">Left</option>
+                                <option value="right">Right</option>
+                                <option value="center">Center</option>
+                            </select>
+                            <a href="#">
+                                <i class="icon-info-sign"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="button" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete Field</button>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
                     </section>
 
-                    <section id="barcode">
-                    <h2>Barcode</h2>
+                    <section id="primary-fields">
+                    <h3>Primary Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="secondary-fields">
+                    <h3>Secondary Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="auxiliary-fields">
+                    <h3>Auxiliary Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
+                    </section>
+
+                    <section id="back-fields">
+                    <h3>Back Fields</h3>
+                    <button type="button" class="btn btn-success"><i class="icon-plus icon-white"></i> Add Field</button>
                     </section>
 
                     <section id="developer">

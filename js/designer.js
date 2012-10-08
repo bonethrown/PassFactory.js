@@ -79,6 +79,13 @@ function Designer() {
     this._retinaThumbnailImageInputContainer = $('#retinaThumbnailImageInputContainer');
     this._retinaThumbnailImageInput = $('#retinaThumbnailImageInput');
 
+    this._relevantDate = null;
+    this._includeRelevantDateCheckbox = $('#includeRelevantDate');
+    this._relevantDateContainer = $('#relevantDateContainer');
+    this._relevantDateInput = $('#relevantDate');
+    this._relevantTimeInput = $('#relevantTime');
+    this._relevantTimeZoneInput = $('#relevantTimeZone');
+
     this._generatePassButton = $('#generateButton');
     this._validationErrorContainer = $('#validationErrorContainer');
     this._downloadButtonContainer = $('#downloadLinkContainer');
@@ -88,6 +95,24 @@ function Designer() {
 
 Designer.prototype = {
     initialize: function() {
+
+        // Hook up date and time pickers
+        this._relevantDateInput.datepicker().on('changeDate', function(e) {
+            this._relevantDate = e.date;
+        }.bind(this));
+
+        this._relevantTimeInput.timepicker({
+            minuteStep: 5
+        });
+
+        var d = new Date();
+
+        // Set up relevant date
+        this._relevantDateInput.datepicker('setValue', d);
+        var localOffset = d.getTimezoneOffset().toString();
+        this._relevantTimeZoneInput.val(localOffset);
+        this._includeRelevantDateCheckbox.change(this._optInSectionCheckBoxValidator(this._relevantDateContainer));
+
         // Register input change handlers
         this._descriptionInput.change(this._stringInputValidator(true));
         this._organizationNameInput.change(this._stringInputValidator(true));
@@ -199,6 +224,21 @@ Designer.prototype = {
                 if (required) container.addClass('error');
             }
         };
+    },
+
+    _optInSectionCheckBoxValidator: function(div) {
+        return function(e) {
+            var checkbox = $(e.target);
+            var container = $(checkbox.parent().parent());
+
+            if (checkbox.prop('checked')) {
+                container.addClass('success');
+                div.removeClass('hidden');
+            } else {
+                container.removeClass('success');
+                div.addClass('hidden');
+            }
+        }
     },
 
     _hookUpFileButtonHandlers: function(fileButton, clearButton, input, container, required) {
@@ -328,6 +368,24 @@ Designer.prototype = {
         return allValid;
     },
 
+    _getRelevantDate: function(dateToDay, timeInput, timezoneOffset) {
+        var date = new Date(dateToDay.getTime());
+
+        var parsedTimeString = timeInput.val().match(/(\d\d):(\d\d) ([AP]M)/);
+
+        var hour = parseInt(parsedTimeString[1], 10),
+            minute = parseInt(parsedTimeString[2], 10),
+            meridian = parsedTimeString[3];
+
+        if (meridian === 'PM') hour += 12;
+
+        date.setHours(hour);
+        date.setMinutes(minute + (timezoneOffset - date.getTimezoneOffset()));
+        date.setSeconds(0);
+
+        return date;
+    },
+
     generatePass: function() {
         if (this.validateAllInputs()) {
             var pass = new PassFactory.GenericPass({
@@ -344,6 +402,10 @@ Designer.prototype = {
             if (this._foregroundColorInput.val()) pass.foregroundColor = this._foregroundColorInput.val();
             if (this._labelColorInput.val()) pass.labelColor = this._labelColorInput.val();
             if (!this._stripShineInput.prop('checked')) pass.suppressStripShine = true;
+
+            if (this._includeRelevantDateCheckbox.prop('checked')) {
+                pass.relevantDate = this._getRelevantDate(this._relevantDate, this._relevantTimeInput, parseInt(this._relevantTimeZoneInput.val()));
+            }
             
             if (this._backgroundImageInput.get(0).files.length > 0) pass.backgroundImage = this._backgroundImageInput.get(0).files[0];
             if (this._retinaBackgroundImageInput.get(0).files.length > 0) pass.retinaBackgroundImage = this._retinaBackgroundImageInput.get(0).files[0];
