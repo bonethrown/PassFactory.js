@@ -346,7 +346,9 @@ Designer.prototype = {
             'Organization Name': this._organizationNameInput, 
             'Pass Type Identifier': this._passTypeIdentifierInput, 
             'Team Identifier': this._teamIdentifierInput, 
-            'Serial Number': this._serialNumberInput
+            'Serial Number': this._serialNumberInput,
+            'Icon Image': this._iconImageInput,
+            '2x Icon Image': this._retinaIconImageInput
         };
 
         var getContainer = function(input) {
