@@ -88,6 +88,13 @@ function Designer() {
     this._relevantTimeInput = $('#relevantTime');
     this._relevantTimeZoneInput = $('#relevantTimeZone');
 
+    this._includeBarcodeCheckbox = $('#includeBarcode');
+    this._barcodeContainer = $('#barcodeContainer');
+    this._barcodeTypeInput = $('#barcodeType');
+    this._barcodeMessageInput = $('#barcodeMessage');
+    this._barcodeTextInput = $('#barcodeText');
+    this._barcodeEncodingInput = $('#barcodeEncoding');
+
     this._generatePassButton = $('#generateButton');
     this._validationErrorContainer = $('#validationErrorContainer');
     this._downloadButtonContainer = $('#downloadLinkContainer');
@@ -135,6 +142,12 @@ Designer.prototype = {
         var localOffset = d.getTimezoneOffset().toString();
         this._relevantTimeZoneInput.val(localOffset);
         this._includeRelevantDateCheckbox.change(this._optInSectionCheckBoxValidator(this._relevantDateContainer));
+
+        // Set up barcode
+        this._includeBarcodeCheckbox.change(this._optInSectionCheckBoxValidator(this._barcodeContainer));
+        this._barcodeMessageInput.change(this._stringInputValidator(true));
+        this._barcodeTextInput.change(this._stringInputValidator(false));
+        this._barcodeEncodingInput.change(this._stringInputValidator(true));
 
         // Register input change handlers
         this._descriptionInput.change(this._stringInputValidator(true));
@@ -347,6 +360,8 @@ Designer.prototype = {
             'Pass Type Identifier': this._passTypeIdentifierInput, 
             'Team Identifier': this._teamIdentifierInput, 
             'Serial Number': this._serialNumberInput,
+            'Barcode Data': [this._barcodeMessageInput, function() { return this._includeBarcodeCheckbox.prop('checked'); }.bind(this) ],
+            'Barcode Encoding': [this._barcodeEncodingInput, function() { return this._includeBarcodeCheckbox.prop('checked'); }.bind(this) ],
             'Icon Image': this._iconImageInput,
             '2x Icon Image': this._retinaIconImageInput
         };
@@ -370,7 +385,17 @@ Designer.prototype = {
 
         for (var name in namesToElements) {
             if (namesToElements.hasOwnProperty(name)) {
-                var inputElement = namesToElements[name];
+                var val = namesToElements[name];
+
+                var inputElement;
+
+                if (val instanceof Array) {
+                    if (!val[1]()) break;
+                    inputElement = val[0];
+                } else {
+                    inputElement = val;
+                }
+
                 if (!isValid(inputElement)) {
                     allValid = false;
                     errorHtml += '<li>' + name + '</li>';
@@ -443,6 +468,18 @@ Designer.prototype = {
 
             if (this._includeRelevantDateCheckbox.prop('checked')) {
                 pass.relevantDate = this._getRelevantDate(this._relevantDate, this._relevantTimeInput, parseInt(this._relevantTimeZoneInput.val()));
+            }
+
+            if (this._includeBarcodeCheckbox.prop('checked')) {
+                var barcode = new PassFactory.Barcode({
+                    format: this._barcodeTypeInput.val(),
+                    message: this._barcodeMessageInput.val(),
+                    messageEncoding: this._barcodeEncodingInput.val()
+                });
+
+                if (this._barcodeTextInput.val()) barcode.altText = this._barcodeTextInput.val();
+
+                pass.barcode = barcode;
             }
             
             if (this._backgroundImageInput.get(0).files.length > 0) pass.backgroundImage = this._backgroundImageInput.get(0).files[0];

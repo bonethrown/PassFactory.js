@@ -289,6 +289,59 @@
 
                     <section id="barcode">
                     <h2>Barcode</h2>
+
+                    <div class="control-group">
+                        <label class="control-label">Include a barcode:</label>
+                        <div class="controls">
+                            <input id="includeBarcode" type="checkbox" />
+                        </div>
+                    </div>
+
+                    <div id="barcodeContainer" class="hidden">
+
+                        <div class="control-group success">
+                            <label class="control-label">Format:</label>
+                            <div class="controls">
+                                <select id="barcodeType">
+                                    <option value="PKBarcodeFormatQR">QR</option>
+                                    <option value="PKBarcodeFormatPDF417">PDF417</option>
+                                    <option value="PKBarcodeFormatAztec">Aztec</option>
+                                </select>
+                                <a href="#" tabindex="-1">
+                                    <i class="icon-info-sign"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="control-group error">
+                            <label class="control-label">Data/Message:</label>
+                            <div class="controls">
+                                <input class="input-xlarge" type="text" id="barcodeMessage" />
+                                <a href="#" tabindex="-1">
+                                    <i class="icon-info-sign"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Text:</label>
+                            <div class="controls">
+                                <input class="input-xlarge" type="text" id="barcodeText" />
+                                <a href="#" tabindex="-1">
+                                    <i class="icon-info-sign"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="control-group success">
+                            <label class="control-label">Encoding:</label>
+                            <div class="controls">
+                                <input class="input-xlarge" type="text" value="iso-8859-1" id="barcodeEncoding" />
+                                <a href="#" tabindex="-1">
+                                    <i class="icon-info-sign"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
                     </section>
 
                     <section id="images">
@@ -600,7 +653,7 @@
         <script src="../js/bootstrap-timepicker.js"></script>
         <script src="../js/swfobject.js"></script>
         <script src="../js/downloadify.min.js"></script>
-        <script src="../js/passfactory-0.1.0.js"></script>
+        <script src="../js/passfactory-0.1.1.js"></script>
         <script src="../js/designer.js"></script>
 
         <!-- Google Analytics -->
