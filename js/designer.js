@@ -5,6 +5,8 @@ function Designer() {
     this._certificateFileInput = $('#certificateFileInput');
 
     this._passTypeInput = $('#styleKey');
+    this._transitTypeInput = $('#transitType');
+    this._transitTypeInputContainer = $(this._transitTypeInput.parent().parent());
     this._descriptionInput = $('#description');
     this._organizationNameInput = $('#organization');
     this._passTypeIdentifierInput = $('#passTypeIdentifier');
@@ -95,6 +97,27 @@ function Designer() {
 
 Designer.prototype = {
     initialize: function() {
+
+        // Hook up type picker
+        this._passTypeInput.change(function() {
+            switch (this._passTypeInput.val()) {
+                case 'boardingPass':
+                    this._transitTypeInputContainer.removeClass('hidden');
+                    break;
+                case 'coupon':
+                    this._transitTypeInputContainer.addClass('hidden');
+                    break;
+                case 'eventTicket':
+                    this._transitTypeInputContainer.addClass('hidden');
+                    break;
+                case 'generic':
+                    this._transitTypeInputContainer.addClass('hidden');
+                    break;
+                case 'storeCard':
+                    this._transitTypeInputContainer.addClass('hidden');
+                    break;
+            };
+        }.bind(this));
 
         // Hook up date and time pickers
         this._relevantDateInput.datepicker().on('changeDate', function(e) {
@@ -388,7 +411,18 @@ Designer.prototype = {
 
     generatePass: function() {
         if (this.validateAllInputs()) {
-            var pass = new PassFactory.GenericPass({
+
+            var passTypesToConstructors = {
+                'boardingPass': PassFactory.BoardingPass,
+                'coupon': PassFactory.Coupon,
+                'eventTicket': PassFactory.EventTicket,
+                'generic': PassFactory.GenericPass,
+                'storeCard': PassFactory.StoreCard
+            };
+
+            var constructor = passTypesToConstructors[this._passTypeInput.val()];
+
+            var pass = new constructor({
                 keyFile: this._certificateFileInput.get(0).files[0],
                 description: this._descriptionInput.val(),
                 organizationName: this._organizationNameInput.val(),
@@ -396,6 +430,8 @@ Designer.prototype = {
                 teamIdentifier: this._teamIdentifierInput.val(),
                 serialNumber: this._serialNumberInput.val()
             });
+
+            if (constructor === PassFactory.BoardingPass) pass.transitType = this._transitTypeInput.val();
 
             if (this._logoTextInput.val()) pass.logoText = this._logoTextInput.val();
             if (this._backgroundColorInput.val()) pass.backgroundColor = this._backgroundColorInput.val();
@@ -431,6 +467,9 @@ Designer.prototype = {
                     dataType: 'string'
                 });
             }.bind(this));
+
+            // Put the result in the global scope, just in case anyone wants to inspect it
+            window.pass = pass;
         }
     }
 };
