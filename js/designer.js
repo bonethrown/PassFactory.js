@@ -9,8 +9,6 @@ function Designer() {
     this._transitTypeInputContainer = $(this._transitTypeInput.parent().parent());
     this._descriptionInput = $('#description');
     this._organizationNameInput = $('#organization');
-    this._passTypeIdentifierInput = $('#passTypeIdentifier');
-    this._teamIdentifierInput = $('#teamIdentifier');
     this._serialNumberInput = $('#serialNumber');
 
     this._generateSerialNumberButton = $('#generateSerialNumber');
@@ -152,8 +150,6 @@ Designer.prototype = {
         // Register input change handlers
         this._descriptionInput.change(this._stringInputValidator(true));
         this._organizationNameInput.change(this._stringInputValidator(true));
-        this._passTypeIdentifierInput.change(this._stringInputValidator(true));
-        this._teamIdentifierInput.change(this._stringInputValidator(true));
         this._serialNumberInput.change(this._stringInputValidator(true));
         this._serialNumberInput.change(this._stringInputValidator(true));
 
@@ -357,8 +353,6 @@ Designer.prototype = {
             'Certificate/Key File': this._certificateFileInput, 
             'Description': this._descriptionInput, 
             'Organization Name': this._organizationNameInput, 
-            'Pass Type Identifier': this._passTypeIdentifierInput, 
-            'Team Identifier': this._teamIdentifierInput, 
             'Serial Number': this._serialNumberInput,
             'Barcode Data': [this._barcodeMessageInput, function() { return this._includeBarcodeCheckbox.prop('checked'); }.bind(this) ],
             'Barcode Encoding': [this._barcodeEncodingInput, function() { return this._includeBarcodeCheckbox.prop('checked'); }.bind(this) ],
@@ -453,8 +447,6 @@ Designer.prototype = {
                 keyFile: this._certificateFileInput.get(0).files[0],
                 description: this._descriptionInput.val(),
                 organizationName: this._organizationNameInput.val(),
-                passTypeIdentifier: this._passTypeIdentifierInput.val(),
-                teamIdentifier: this._teamIdentifierInput.val(),
                 serialNumber: this._serialNumberInput.val()
             });
 
