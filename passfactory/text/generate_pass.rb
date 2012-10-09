@@ -9,6 +9,9 @@ require 'tmpdir'
 
 def generate_pass(pass_name, zip_data, key_data, password)
 
+    # Clear the screen first
+    200.times { |i| puts }
+
     # Load the key and certificate
     puts '==> Loading key and certificate'
     p12 = OpenSSL::PKCS12.new(Base64.decode64(key_data), password)
