@@ -2,6 +2,7 @@
 # passed in as a quoted parameter to the ruby command-line executable.
 
 require 'base64'
+require 'digest/sha1'
 require 'fileutils'
 require 'openssl'
 require 'tmpdir'
@@ -13,6 +14,23 @@ def generate_pass(pass_name, zip_data, key_data, password)
     p12 = OpenSSL::PKCS12.new(Base64.decode64(key_data), password)
     cert = p12.certificate
     key = p12.key
+
+    # Extract teamIdentifier and passTypeIdentifier from certificate
+    puts '==> Looking for developer data'
+    team_identifier = nil;
+    pass_type_identifier = nil;
+    cert.subject.to_a.each do |part|
+        part_type = part[0]
+        part_value = part[1]
+
+        if part_type == 'OU'
+            team_identifier = part_value
+            puts '    Found Team Identifier: ' + team_identifier
+        elsif part_type == 'UID'
+            pass_type_identifier = part_value
+            puts '    Found Pass Type Identifier: ' + pass_type_identifier
+        end
+    end
 
     # Create a temporary directory for file work (automatically deleted)
     puts '==> Creating temporary directory'
@@ -31,6 +49,21 @@ def generate_pass(pass_name, zip_data, key_data, password)
             puts '==> Loading WWDR certificate'
             wwdr = OpenSSL::X509::Certificate.new(File.read 'wwdr.pem')
             File.delete 'wwdr.pem'
+
+            # Replace placeholder values with teamIdentifier and passTypeIdentifier
+            puts '==> Injecting developer data into pass.json'
+            pass_text = File.read('pass.json')
+            File.open('pass.json', 'w') { |file| file.write pass_text.gsub('**TEAM_IDENTIFIER**', team_identifier)
+                                                                     .gsub('**PASS_TYPE_IDENTIFIER**', pass_type_identifier) }
+
+            # Calculate the checksum for pass.json, now that it's in its final state
+            puts '==> Calculating SHA-1 sum for new pass.json'
+            pass_sha1 = Digest::SHA1.hexdigest File.read('pass.json')
+
+            # Inject pass.json checksum into pass manifest
+            puts '==> Injecting SHA-1 sum for new pass.json into pass manifest'
+            manifest_text = File.read('manifest.json')
+            File.open('manifest.json', 'w') { |file| file.write manifest_text.gsub('**PASS_SHA1**', pass_sha1) }
 
             # Sign the manifest
             puts '==> Signing pass manifest'

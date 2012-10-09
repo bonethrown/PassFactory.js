@@ -105,7 +105,10 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
         toAppleScript: function(callback) { return this.packageData.toAppleScript(callback); },
         toAppleScriptDataUrl: function(callback) { return this.packageData.toAppleScriptDataUrl(callback); },
 
-        toJSON: function() {
+        // args = {omitCertData: true}
+        toJSON: function(args) {
+            var omitCertData = !!(args && args.omitCertData);
+
             var errorMessage = 'Pass not ready to be serialized. Property not yet defined: ';
 
             var throwPropertyError = function(p) { throw new Error(errorMessage + p); };
@@ -114,17 +117,17 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
             if (!this.description) throwPropertyError('description');
             if (!this.organizationName) throwPropertyError('organizationName');
-            if (!this.passTypeIdentifier) throwPropertyError('passTypeIdentifier');
+            if (!this.passTypeIdentifier && !omitCertData) throwPropertyError('passTypeIdentifier');
             if (!this.serialNumber) throwPropertyError('serialNumber');
-            if (!this.teamIdentifier) throwPropertyError('teamIdentifier');
+            if (!this.teamIdentifier && !omitCertData) throwPropertyError('teamIdentifier');
 
             var result = {
                 description: this.description,
                 formatVersion: this._formatVersion,
                 organizationName: this.organizationName,
-                passTypeIdentifier: this.passTypeIdentifier,
+                passTypeIdentifier: omitCertData ? '**PASS_TYPE_IDENTIFIER**' : this.passTypeIdentifier,
                 serialNumber: this.serialNumber,
-                teamIdentifier: this.teamIdentifier
+                teamIdentifier: omitCertData ? '**TEAM_IDENTIFIER**' : this.teamIdentifier
             };
 
             // Associated app keys

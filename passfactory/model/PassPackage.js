@@ -14,10 +14,10 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
     PassPackage.prototype = {
 
-        _getManifestData: function(passData, zip, callback) {
+        _getManifestData: function(passData, zip, callback, omitCertData) {
             var manifest = {};
 
-            manifest['pass.json'] = Utility.sha1(passData);
+            manifest['pass.json'] = omitCertData ? '**PASS_SHA1**' : Utility.sha1(passData);
 
             var pendingUploads = 0;
 
@@ -52,9 +52,13 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
             returnIfReady();
         },
-        
+
         toZip: function(callback) {
-            var passData = JSON.stringify(this.pass, null, '    ') + '\n';
+            return this._toZip(callback);
+        },
+        
+        _toZip: function(callback, omitCertData) {
+            var passData = JSON.stringify(this.pass.toJSON({ omitCertData: !!omitCertData} ), null, '    ') + '\n';
             var zip = new JSZip();
 
             this._getManifestData(passData, zip, function(manifestData) {
@@ -63,7 +67,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
                 zip.file('wwdr.pem', wwdrCert);
                 
                 callback(zip.generate());
-            });
+            }, omitCertData);
         },
 
         toZipDataUrl: function(callback) {
@@ -73,7 +77,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
         },
 
         toAppleScript: function(callback) {
-            return this.toZip(function(zipData) {
+            return this._toZip(function(zipData) {
                 Utility.base64File(this.keyFile, function(keyData) {
                     var ruby = rubyText.replace('**PASS_NAME**', this.passFileName || 'Pass')
                                        .replace('**ZIP_DATA**', Utility.lineBreakRubyStringLiteral(zipData))
@@ -82,7 +86,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
                     callback(appleScript);
                 }.bind(this));
-            }.bind(this));
+            }.bind(this), true);
         },
 
         toAppleScriptDataUrl: function(callback) {
