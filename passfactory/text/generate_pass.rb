@@ -97,5 +97,5 @@ generate_pass('**PASS_NAME**',
               # Key data
               '**KEY_DATA**',
              
-             # Password (to be filled in by AppleScript)
-             '**PASSWORD**')
+              # Password (to be filled in by AppleScript)
+              '**PASSWORD**')
