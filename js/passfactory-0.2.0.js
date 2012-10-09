@@ -1,5 +1,5 @@
 /**
- * PassFactory.js v0.1.1
+ * PassFactory.js v0.2.0
  * iOS 6 Passes from the web browser
  * Global export development edition
  * 
@@ -3107,7 +3107,7 @@ define('text',['module'], function (module) {
     return text;
 });
 
-define('text!text/generate_pass.rb',[],function () { return '# This file can\'t have any double quotes in it, because it will actually be\n# passed in as a quoted parameter to the ruby command-line executable.\n\nrequire \'base64\'\nrequire \'fileutils\'\nrequire \'openssl\'\nrequire \'tmpdir\'\n\ndef generate_pass(pass_name, zip_data, key_data, password)\n\n    # Load the key and certificate\n    puts \'==> Loading key and certificate\'\n    p12 = OpenSSL::PKCS12.new(Base64.decode64(key_data), password)\n    cert = p12.certificate\n    key = p12.key\n\n    # Create a temporary directory for file work (automatically deleted)\n    puts \'==> Creating temporary directory\'\n    Dir.mktmpdir do |dir|\n\n        FileUtils.cd dir do |cwd|\n\n            # Unpack the current zip file\n            # (unzipping requires an extra library, so use the command-line version)\n            puts \'==> Decoding and unzipping pass data\'\n            open \'infile.zip\', \'w\' do |io| io.write Base64.decode64(zip_data) end\n            system \'unzip infile.zip\'\n            File.delete \'infile.zip\';\n\n            # Load the WWDR cert\n            puts \'==> Loading WWDR certificate\'\n            wwdr = OpenSSL::X509::Certificate.new(File.read \'wwdr.pem\')\n            File.delete \'wwdr.pem\'\n\n            # Sign the manifest\n            puts \'==> Signing pass manifest\'\n            signature = OpenSSL::PKCS7::sign(cert, key, File.read(\'manifest.json\'), [wwdr],\n                                             OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOATTR | OpenSSL::PKCS7::DETACHED)\n            open \'signature\', \'w\' do |io| io.write signature.to_der end\n\n            # Package up the final pass\n            # (creating zip files requires an extra library, so use the command-line version)\n            puts \'==> Creating final pass file\'\n            system \'zip -r \' + pass_name + \'.pkpass *\'\n\n            # Copy final pass to Desktop\n            puts \'==> Copying pass file to desktop\'\n            FileUtils.cp pass_name + \'.pkpass\', File.expand_path(\'~/Desktop\')\n\n            puts \'==> Done! It is now safe to exit. Your pass should be on your desktop.\'\n\n        end\n    end\nend\n\ngenerate_pass(\'**PASS_NAME**\',\n\n              # Zip data\n              \'**ZIP_DATA**\',\n              \n              # Key data\n              \'**KEY_DATA**\',\n             \n             # Password (to be filled in by AppleScript)\n             \'**PASSWORD**\')\n';});
+define('text!text/generate_pass.rb',[],function () { return '# This file can\'t have any double quotes in it, because it will actually be\n# passed in as a quoted parameter to the ruby command-line executable.\n\nrequire \'base64\'\nrequire \'digest/sha1\'\nrequire \'fileutils\'\nrequire \'openssl\'\nrequire \'tmpdir\'\n\ndef generate_pass(pass_name, zip_data, key_data, password)\n\n    # Clear the screen first\n    200.times { |i| puts }\n\n    # Load the key and certificate\n    puts \'==> Loading key and certificate\'\n    p12 = OpenSSL::PKCS12.new(Base64.decode64(key_data), password)\n    cert = p12.certificate\n    key = p12.key\n\n    # Extract teamIdentifier and passTypeIdentifier from certificate\n    puts \'==> Looking for developer data\'\n    team_identifier = nil;\n    pass_type_identifier = nil;\n    cert.subject.to_a.each do |part|\n        part_type = part[0]\n        part_value = part[1]\n\n        if part_type == \'OU\'\n            team_identifier = part_value\n            puts \'    Found Team Identifier: \' + team_identifier\n        elsif part_type == \'UID\'\n            pass_type_identifier = part_value\n            puts \'    Found Pass Type Identifier: \' + pass_type_identifier\n        end\n    end\n\n    # Create a temporary directory for file work (automatically deleted)\n    puts \'==> Creating temporary directory\'\n    Dir.mktmpdir do |dir|\n\n        FileUtils.cd dir do |cwd|\n\n            # Unpack the current zip file\n            # (unzipping requires an extra library, so use the command-line version)\n            puts \'==> Decoding and unzipping pass data\'\n            open \'infile.zip\', \'w\' do |io| io.write Base64.decode64(zip_data) end\n            system \'unzip infile.zip\'\n            File.delete \'infile.zip\';\n\n            # Load the WWDR cert\n            puts \'==> Loading WWDR certificate\'\n            wwdr = OpenSSL::X509::Certificate.new(File.read \'wwdr.pem\')\n            File.delete \'wwdr.pem\'\n\n            # Replace placeholder values with teamIdentifier and passTypeIdentifier\n            puts \'==> Injecting developer data into pass.json\'\n            pass_text = File.read(\'pass.json\')\n            File.open(\'pass.json\', \'w\') { |file| file.write pass_text.gsub(\'**TEAM_IDENTIFIER**\', team_identifier)\n                                                                     .gsub(\'**PASS_TYPE_IDENTIFIER**\', pass_type_identifier) }\n\n            # Calculate the checksum for pass.json, now that it\'s in its final state\n            puts \'==> Calculating SHA-1 sum for new pass.json\'\n            pass_sha1 = Digest::SHA1.hexdigest File.read(\'pass.json\')\n\n            # Inject pass.json checksum into pass manifest\n            puts \'==> Injecting SHA-1 sum for new pass.json into pass manifest\'\n            manifest_text = File.read(\'manifest.json\')\n            File.open(\'manifest.json\', \'w\') { |file| file.write manifest_text.gsub(\'**PASS_SHA1**\', pass_sha1) }\n\n            # Sign the manifest\n            puts \'==> Signing pass manifest\'\n            signature = OpenSSL::PKCS7::sign(cert, key, File.read(\'manifest.json\'), [wwdr],\n                                             OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOATTR | OpenSSL::PKCS7::DETACHED)\n            open \'signature\', \'w\' do |io| io.write signature.to_der end\n\n            # Package up the final pass\n            # (creating zip files requires an extra library, so use the command-line version)\n            puts \'==> Creating final pass file\'\n            system \'zip -r \' + pass_name + \'.pkpass *\'\n\n            # Copy final pass to Desktop\n            puts \'==> Copying pass file to desktop\'\n            FileUtils.cp pass_name + \'.pkpass\', File.expand_path(\'~/Desktop\')\n\n            puts \'==> Done! It is now safe to exit. Your pass should be on your desktop.\'\n\n        end\n    end\nend\n\ngenerate_pass(\'**PASS_NAME**\',\n\n              # Zip data\n              \'**ZIP_DATA**\',\n              \n              # Key data\n              \'**KEY_DATA**\',\n             \n              # Password (to be filled in by AppleScript)\n              \'**PASSWORD**\')\n';});
 
 define('text!text/generate_pass.scpt',[],function () { return 'set rubyCommand to "echo \\"\n\n**RUBY_FILE_CONTENT**\n\n    \\" | ruby"\n\non replace_chars(this_text, search_string, replacement_string)\n    set AppleScript\'s text item delimiters to the search_string\n    set the item_list to every text item of this_text\n    set AppleScript\'s text item delimiters to the replacement_string\n    set this_text to the item_list as string\n    set AppleScript\'s text item delimiters to ""\n    return this_text\nend replace_chars\n\ndisplay dialog "Enter the password for your key/certificate file:" default answer "" with hidden answer\n\nset rubyCommand to replace_chars(rubyCommand, "**PASSWORD**", text returned of result)\n\ntell application "Terminal"\n    activate\n    set currentTab to do script rubyCommand\nend tell\n';});
 
@@ -3129,10 +3129,10 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
     PassPackage.prototype = {
 
-        _getManifestData: function(passData, zip, callback) {
+        _getManifestData: function(passData, zip, callback, omitCertData) {
             var manifest = {};
 
-            manifest['pass.json'] = Utility.sha1(passData);
+            manifest['pass.json'] = omitCertData ? '**PASS_SHA1**' : Utility.sha1(passData);
 
             var pendingUploads = 0;
 
@@ -3167,9 +3167,13 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
             returnIfReady();
         },
-        
+
         toZip: function(callback) {
-            var passData = JSON.stringify(this.pass, null, '    ') + '\n';
+            return this._toZip(callback);
+        },
+        
+        _toZip: function(callback, omitCertData) {
+            var passData = JSON.stringify(this.pass.toJSON({ omitCertData: !!omitCertData} ), null, '    ') + '\n';
             var zip = new JSZip();
 
             this._getManifestData(passData, zip, function(manifestData) {
@@ -3178,7 +3182,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
                 zip.file('wwdr.pem', wwdrCert);
                 
                 callback(zip.generate());
-            });
+            }, omitCertData);
         },
 
         toZipDataUrl: function(callback) {
@@ -3188,7 +3192,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
         },
 
         toAppleScript: function(callback) {
-            return this.toZip(function(zipData) {
+            return this._toZip(function(zipData) {
                 Utility.base64File(this.keyFile, function(keyData) {
                     var ruby = rubyText.replace('**PASS_NAME**', this.passFileName || 'Pass')
                                        .replace('**ZIP_DATA**', Utility.lineBreakRubyStringLiteral(zipData))
@@ -3197,7 +3201,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
                     callback(appleScript);
                 }.bind(this));
-            }.bind(this));
+            }.bind(this), true);
         },
 
         toAppleScriptDataUrl: function(callback) {
@@ -3468,7 +3472,10 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
         toAppleScript: function(callback) { return this.packageData.toAppleScript(callback); },
         toAppleScriptDataUrl: function(callback) { return this.packageData.toAppleScriptDataUrl(callback); },
 
-        toJSON: function() {
+        // args = {omitCertData: true}
+        toJSON: function(args) {
+            var omitCertData = !!(args && args.omitCertData);
+
             var errorMessage = 'Pass not ready to be serialized. Property not yet defined: ';
 
             var throwPropertyError = function(p) { throw new Error(errorMessage + p); };
@@ -3477,17 +3484,17 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
             if (!this.description) throwPropertyError('description');
             if (!this.organizationName) throwPropertyError('organizationName');
-            if (!this.passTypeIdentifier) throwPropertyError('passTypeIdentifier');
+            if (!this.passTypeIdentifier && !omitCertData) throwPropertyError('passTypeIdentifier');
             if (!this.serialNumber) throwPropertyError('serialNumber');
-            if (!this.teamIdentifier) throwPropertyError('teamIdentifier');
+            if (!this.teamIdentifier && !omitCertData) throwPropertyError('teamIdentifier');
 
             var result = {
                 description: this.description,
                 formatVersion: this._formatVersion,
                 organizationName: this.organizationName,
-                passTypeIdentifier: this.passTypeIdentifier,
+                passTypeIdentifier: omitCertData ? '**PASS_TYPE_IDENTIFIER**' : this.passTypeIdentifier,
                 serialNumber: this.serialNumber,
-                teamIdentifier: this.teamIdentifier
+                teamIdentifier: omitCertData ? '**TEAM_IDENTIFIER**' : this.teamIdentifier
             };
 
             // Associated app keys
