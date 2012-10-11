@@ -1,10 +1,27 @@
 {
 	"folders": [
 		{
-			"path": "js"
+			"path": "."
 		},
 		{
-			"path": "designer"
+			"path": "js",
+			"name": "JavaScript"
+		},
+		{
+			"path": "css",
+			"name": "CSS"
+		},
+		{
+			"path": "designer",
+			"name": "Designer"
+		},
+		{
+			"path": "faq",
+			"name": "FAQ"
+		},
+		{
+			"path": "usage",
+			"name": "Usage"
 		}
 	]
 }

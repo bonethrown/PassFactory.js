@@ -3,6 +3,16 @@ body {
     padding-bottom: 60px;
 }
 
+div.map {
+    width: 600px;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+div.map img {
+    max-width: none;
+}
+
 img.ribbon {
     position: fixed;
     top: 0;

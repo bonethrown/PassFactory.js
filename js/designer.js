@@ -86,6 +86,10 @@ function Designer() {
     this._relevantTimeInput = $('#relevantTime');
     this._relevantTimeZoneInput = $('#relevantTimeZone');
 
+    this._locationControls = [];
+    this._addLocationButton = $('#addLocation');
+    this._locationsContainer = $('#locationsContainer');
+
     this._includeBarcodeCheckbox = $('#includeBarcode');
     this._barcodeContainer = $('#barcodeContainer');
     this._barcodeTypeInput = $('#barcodeType');
@@ -140,6 +144,11 @@ Designer.prototype = {
         var localOffset = d.getTimezoneOffset().toString();
         this._relevantTimeZoneInput.val(localOffset);
         this._includeRelevantDateCheckbox.change(this._optInSectionCheckBoxValidator(this._relevantDateContainer));
+
+        // Set up locations
+        this._addLocationButton.click(function() {
+            this._locationControls.push(new LocationControl(this, this._locationsContainer));
+        }.bind(this));
 
         // Set up barcode
         this._includeBarcodeCheckbox.change(this._optInSectionCheckBoxValidator(this._barcodeContainer));
@@ -335,6 +344,12 @@ Designer.prototype = {
 
     },
 
+    removeLocationControl: function(control) {
+        if (this._locationControls.indexOf(control) > -1) {
+            this._locationControls.splice(this._locationControls.indexOf(control), 1);
+        }
+    },
+
     generateSerialNumber: function() {
         // Generate a UUID v4 (sans hyphens) and use it for the pass's
         // serial number.
@@ -472,6 +487,12 @@ Designer.prototype = {
                 if (this._barcodeTextInput.val()) barcode.altText = this._barcodeTextInput.val();
 
                 pass.barcode = barcode;
+            }
+
+            for (var i = 0; i < this._locationControls.length; i ++) {
+                var locationControl = this._locationControls[i];
+
+                pass.locations.push(locationControl.location);
             }
             
             if (this._backgroundImageInput.get(0).files.length > 0) pass.backgroundImage = this._backgroundImageInput.get(0).files[0];
