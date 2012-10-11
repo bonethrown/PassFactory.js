@@ -1,5 +1,19 @@
-define(['model/Barcode', 'model/BarcodeFormat', 'model/BoardingPass', 'model/Color', 'model/Coupon', 'model/EventTicket', 'model/GenericPass', 'model/StoreCard', 'model/TextAlignment'],
-        function(Barcode, BarcodeFormat, BoardingPass, Color, Coupon, EventTicket, GenericPass, StoreCard, TextAlignment) {
+define(['model/Barcode',
+        'model/BarcodeFormat',
+        'model/BoardingPass',
+        'model/Color',
+        'model/Coupon',
+        'model/Location',
+        'model/EventTicket',
+        'model/GenericPass',
+        'model/StoreCard',
+        'model/TextAlignment',
+        'model/TransitType'],
+        
+function(Barcode, BarcodeFormat, BoardingPass, Color, Coupon, Location,
+         EventTicket, GenericPass, StoreCard, TextAlignment, TransitType) {
+
+    "use strict";
 
     var PassFactory = {
 
@@ -10,15 +24,16 @@ define(['model/Barcode', 'model/BarcodeFormat', 'model/BoardingPass', 'model/Col
         GenericPass: GenericPass,
         StoreCard: StoreCard,
 
+        // Complex Properties
+        Color: Color,
+        Location: Location,
+
         // Enums
         Barcode: Barcode,
         BarcodeFormat: BarcodeFormat,
-        Color: Color,
-        TextAlignment: TextAlignment
-
+        TextAlignment: TextAlignment,
+        TransitType: TransitType
     };
 
-    Object.freeze(PassFactory);
-
-    return PassFactory;
+    return Object.freeze(PassFactory);
 });
