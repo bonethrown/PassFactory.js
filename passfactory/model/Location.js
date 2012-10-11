@@ -32,6 +32,8 @@ function(Utility) {
 
 			if (this.altitude !== null) result.altitude = this.altitude;
 			if (this.relevantText !== null) result.relevantText = this.relevantText;
+
+			return result;
 		}
 	};
 
