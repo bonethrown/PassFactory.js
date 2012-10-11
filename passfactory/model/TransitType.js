@@ -6,6 +6,7 @@ define(function() {
         Air: 'PKTransitTypeAir',
         Boat: 'PKTransitTypeBoat',
         Bus: 'PKTransitTypeBus',
+        Generic: 'PKTransitTypeGeneric',
         Train: 'PKTransitTypeTrain'
     };
 
