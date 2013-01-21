@@ -1,5 +1,4 @@
 .*.swp
 .DS_Store
 build/
-index.html
 require.js
