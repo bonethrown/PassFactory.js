@@ -6,8 +6,7 @@ define(['Utility',
         'model/PassStyle'],
        
 function(Utility, FieldSet, Barcode, Color, PassPackage) {
-
-    "use strict";
+    'use strict';
 
     function Pass(args) {
         this._packageData = null;
@@ -47,39 +46,39 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
         this._webServiceURL = null;
 
         if (args) {
-            if (args.description) this.description = args.description;
-            if (args.organizationName) this.organizationName = args.organizationName;
-            if (args.passTypeIdentifier) this.passTypeIdentifier = args.passTypeIdentifier;
-            if (args.serialNumber) this.serialNumber = args.serialNumber;
-            if (args.teamIdentifier) this.teamIdentifier = args.teamIdentifier;
+            if (args.description) { this.description = args.description; }
+            if (args.organizationName) { this.organizationName = args.organizationName; }
+            if (args.passTypeIdentifier) { this.passTypeIdentifier = args.passTypeIdentifier; }
+            if (args.serialNumber) { this.serialNumber = args.serialNumber; }
+            if (args.teamIdentifier) { this.teamIdentifier = args.teamIdentifier; }
 
-            if (args.associatedStoreIdentifiers) this.associatedStoreIdentifiers = args.associatedStoreIdentifiers;
+            if (args.associatedStoreIdentifiers) { this.associatedStoreIdentifiers = args.associatedStoreIdentifiers; }
             
-            if (args.locations) this.locations = args.locations;
-            if (args.relevantDate) this.relevantDate = args.relevantDate;
+            if (args.locations) { this.locations = args.locations; }
+            if (args.relevantDate) { this.relevantDate = args.relevantDate; }
 
-            if (args.barcode) this.barcode = args.barcode;
-            if (args.backgroundColor) this.backgroundColor = args.backgroundColor;
-            if (args.foregroundColor) this.foregroundColor = args.foregroundColor;
-            if (args.labelColor) this.labelColor = args.labelColor;
-            if (args.logoColor) this.logoColor = args.logoColor;
-            if (args.suppressStripShine !== undefined) this.suppressStripShine = args.suppressStripShine;
+            if (args.barcode) { this.barcode = args.barcode; }
+            if (args.backgroundColor) { this.backgroundColor = args.backgroundColor; }
+            if (args.foregroundColor) { this.foregroundColor = args.foregroundColor; }
+            if (args.labelColor) { this.labelColor = args.labelColor; }
+            if (args.logoColor) { this.logoColor = args.logoColor; }
+            if (args.suppressStripShine !== undefined) { this.suppressStripShine = args.suppressStripShine; }
 
-            if (args.authenticationToken) this.authenticationToken = args.authenticationToken;
-            if (args.webserviceURL) this.webServiceURL = args.webServiceURL;
+            if (args.authenticationToken) { this.authenticationToken = args.authenticationToken; }
+            if (args.webserviceURL) { this.webServiceURL = args.webServiceURL; }
             
-            if (args.fileName) this.fileName = args.fileName;
-            if (args.keyFile) this.keyFile = args.keyFile;
-            if (args.backgroundImage) this.backgroundImage = args.backgroundImage;
-            if (args.retinaBackgroundImage) this.retinaBackgroundImage = args.retinaBackgroundImage;
-            if (args.footerImage) this.footerImage = args.footerImage;
-            if (args.retinaFooterImage) this.retinaFooterImage = args.retinaFooterImage;
-            if (args.iconImage) this.iconImage = args.iconImage;
-            if (args.retinaIconImage) this.retinaIconImage = args.retinaIconImage;
-            if (args.logoImage) this.logoImage = args.logoImage;
-            if (args.retinaLogoImage) this.retinaLogoImage = args.retinaLogoImage;
-            if (args.stripImage) this.stripImage = args.stripImage;
-            if (args.retinaStripImage) this.retinaStripImage = args.retinaStripImage;
+            if (args.fileName) { this.fileName = args.fileName; }
+            if (args.keyFile) { this.keyFile = args.keyFile; }
+            if (args.backgroundImage) { this.backgroundImage = args.backgroundImage; }
+            if (args.retinaBackgroundImage) { this.retinaBackgroundImage = args.retinaBackgroundImage; }
+            if (args.footerImage) { this.footerImage = args.footerImage; }
+            if (args.retinaFooterImage) { this.retinaFooterImage = args.retinaFooterImage; }
+            if (args.iconImage) { this.iconImage = args.iconImage; }
+            if (args.retinaIconImage) { this.retinaIconImage = args.retinaIconImage; }
+            if (args.logoImage) { this.logoImage = args.logoImage; }
+            if (args.retinaLogoImage) { this.retinaLogoImage = args.retinaLogoImage; }
+            if (args.stripImage) { this.stripImage = args.stripImage; }
+            if (args.retinaStripImage) { this.retinaStripImage = args.retinaStripImage; }
         }
     }
     
@@ -115,11 +114,11 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
             // Standard (required) keys
 
-            if (!this.description) throwPropertyError('description');
-            if (!this.organizationName) throwPropertyError('organizationName');
-            if (!this.passTypeIdentifier && !omitCertData) throwPropertyError('passTypeIdentifier');
-            if (!this.serialNumber) throwPropertyError('serialNumber');
-            if (!this.teamIdentifier && !omitCertData) throwPropertyError('teamIdentifier');
+            if (!this.description) { throwPropertyError('description'); }
+            if (!this.organizationName) { throwPropertyError('organizationName'); }
+            if (!this.passTypeIdentifier && !omitCertData) { throwPropertyError('passTypeIdentifier'); }
+            if (!this.serialNumber) { throwPropertyError('serialNumber'); }
+            if (!this.teamIdentifier && !omitCertData) { throwPropertyError('teamIdentifier'); }
 
             var result = {
                 description: this.description,
@@ -131,34 +130,34 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
             };
 
             // Associated app keys
-            if (this.associatedStoreIdentifiers.length > 0) result.associatedStoreIdentifiers = this.associatedStoreIdentifiers;
+            if (this.associatedStoreIdentifiers.length > 0) { result.associatedStoreIdentifiers = this.associatedStoreIdentifiers; }
 
             // Relevance keys
-            if (this.locations.length > 0) result.locations = this.locations;
-            if (this.relevantDate) result.relevantDate = this.relevantDate;
+            if (this.locations.length > 0) { result.locations = this.locations; }
+            if (this.relevantDate) { result.relevantDate = this.relevantDate; }
 
             // Style keys
             var styleDict = {};
 
-            if (this.headerFields.length > 0) styleDict.headerFields = this.headerFields;
-            if (this.primaryFields.length > 0) styleDict.primaryFields = this.primaryFields;
-            if (this.secondaryFields.length > 0) styleDict.secondaryFields = this.secondaryFields;
-            if (this.auxiliaryFields.length > 0) styleDict.auxiliaryFields = this.auxiliaryFields;
-            if (this.backFields.length > 0) styleDict.backFields = this.backFields;
+            if (this.headerFields.length > 0) { styleDict.headerFields = this.headerFields; }
+            if (this.primaryFields.length > 0) { styleDict.primaryFields = this.primaryFields; }
+            if (this.secondaryFields.length > 0) { styleDict.secondaryFields = this.secondaryFields; }
+            if (this.auxiliaryFields.length > 0) { styleDict.auxiliaryFields = this.auxiliaryFields; }
+            if (this.backFields.length > 0) { styleDict.backFields = this.backFields; }
 
             result[this.styleKey] = styleDict;
 
             // Visual appaerance keys
-            if (this.barcode) result.barcode = this.barcode;
-            if (this.backgroundColor) result.backgroundColor = this.backgroundColor;
-            if (this.foregroundColor) result.foregroundColor = this.foregroundColor;
-            if (this.labelColor) result.labelColor = this.labelColor;
-            if (this.logoText) result.logoText = this.logoText;
-            if (this.suppressStripShine) result.suppressStripShine = this.suppressStripShine;
+            if (this.barcode) { result.barcode = this.barcode; }
+            if (this.backgroundColor) { result.backgroundColor = this.backgroundColor; }
+            if (this.foregroundColor) { result.foregroundColor = this.foregroundColor; }
+            if (this.labelColor) { result.labelColor = this.labelColor; }
+            if (this.logoText) { result.logoText = this.logoText; }
+            if (this.suppressStripShine) { result.suppressStripShine = this.suppressStripShine; }
 
             // Web service keys
-            if (this.authenticationToken) result.authenticationToken = this.authenticationToken;
-            if (this.webServiceURL) result.webServiceURL = this.webServiceURL;
+            if (this.authenticationToken) { result.authenticationToken = this.authenticationToken; }
+            if (this.webServiceURL) { result.webServiceURL = this.webServiceURL; }
 
             return result;
        }

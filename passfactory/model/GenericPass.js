@@ -2,8 +2,7 @@ define(['model/Pass',
         'model/PassStyle'],
 
 function(Pass, PassStyle) {
-
-    "use strict";
+    'use strict';
 
     function GenericPass(args) {
         Pass.call(this, args);

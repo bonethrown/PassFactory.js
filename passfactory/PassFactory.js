@@ -12,8 +12,7 @@ define(['model/Barcode',
         
 function(Barcode, BarcodeFormat, BoardingPass, Color, Coupon, Location,
          EventTicket, GenericPass, StoreCard, TextAlignment, TransitType) {
-
-    "use strict";
+    'use strict';
 
     var PassFactory = {
 

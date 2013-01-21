@@ -5,8 +5,7 @@ define(['Utility',
         'text!text/WWDR.pem'],
         
 function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
-
-    "use strict";
+    'use strict';
 
     function PassPackage(pass) {
         this.pass = pass;
@@ -22,7 +21,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
             var pendingUploads = 0;
 
             var returnIfReady = function() {
-                if (pendingUploads < 1) callback(JSON.stringify(manifest, null, '    '));
+                if (pendingUploads < 1) { callback(JSON.stringify(manifest, null, '    ')); }
             };
 
             var loadIfExists = function(image, imageName) {

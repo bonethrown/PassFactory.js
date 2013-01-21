@@ -1,8 +1,7 @@
 define(['Utility'],
 
 function(Utility) {
-
-	"use strict";
+	'use strict';
 
 	function Location(args) {
 
@@ -12,26 +11,26 @@ function(Utility) {
 		this._relevantText = null;
 
 		// Required
-		if (args && args.latitude) this.latitude = args.latitude;
-		if (args && args.longitude) this.longitude = args.longitude;
+		if (args && args.latitude) { this.latitude = args.latitude; }
+		if (args && args.longitude) { this.longitude = args.longitude; }
 
 		// Optional
-		if (args && args.altitude) this.altitude = args.altitude;
-		if (args && args.relevantText) this.relevantText = args.relevantText;
+		if (args && args.altitude) { this.altitude = args.altitude; }
+		if (args && args.relevantText) { this.relevantText = args.relevantText; }
 	}
 
 	Location.prototype = {
 		toJSON: function() {
-			if (this.latitude === null) throw new Error('Location not ready to be serialized: latitude not defined');
-			if (this.longitude === null) throw new Error('Location not ready to be serialized: longitude not defined');
+			if (this.latitude === null) { throw new Error('Location not ready to be serialized: latitude not defined'); }
+			if (this.longitude === null) { throw new Error('Location not ready to be serialized: longitude not defined'); }
 
 			var result = {
 				latitude: this.latitude,
 				longitude: this.longitude
 			};
 
-			if (this.altitude !== null) result.altitude = this.altitude;
-			if (this.relevantText !== null) result.relevantText = this.relevantText;
+			if (this.altitude !== null) { result.altitude = this.altitude; }
+			if (this.relevantText !== null) { result.relevantText = this.relevantText; }
 
 			return result;
 		}

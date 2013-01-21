@@ -4,8 +4,7 @@ define(['Utility',
         'model/TransitType'],
 
 function(Utility, Pass, PassStyle, TransitType) {
-
-    "use strict";
+    'use strict';
 
     function BoardingPass(args) {
 
@@ -14,14 +13,18 @@ function(Utility, Pass, PassStyle, TransitType) {
         this._super.call(this, args);
         
         if (args) {
-            if (args.transitType) this.transitType = args.transitType;
+            if (args.transitType) {
+                this.transitType = args.transitType;
+            }
         }
     }
 
     BoardingPass.prototype = Object.create(new Pass(), {
         toJSON: { value: function() {
 
-            if (!this.transitType) throw new Error('Pass is not ready to be serialized. Transit type is not defined.');
+            if (!this.transitType) {
+                throw new Error('Pass is not ready to be serialized. Transit type is not defined.');
+            }
 
             var result = this._super.prototype.toJSON.apply(this, arguments);
 

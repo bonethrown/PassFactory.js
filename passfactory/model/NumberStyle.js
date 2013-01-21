@@ -1,6 +1,5 @@
 define(function() {
-
-	"use strict";
+	'use strict';
 
 	var NumberStyle = {
 		Decimal: 'PKNumberStyleDecimal',

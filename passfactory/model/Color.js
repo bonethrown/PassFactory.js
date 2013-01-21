@@ -1,8 +1,7 @@
 define(['Utility'],
 
 function(Utility) {
-
-    "use strict";
+    'use strict';
 
     function Color(redOrHex, green, blue) {
         if (Utility.isCorrectType(redOrHex, String)) {
@@ -62,7 +61,9 @@ function(Utility) {
             get: function() { return this._red || 0; },
             set: function(val) {
                 Utility.validateType(val, Number);
-                if (val < 0 || val > 255) throw new TypeError('Invalid RBG red color value: ' + val);
+                if (val < 0 || val > 255)  {
+                    throw new TypeError('Invalid RBG red color value: ' + val);
+                }
                 this._red = val;
             }
         },
@@ -72,7 +73,9 @@ function(Utility) {
             get: function() { return this._green || 0; },
             set: function(val) {
                 Utility.validateType(val, Number);
-                if (val < 0 || val > 255) throw new TypeError('Invalid RBG green color value: ' + val);
+                if (val < 0 || val > 255) {
+                    throw new TypeError('Invalid RBG green color value: ' + val);
+                }
                 this._green = val;
             }
         },
@@ -82,7 +85,9 @@ function(Utility) {
             get: function() { return this._blue || 0; },
             set: function(val) {
                 Utility.validateType(val, Number);
-                if (val < 0 || val > 255) throw new TypeError('Invalid RBG blue color value: ' + val);
+                if (val < 0 || val > 255) {
+                    throw new TypeError('Invalid RBG blue color value: ' + val);
+                }
                 this._blue = val;
             }
         }

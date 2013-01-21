@@ -2,8 +2,7 @@ define(['Utility',
         'model/BarcodeFormat'],
        
 function(Utility, BarcodeFormat) {
-
-    "use strict";
+    'use strict';
 
     function Barcode(args) {
         this.altText = args.altText || null;
@@ -17,9 +16,9 @@ function(Utility, BarcodeFormat) {
             var notReadyMessage = 'Barcode not ready to be serialized. Property missing: ';
             var throwNotReadyError = function(p) { throw new Error(notReadyMessage + p); };
 
-            if (!this.format) throwNotReadyError('format');
-            if (!this.message) throwNotReadyError('message');
-            if (!this.messageEncoding) throwNotReadyError('messageEncoding');
+            if (!this.format) { throwNotReadyError('format'); }
+            if (!this.message) { throwNotReadyError('message'); }
+            if (!this.messageEncoding) { throwNotReadyError('messageEncoding'); }
 
             var result = {
                 format: this.format,
@@ -27,7 +26,7 @@ function(Utility, BarcodeFormat) {
                 messageEncoding: this.messageEncoding
             };
 
-            if (this.altText) result.altText = this.altText;
+            if (this.altText) { result.altText = this.altText; }
 
             return result;
         }

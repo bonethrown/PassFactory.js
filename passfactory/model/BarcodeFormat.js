@@ -1,6 +1,5 @@
 define(function() {
-
-	"use strict";
+	'use strict';
 
 	var BarcodeFormat = {
         QR: 'PKBarcodeFormatQR',

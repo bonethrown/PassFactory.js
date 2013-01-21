@@ -1,8 +1,7 @@
 define(['model/Field'],
 
 function(Field) {
-
-    "use strict";
+    'use strict';
 
     function FieldSet() {
         this._length = 0;

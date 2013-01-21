@@ -4,8 +4,7 @@ define(['Utility',
         'model/NumberStyle'],
 
 function(Utility, TextAlignment, DateStyle, NumberStyle) {
-
-    "use strict";
+    'use strict';
 
     function Field(args) {
         this._key = null;
@@ -24,41 +23,41 @@ function(Utility, TextAlignment, DateStyle, NumberStyle) {
         Utility.validateType(args, Object);
 
         this.key = args.key || null;
-        if (args.value) this.value = args.value;
-        if (args.changeMessage) this.changeMessage = args.changeMessage;
-        if (args.label) this.label = args.label;
-        if (args.textAlignment) this.textAlignment = args.textAlignment;
+        if (args.value) { this.value = args.value; }
+        if (args.changeMessage) { this.changeMessage = args.changeMessage; }
+        if (args.label) { this.label = args.label; }
+        if (args.textAlignment) { this.textAlignment = args.textAlignment; }
 
-        if (args.dateStyle) this.dateStyle = args.dateStyle;
-        if (args.timeStyle) this.timeStyle = args.timeStyle;
-        if (args.isRelative !== undefined) this.isRelative = args.isRelative;
+        if (args.dateStyle) { this.dateStyle = args.dateStyle; }
+        if (args.timeStyle) { this.timeStyle = args.timeStyle; }
+        if (args.isRelative !== undefined) { this.isRelative = args.isRelative; }
 
-        if (args.currencyCode) this.currencyCode = args.currencyCode;
-        if (args.numberStyle) this.numberStyle = args.numberStyle;
+        if (args.currencyCode) { this.currencyCode = args.currencyCode; }
+        if (args.numberStyle) { this.numberStyle = args.numberStyle; }
     }
     
     Field.prototype = {
         toJSON: function() {
             var message = 'Field not ready to be serialized. Missing property : ';
 
-            if (!this.key) throw new Error(message + 'key');
-            if (!this.value) throw new Error(message + 'value');
+            if (!this.key) { throw new Error(message + 'key'); }
+            if (!this.value) { throw new Error(message + 'value'); }
 
             var result = {
                 key: this.key,
                 value: this.value
             };
 
-            if (this.changeMessage) result.value = this.changeMessage;
-            if (this.label) result.label = this.label;
-            if (this.textAlignment) result.textAlignment = this.textAlignment;
+            if (this.changeMessage) { result.value = this.changeMessage; }
+            if (this.label) { result.label = this.label; }
+            if (this.textAlignment) { result.textAlignment = this.textAlignment; }
 
-            if (this.dateStyle) result.dateStyle = this.dateStyle;
-            if (this.timeStyle) result.timeStyle = this.timeStyle;
-            if (this.isRelative !== null) result.isRelative = this.isRelative;
+            if (this.dateStyle) { result.dateStyle = this.dateStyle; }
+            if (this.timeStyle) { result.timeStyle = this.timeStyle; }
+            if (this.isRelative !== null) { result.isRelative = this.isRelative; }
 
-            if (this.currencyCode) result.currencyCode = this.currencyCode;
-            if (this.numberStyle) result.numberStyle = this.numberStyle;
+            if (this.currencyCode) { result.currencyCode = this.currencyCode; }
+            if (this.numberStyle) { result.numberStyle = this.numberStyle; }
 
             return result;
         }
