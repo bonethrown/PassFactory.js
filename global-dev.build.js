@@ -1,8 +1,8 @@
 ({
     baseUrl: 'passfactory',
     name: 'almond',
-    include: ['BuildGlobal'],
-    insertRequire: ['BuildGlobal'],
+    include: ['_global'],
+    insertRequire: ['_global'],
     out: 'build/passfactory-' + fs.readFileSync('VERSION', 'utf8') + '.js',
     optimize: 'none',
     wrap: {
