@@ -50,7 +50,7 @@ installed, then navigate a terminal to the root of this repository.
     $ r.js -o build.global.js       # production version
     $ r.js -o build.global.lite.js  # "lite" version (no packaging/building)
 
-## Development versions:
+### Development versions:
 
 To build any of the above four editions as an unminified development version,
 simply include `optimize=none` as an argument to the build command:
