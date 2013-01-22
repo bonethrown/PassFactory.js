@@ -1,15 +1,12 @@
 define(['Utility',
         'model/FieldSet',
         'model/Barcode',
-        'model/Color',
-        'model/PassPackage',
-        'model/PassStyle'],
+        'model/Color'],
        
-function(Utility, FieldSet, Barcode, Color, PassPackage) {
+function(Utility, FieldSet, Barcode, Color) {
     'use strict';
 
     function Pass(args) {
-        this._packageData = null;
 
         // Standard keys
         this._description = null;
@@ -98,12 +95,6 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
         addBackField: function(name, args) { this.backFields.addField(name, args);  },
         removeBackField: function(name) { this.backFields.removeField(name); },
 
-        toZip: function(callback) { return this.packageData.toZip(callback); },
-        toZipDataUrl: function(callback) { return this.packageData.toZipDataUrl(callback); },
-
-        toAppleScript: function(callback) { return this.packageData.toAppleScript(callback); },
-        toAppleScriptDataUrl: function(callback) { return this.packageData.toAppleScriptDataUrl(callback); },
-
         // args = {omitCertData: true}
         toJSON: function(args) {
             var omitCertData = !!(args && args.omitCertData);
@@ -165,102 +156,6 @@ function(Utility, FieldSet, Barcode, Color, PassPackage) {
 
     Object.defineProperties(Pass.prototype, {
 
-        packageData: {
-            configurable: false,
-            get: function() {
-                if (!this._packageData) {
-                    this._packageData = new PassPackage(this);
-                }
-
-                return this._packageData;
-            }
-        },
-
-        // Package data
-
-        fileName: {
-            configurable: false,
-            get: function() { return this.packageData.passFileName; },
-            set: function(val) { return this.packageData.passFileName = val; }
-        },
-
-        keyFile: {
-            configurable: false,
-            get: function() { return this.packageData.keyFile; },
-            set: function(val) { return this.packageData.keyFile = val; }
-        },
-
-        backgroundImage: {
-            configurable: false,
-            get: function() { return this.packageData.backgroundImage; },
-            set: function(val) { return this.packageData.backgroundImage = val; }
-        },
-
-        retinaBackgroundImage: {
-            configurable: false,
-            get: function() { return this.packageData.retinaBackgroundImage; },
-            set: function(val) { return this.packageData.retinaBackgroundImage = val; }
-        },
-
-        footerImage: {
-            configurable: false,
-            get: function() { return this.packageData.retinaBackgroundImage; },
-            set: function(val) { return this.packageData.retinaBackgroundImage = val; }
-        },
-
-        retinaFooterImage: {
-            configurable: false,
-            get: function() { return this.packageData.retinaBackgroundImage; },
-            set: function(val) { return this.packageData.retinaBackgroundImage = val; }
-        },
-
-        iconImage: {
-            configurable: false,
-            get: function() { return this.packageData.iconImage; },
-            set: function(val) { return this.packageData.iconImage = val; }
-        },
-
-        retinaIconImage: {
-            configurable: false,
-            get: function() { return this.packageData.retinaIconImage; },
-            set: function(val) { return this.packageData.retinaIconImage = val; }
-        },
-
-        logoImage: {
-            configurable: false,
-            get: function() { return this.packageData.logoImage; },
-            set: function(val) { return this.packageData.logoImage = val; }
-        },
-
-        retinaLogoImage: {
-            configurable: false,
-            get: function() { return this.packageData.retinaLogoImage; },
-            set: function(val) { return this.packageData.retinaLogoImage = val; }
-        },
-
-        stripImage: {
-            configurable: false,
-            get: function() { return this.packageData.stripImage; },
-            set: function(val) { return this.packageData.stripImage = val; }
-        },
-
-        retinaStripImage: {
-            configurable: false,
-            get: function() { return this.packageData.retinaStripImage; },
-            set: function(val) { return this.packageData.retinaStripImage = val; }
-        },
-
-        thumbnailImage: {
-            configurable: false,
-            get: function() { return this.packageData.thumbnailImage; },
-            set: function(val) { return this.packageData.thumbnailImage = val; }
-        },
-
-        retinaThumbnailImage: {
-            configurable: false,
-            get: function() { return this.packageData.retinaThumbnailImage; },
-            set: function(val) { return this.packageData.retinaThumbnailImage = val; }
-        },
         // Style key (implemented by child classes)
 
         styleKey: {

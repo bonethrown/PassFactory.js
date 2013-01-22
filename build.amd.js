@@ -3,7 +3,7 @@
     name: 'PassFactory',
     out: 'build/passfactory-' + fs.readFileSync('VERSION', 'utf8') + '.amd.min.js',
     wrap: {
-        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', fs.readFileSync('VERSION', 'utf8')).replace('EDITION', 'AMD production edition'),
+        start: fs.readFileSync('BANNER', 'utf8').replace('VERSION', fs.readFileSync('VERSION', 'utf8')).replace('EDITION', 'AMD edition'),
         end: ' '
     },
     shim: {

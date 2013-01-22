@@ -8,12 +8,10 @@ define(['model/Barcode',
         'model/GenericPass',
         'model/StoreCard',
         'model/TextAlignment',
-        'model/TransitType',
-        'model/PassPackage'],
+        'model/TransitType'],
         
 function(Barcode, BarcodeFormat, BoardingPass, Color, Coupon, Location,
-         EventTicket, GenericPass, StoreCard, TextAlignment, TransitType,
-         PassPackage) {
+         EventTicket, GenericPass, StoreCard, TextAlignment, TransitType) {
     'use strict';
 
     var PassFactory = {
@@ -33,10 +31,7 @@ function(Barcode, BarcodeFormat, BoardingPass, Color, Coupon, Location,
         Barcode: Barcode,
         BarcodeFormat: BarcodeFormat,
         TextAlignment: TextAlignment,
-        TransitType: TransitType,
-
-        // Package
-        PassPackage: PassPackage
+        TransitType: TransitType
     };
 
     return Object.freeze(PassFactory);
