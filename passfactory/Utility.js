@@ -2,8 +2,7 @@ define(['lib/underscore',
         'lib/crypto-js-sha1'],
 
 function(_, CryptoJS) {
-
-    "use strict";
+    'use strict';
     
     var Utility = {
 
@@ -28,14 +27,15 @@ function(_, CryptoJS) {
          * From: http://www.webtoolkit.info/javascript-base64.html
          */
         base64: function(str) {
-            var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            /*jshint bitwise:false */
+            var _keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
             var utf8Encode = function(s) {
-                s = s.replace(/\r\n/g,"\n");
-                var utftext = "";
+                s = s.replace(/\r\n/g, '\n');
+                var utftext = '';
                 for (var n = 0; n < s.length; n++) {
                     var c = s.charCodeAt(n);
-                    if (c < 128) utftext += String.fromCharCode(c);
+                    if (c < 128) { utftext += String.fromCharCode(c); }
                     else if (c > 127 && c < 2048) {
                         utftext += String.fromCharCode((c >> 6) | 192);
                         utftext += String.fromCharCode((c & 63) | 128);
@@ -49,7 +49,7 @@ function(_, CryptoJS) {
                 return utftext;
             };
  
-            var output = "";
+            var output = '';
             var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
             var i = 0;
  
@@ -97,7 +97,7 @@ function(_, CryptoJS) {
             var result = str.slice(0, len);
 
             for (var i = len; i < str.length; i += len) {
-                result += "\n              " + str.slice(i, i + len);
+                result += '\n              ' + str.slice(i, i + len);
             }
 
             return result;
