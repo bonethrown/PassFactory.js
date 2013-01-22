@@ -42,12 +42,19 @@ installed, then navigate a terminal to the root of this repository.
 
 ### For AMD users:
 
-    $ r.js -o amd.build.js        # production version
-    $ r.js -o amd-dev.build.js    # development version
+    $ r.js -o build.amd.js          # production version
+    $ r.js -o build.amd.lite.js     # "lite" version (no packaging/building)
 
 ### For global export users:
+ 
+    $ r.js -o build.global.js       # production version
+    $ r.js -o build.global.lite.js  # "lite" version (no packaging/building)
 
-    $ r.js -o global.build.js        # production version
-    $ r.js -o global-dev.build.js    # development version
+## Development versions:
 
-Resulting files should appear in the `build/` directory.
+To build any of the above four editions as an unminified development version,
+simply include `optimize=none` as an argument to the build command:
+
+    $ r.js -o build.global.js optimize=none
+
+All resulting files should appear in the `build/` directory.
