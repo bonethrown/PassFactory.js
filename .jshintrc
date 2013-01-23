@@ -17,6 +17,8 @@
 	"immed": true,
 	"indent": 4,
 	"latedef": true,
+	"maxlen": 80,
+	"multistr": true,
 	"newcap": true,
 	"noarg": true,
     "noempty": true,

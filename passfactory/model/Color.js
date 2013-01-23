@@ -51,7 +51,9 @@ function(Utility) {
         },
 
         toJSON: function() {
-            return 'rgb(' + this.red + ', ' + this.green + ', ' + this.blue + ')';
+            return 'rgb(' + this.red + ', ' +
+                            this.green + ', ' +
+                            this.blue + ')';
         }
     };
 
@@ -62,7 +64,7 @@ function(Utility) {
             set: function(val) {
                 Utility.validateType(val, Number);
                 if (val < 0 || val > 255)  {
-                    throw new TypeError('Invalid RBG red color value: ' + val);
+                    throw new TypeError('Invalid RBG red value: ' + val);
                 }
                 this._red = val;
             }
@@ -74,7 +76,7 @@ function(Utility) {
             set: function(val) {
                 Utility.validateType(val, Number);
                 if (val < 0 || val > 255) {
-                    throw new TypeError('Invalid RBG green color value: ' + val);
+                    throw new TypeError('Invalid RBG green value: ' + val);
                 }
                 this._green = val;
             }
@@ -86,7 +88,7 @@ function(Utility) {
             set: function(val) {
                 Utility.validateType(val, Number);
                 if (val < 0 || val > 255) {
-                    throw new TypeError('Invalid RBG blue color value: ' + val);
+                    throw new TypeError('Invalid RBG blue value: ' + val);
                 }
                 this._blue = val;
             }

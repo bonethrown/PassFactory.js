@@ -33,7 +33,8 @@ function(Field) {
             var result = [];
 
             for (var property in this) {
-                if (this.hasOwnProperty(property) && this[property] instanceof Field) {
+                if (this.hasOwnProperty(property) &&
+                    this[property] instanceof Field) {
                     result.push(this[property]);
                 }
             }

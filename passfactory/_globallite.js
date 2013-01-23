@@ -3,6 +3,8 @@
  * namespace
  */
 define(['PassFactoryLite'], function(PassFactoryLite) {
+    'use strict';
+    
     if (window) {
         window.$PF = window.PassFactory = PassFactoryLite;
     }

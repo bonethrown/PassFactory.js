@@ -16,12 +16,16 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
         _getManifestData: function(passData, zip, callback, omitCertData) {
             var manifest = {};
 
-            manifest['pass.json'] = omitCertData ? '**PASS_SHA1**' : Utility.sha1(passData);
+            manifest['pass.json'] = omitCertData ?
+                                        '**PASS_SHA1**' :
+                                        Utility.sha1(passData);
 
             var pendingUploads = 0;
 
             var returnIfReady = function() {
-                if (pendingUploads < 1) { callback(JSON.stringify(manifest, null, '    ')); }
+                if (pendingUploads < 1) {
+                    callback(JSON.stringify(manifest, null, '    '));
+                }
             };
 
             var loadIfExists = function(image, imageName) {
@@ -57,8 +61,9 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
         },
         
         _toZip: function(callback, omitCertData) {
-            var passData = JSON.stringify(this.pass.toJSON({ omitCertData: !!omitCertData} ), null, '    ') + '\n';
-            var zip = new JSZip();
+            var passJson = this.pass.toJSON({ omitCertData: !!omitCertData} ),
+                passData = JSON.stringify(passJson, null, '    ') + '\n',
+                zip = new JSZip();
 
             this._getManifestData(passData, zip, function(manifestData) {
                 zip.file('pass.json', passData, zip);
@@ -76,21 +81,30 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
         },
 
         toAppleScript: function(callback) {
+            var that = this;
+            function zipCallback(zip, key) {
+                var passName = that.passFileName || 'Pass',
+                    zipData = Utility.lineBreakRubyStringLiteral(zip),
+                    keyData = Utility.lineBreakRubyStringLiteral(key),
+                    ruby = rubyText.replace('**PASS_NAME**', passName)
+                                   .replace('**ZIP_DATA**', zipData)
+                                   .replace('**KEY_DATA**', keyData)
+                                   .replace(/^/gm, '        '),
+                    as = appleScriptText.replace('**RUBY_FILE_CONTENT**', ruby);
+
+                callback(as);
+            }
             return this._toZip(function(zipData) {
                 Utility.base64File(this.keyFile, function(keyData) {
-                    var ruby = rubyText.replace('**PASS_NAME**', this.passFileName || 'Pass')
-                                       .replace('**ZIP_DATA**', Utility.lineBreakRubyStringLiteral(zipData))
-                                       .replace('**KEY_DATA**', Utility.lineBreakRubyStringLiteral(keyData));
-                    var appleScript = appleScriptText.replace('**RUBY_FILE_CONTENT**', ruby.replace(/^/gm, '        '));
-
-                    callback(appleScript);
-                }.bind(this));
-            }.bind(this), true);
+                    zipCallback(zipData, keyData);
+                });
+            }, true);
         },
 
         toAppleScriptDataUrl: function(callback) {
             this.toAppleScript(function(script) {
-                callback('data:application/x-applescript;base64,' + Utility.base64(script));
+                callback('data:application/x-applescript;base64,' +
+                          Utility.base64(script));
             });
         }
     };

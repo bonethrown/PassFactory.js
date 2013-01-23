@@ -23,7 +23,8 @@ function(Utility, Pass, PassStyle, TransitType) {
         toJSON: { value: function() {
 
             if (!this.transitType) {
-                throw new Error('Pass is not ready to be serialized. Transit type is not defined.');
+                throw new Error('Pass is not ready to be serialized. \
+                                 Transit type is not defined.');
             }
 
             var result = this._super.prototype.toJSON.apply(this, arguments);

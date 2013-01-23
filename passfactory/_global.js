@@ -3,6 +3,8 @@
  * namespace
  */
 define(['PassFactory'], function(PassFactory) {
+    'use strict';
+    
     if (window) {
         window.$PF = window.PassFactory = PassFactory
     }

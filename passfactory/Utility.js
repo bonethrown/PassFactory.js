@@ -16,8 +16,8 @@ function(_, CryptoJS) {
 
             fileReader.onload = function() {
                 var fileData = fileReader.result;
-                var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData)).toString();
-                callback(sha1, fileData);
+                var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData));
+                callback(sha1.toString(), fileData);
             };
 
             fileReader.readAsBinaryString(file);
@@ -28,7 +28,9 @@ function(_, CryptoJS) {
          */
         base64: function(str) {
             /*jshint bitwise:false */
-            var _keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+            var _keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+                           abcdefghijklmnopqrstuvwxyz\
+                           0123456789+/=';
 
             var utf8Encode = function(s) {
                 s = s.replace(/\r\n/g, '\n');

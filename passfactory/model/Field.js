@@ -30,7 +30,10 @@ function(Utility, TextAlignment, DateStyle, NumberStyle) {
 
         if (args.dateStyle) { this.dateStyle = args.dateStyle; }
         if (args.timeStyle) { this.timeStyle = args.timeStyle; }
-        if (args.isRelative !== undefined) { this.isRelative = args.isRelative; }
+
+        if (args.isRelative !== undefined) {
+            this.isRelative = args.isRelative;
+        }
 
         if (args.currencyCode) { this.currencyCode = args.currencyCode; }
         if (args.numberStyle) { this.numberStyle = args.numberStyle; }
@@ -38,7 +41,8 @@ function(Utility, TextAlignment, DateStyle, NumberStyle) {
     
     Field.prototype = {
         toJSON: function() {
-            var message = 'Field not ready to be serialized. Missing property : ';
+            var message = 'Field not ready to be serialized. \
+                           Missing property : ';
 
             if (!this.key) { throw new Error(message + 'key'); }
             if (!this.value) { throw new Error(message + 'value'); }
@@ -50,11 +54,17 @@ function(Utility, TextAlignment, DateStyle, NumberStyle) {
 
             if (this.changeMessage) { result.value = this.changeMessage; }
             if (this.label) { result.label = this.label; }
-            if (this.textAlignment) { result.textAlignment = this.textAlignment; }
+
+            if (this.textAlignment) {
+                result.textAlignment = this.textAlignment;
+            }
 
             if (this.dateStyle) { result.dateStyle = this.dateStyle; }
             if (this.timeStyle) { result.timeStyle = this.timeStyle; }
-            if (this.isRelative !== null) { result.isRelative = this.isRelative; }
+
+            if (this.isRelative !== null) {
+                result.isRelative = this.isRelative;
+            }
 
             if (this.currencyCode) { result.currencyCode = this.currencyCode; }
             if (this.numberStyle) { result.numberStyle = this.numberStyle; }
