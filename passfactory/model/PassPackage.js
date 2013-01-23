@@ -1,11 +1,29 @@
 define(['Utility',
         'lib/jszip',
+        'lib/crypto-js-sha1',
         'text!text/generate_pass.rb',
         'text!text/generate_pass.scpt',
         'text!text/WWDR.pem'],
         
-function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
+function(Utility, JSZip, CryptoJS, rubyText, appleScriptText, wwdrCert) {
     'use strict';
+
+    function sha1(str) {
+        return CryptoJS.SHA1(str).toString();
+    }
+
+    // callback(sha1, fileData)
+    function sha1File(file, callback) {
+        var fileReader = new FileReader();
+
+        fileReader.onload = function() {
+            var fileData = fileReader.result;
+            var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData));
+            callback(sha1.toString(), fileData);
+        };
+
+        fileReader.readAsBinaryString(file);
+    }
 
     function PassPackage(pass) {
         this.pass = pass;
@@ -18,7 +36,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
 
             manifest['pass.json'] = omitCertData ?
                                         '**PASS_SHA1**' :
-                                        Utility.sha1(passData);
+                                        sha1(passData);
 
             var pendingUploads = 0;
 
@@ -31,7 +49,7 @@ function(Utility, JSZip, rubyText, appleScriptText, wwdrCert) {
             var loadIfExists = function(image, imageName) {
                 if (image) {
                     pendingUploads ++;
-                    Utility.sha1File(image, function(sha1, fileData) {
+                    sha1File(image, function(sha1, fileData) {
                         manifest[imageName] = sha1;
                         zip.file(imageName, fileData, { binary: true });
                         pendingUploads --;

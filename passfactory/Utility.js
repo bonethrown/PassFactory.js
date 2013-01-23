@@ -1,26 +1,7 @@
-define(['lib/crypto-js-sha1'],
-
-function(CryptoJS) {
+define(function() {
     'use strict';
     
     var Utility = {
-
-        sha1: function(str) {
-            return CryptoJS.SHA1(str).toString();
-        },
-
-        // callback(sha1, fileData)
-        sha1File: function(file, callback) {
-            var fileReader = new FileReader();
-
-            fileReader.onload = function() {
-                var fileData = fileReader.result;
-                var sha1 = CryptoJS.SHA1(CryptoJS.enc.Latin1.parse(fileData));
-                callback(sha1.toString(), fileData);
-            };
-
-            fileReader.readAsBinaryString(file);
-        },
 
         /**
          * From: http://www.webtoolkit.info/javascript-base64.html
