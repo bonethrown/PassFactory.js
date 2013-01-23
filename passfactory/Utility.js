@@ -1,7 +1,6 @@
-define(['lib/underscore',
-        'lib/crypto-js-sha1'],
+define(['lib/crypto-js-sha1'],
 
-function(_, CryptoJS) {
+function(CryptoJS) {
     'use strict';
     
     var Utility = {
@@ -127,7 +126,14 @@ function(_, CryptoJS) {
                 default:
                     // Enums
                     if (typeof type === 'object') {
-                        return _.values(type).indexOf(obj) > -1;
+                        for (var key in type) {
+                            if (type.hasOwnProperty(key) &&
+                                type[key] === obj) {
+                                return true;
+                            }
+                        }
+
+                        return false;
                     }
                     
                     // Regular inheritance case
